@@ -1,7 +1,6 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 
 export default function ArchivedPage() {
   const { userId, isLoaded } = useAuth();

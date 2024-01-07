@@ -1,9 +1,4 @@
-import {
-  Link,
-  useLocation,
-  useMatch,
-  useResolvedPath,
-} from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import { cn } from "../lib/utils";
 
 export default function Navigation() {

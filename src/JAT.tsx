@@ -1,6 +1,5 @@
 import { useAuth } from "@clerk/clerk-react";
 import {
-  Navigate,
   Outlet,
   RouterProvider,
   createBrowserRouter,
