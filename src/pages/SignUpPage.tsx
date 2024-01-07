@@ -1,5 +1,5 @@
 import { SignUp } from "@clerk/clerk-react";
 
-export default function SignOutPage() {
+export default function SignUpPage() {
   return <SignUp />;
 }

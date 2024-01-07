@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
-export default function () {
+export default function ArchivedPage() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
   console.log("test", userId);
@@ -17,5 +17,10 @@ export default function () {
     }
   }, [userId, isLoaded]);
 
-  return <div>DashboardPage works</div>;
+  return (
+    <div>
+      Archived
+      {/* <SignOutButton /> */}
+    </div>
+  );
 }
