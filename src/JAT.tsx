@@ -1,5 +1,6 @@
 import { useAuth } from "@clerk/clerk-react";
 import {
+  Navigate,
   Outlet,
   RouterProvider,
   createBrowserRouter,
@@ -13,9 +14,13 @@ import Header from "./components/Header";
 import { useEffect } from "react";
 
 function HandleRedirect() {
+  return <Navigate to={"/"} />;
+}
+
+function RootLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  console.log("test", userId);
+  console.log("userId", userId);
 
   //effect description
   useEffect(() => {
@@ -29,10 +34,7 @@ function HandleRedirect() {
   if (!isLoaded) {
     return <div>Navigating</div>;
   }
-  return null;
-}
 
-function RootLayout() {
   return (
     <div>
       <Outlet />
