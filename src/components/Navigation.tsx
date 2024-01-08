@@ -1,5 +1,5 @@
+import { cn } from "@/lib/utils";
 import { Link, useMatch } from "react-router-dom";
-import { cn } from "../lib/utils";
 
 export default function Navigation() {
   const isOnDashboard = useMatch("/dashboard");

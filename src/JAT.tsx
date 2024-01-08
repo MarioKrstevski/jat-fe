@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ArchivedPage from "./pages/ArchivedPage";
 import Header from "./components/Header";
 import { useEffect } from "react";
+import { Toaster } from "./components/ui/sonner";
 
 function HandleRedirect() {
   return <Navigate to={"/"} />;
@@ -44,6 +45,7 @@ function RootLayout() {
 function DashboardLayout() {
   return (
     <div>
+      <Toaster richColors closeButton />
       <Header />
       <Outlet />
     </div>
