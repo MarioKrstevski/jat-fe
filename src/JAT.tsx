@@ -21,7 +21,6 @@ function HandleRedirect() {
 function RootLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  console.log("userId", userId);
 
   //effect description
   useEffect(() => {
