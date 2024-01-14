@@ -1,13 +1,19 @@
 import { faker } from "@faker-js/faker";
-import { JobApplication, JobApplicationStatus } from "../types";
+import {
+  JobApplication,
+  JobApplicationGenerated,
+  JobApplicationStatus,
+} from "../types";
 const jobApplicationStatuses: JobApplicationStatus[] = [
-  "Bookmarked",
+  "Wishlist",
   "Applied",
-  "NoResponse",
+  "OA - Online Assessment",
+  "Waiting Referral",
+  "No Response",
   "Ghosted",
-  "PhoneScreen",
-  "CodingChallenge",
-  "TakeHomeAssignment",
+  "Phone Screen",
+  "Coding Challenge",
+  "Take-Home Assignment",
   "Onsite",
   "Behavioral",
   "Interview",
@@ -26,33 +32,41 @@ function getRandomJobApplicationStatus(): JobApplicationStatus {
 export function generateFakeJobApplications(size: number) {
   const jobApplications = [];
   for (let i = 0; i < size; i++) {
-    const jobApplication = {
+    const jobApplication: JobApplicationGenerated = {
+      // userId: faker.string.uuid(),
       id: faker.string.uuid(),
-      isArchived: faker.datatype.boolean(),
+      isArchived: false,
       isRemote: faker.datatype.boolean(),
-      userId: faker.string.uuid(),
+      wasReffered: faker.datatype.boolean(),
+      refferedBy: faker.person.fullName(),
+      companyId: faker.string.uuid(),
       companyName: faker.company.name(),
-      jobPosition: faker.person.jobTitle(),
-      adLink: faker.internet.url(),
+      companyInfo: faker.lorem.paragraph(1),
+      jobPositionTitle: faker.person.jobTitle(),
+      link: faker.internet.url(),
       status: getRandomJobApplicationStatus(),
-      cvUsed: faker.system.commonFileName(),
-      motivationalLetter: faker.lorem.paragraph(),
-      notes: faker.lorem.paragraph(),
-      createdAt: faker.date.past().toISOString(),
-      applicationTime: faker.date.past().toISOString(),
-      responseDateTime: faker.date.past().toISOString(),
-      applicationLocation: faker.location.city(),
-      referralSource: faker.person.jobArea(),
-      wishlist: faker.lorem.paragraph(),
-      companyInfo: faker.lorem.paragraph(),
-      mapLocation: faker.location.city(),
-      nextInterviewDate: faker.date.past().toISOString(),
+      statusOptions: jobApplicationStatuses.join(","),
+      timeline: faker.lorem.paragraph(1),
+      resumeUsed: faker.lorem.paragraph(1),
+      motivationalLetter: faker.lorem.paragraph(1),
+      notes: faker.lorem.paragraph(1),
+      createdAt: faker.date.past(),
+      updatedAt: faker.date.past(),
+      nextInterviewDate: faker.date.future(),
+      salaryDetails: faker.lorem.paragraph(1),
+      appliedFrom: faker.lorem.paragraph(1),
+      heardAboutFrom: faker.lorem.paragraph(1),
+      mapLocation:
+        faker.location.latitude().toString() +
+        "," +
+        faker.location.longitude().toString(),
+      todos: "",
     };
     jobApplications.push(jobApplication);
   }
   return jobApplications;
 }
 
-export function getFakeJobApplications(): JobApplication[] {
+export function getFakeJobApplications(): JobApplicationGenerated[] {
   return generateFakeJobApplications(30);
 }

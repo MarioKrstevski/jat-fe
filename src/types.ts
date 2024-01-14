@@ -1,14 +1,17 @@
 //how to handle multiple stages of interviewing?
 //how to handle multiple applications to the same company?
 //how to handle multiple offers?
+
 export type JobApplicationStatus =
-  | "Bookmarked"
+  | "Wishlist"
+  | "OA - Online Assessment"
   | "Applied"
-  | "NoResponse"
+  | "Waiting Referral"
+  | "No Response"
   | "Ghosted"
-  | "PhoneScreen"
-  | "CodingChallenge"
-  | "TakeHomeAssignment"
+  | "Phone Screen"
+  | "Coding Challenge"
+  | "Take-Home Assignment"
   | "Onsite"
   | "Behavioral"
   | "Interview"
@@ -17,25 +20,56 @@ export type JobApplicationStatus =
   | "Accepted"
   | "Archived";
 
-export interface JobApplication {
+export interface JobApplicationGenerated {
   id: string;
   isArchived: boolean;
   isRemote: boolean;
-  userId: string;
+  wasReffered: boolean;
+  refferedBy: string;
+  companyId: string | null;
   companyName: string;
-  jobPosition: string;
-  adLink: string;
-  status: JobApplicationStatus;
-  cvUsed: string;
+  companyInfo: string;
+  jobPositionTitle: string;
+  link: string;
+  status: string;
+  timeline: string;
+  statusOptions: string;
+  resumeUsed: string;
   motivationalLetter: string;
   notes: string;
-  createdAt: string;
-  applicationTime: string;
-  responseDateTime: string;
-  applicationLocation: string;
-  referralSource: string;
-  wishlist: string;
-  companyInfo: string;
+  createdAt: Date;
+  updatedAt: Date;
+  nextInterviewDate: Date;
+  salaryDetails: string;
+  appliedFrom: string;
+  heardAboutFrom: string;
   mapLocation: string;
-  nextInterviewDate: string;
+  todos: string;
+}
+export interface JobApplication {
+  userId: string;
+  id: string;
+  isArchived: boolean;
+  isRemote: boolean;
+  wasReffered: boolean;
+  refferedBy: string;
+  companyId: string | null;
+  companyName: string;
+  companyInfo: string;
+  jobPositionTitle: string;
+  link: string;
+  status: string;
+  timeline: string;
+  statusOptions: string;
+  resumeUsed: string;
+  motivationalLetter: string;
+  notes: string;
+  createdAt: Date;
+  updatedAt: Date;
+  nextInterviewDate: Date;
+  salaryDetails: string;
+  appliedFrom: string;
+  heardAboutFrom: string;
+  mapLocation: string;
+  todos: string;
 }
