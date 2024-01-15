@@ -1,18 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/NOU6FCUtyFM
- */
-import { Input } from "@/components/ui/input";
-import {
-  SelectValue,
-  SelectTrigger,
-  SelectLabel,
-  SelectItem,
-  SelectGroup,
-  SelectContent,
-  Select,
-} from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   TableHead,
   TableRow,
@@ -21,12 +6,52 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
-import Link from "next/link";
-import { SearchIcon, TrashIcon, PlusIcon } from "lucide-react";
-import { JobApplication } from "@/types";
+import { JobApplication, JobApplicationStatus } from "@/types";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
+import TableHeaderAddon from "./TableHeaderAddon";
+import ActionList from "./ActionList";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "./ui/popover";
+import StateSelector from "./StateSelector";
+import { Button } from "./ui/button";
+function formatDate(date: Date, formatString: string) {
+  const dateParsed = parseISO(date.toString());
+  return format(dateParsed, formatString);
+}
 
+function StatusChanger({ ja }: { ja: JobApplication }) {
+  const statusOptions = ja.statusOptions.split(
+    ","
+  ) as JobApplicationStatus[];
+  return (
+    <div className="">
+      <div className="flex  gap-2 ">
+        <div>
+          Current Status:
+          <br />
+          <StateSelector
+            current={ja.waitingFor}
+            states={statusOptions}
+          />
+        </div>
+        <div>
+          Next Step: <br />{" "}
+          <StateSelector
+            current={ja.waitingFor}
+            states={statusOptions}
+          />
+        </div>
+      </div>
+      <div className="flex justify-end">
+        <Button className="mt-4 "> Save Changes </Button>
+      </div>
+    </div>
+  );
+}
 export default function JATable({
   jobApplications,
 }: {
@@ -52,97 +77,13 @@ export default function JATable({
         .includes(searchKeyword.toLocaleLowerCase())
     );
   });
+
   return (
-    <div className="w-full m-2 overflow-x-auto">
-      <div className="flex items-start gap-4">
-        <div className="">
-          <h1 className="text-2xl font-bold">Job Applications</h1>
-        </div>
-        <div className="flex-1">
-          <form>
-            <div className="relative w-full">
-              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-              <Input
-                className="w-full bg-white shadow-none appearance-none pl-8 max-w-[350px] dark:bg-gray-950"
-                placeholder="Search by company or by status..."
-                type="search"
-                onChange={(e) => setSearchKeyword(e.target.value)}
-              />
-            </div>
-          </form>
-        </div>
-        <div className="flex-1">
-          <Select>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select columns" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {/* <SelectLabel>Columns</SelectLabel> */}
-                {Object.keys(jobApplications[0]).map((option) => {
-                  return (
-                    <SelectItem value={option} key={option}>
-                      {option}
-                    </SelectItem>
-                  );
-                })}
-                <SelectItem value="user-id">User ID</SelectItem>
-                <SelectItem value="is-archived">
-                  Is Archived
-                </SelectItem>
-                <SelectItem value="is-remote">Is Remote</SelectItem>
-                <SelectItem value="was-referred">
-                  Was Referred
-                </SelectItem>
-                <SelectItem value="referred-by">
-                  Referred By
-                </SelectItem>
-                <SelectItem value="company-id">Company ID</SelectItem>
-                <SelectItem value="company-name">
-                  Company Name
-                </SelectItem>
-                <SelectItem value="company-info">
-                  Company Info
-                </SelectItem>
-                <SelectItem value="job-position-title">
-                  Job Position Title
-                </SelectItem>
-                <SelectItem value="link">Link</SelectItem>
-                <SelectItem value="status">Status</SelectItem>
-                <SelectItem value="timeline">Timeline</SelectItem>
-                <SelectItem value="status-options">
-                  Status Options
-                </SelectItem>
-                <SelectItem value="resume-used">
-                  Resume Used
-                </SelectItem>
-                <SelectItem value="motivational-letter">
-                  Motivational Letter
-                </SelectItem>
-                <SelectItem value="notes">Notes</SelectItem>
-                <SelectItem value="created-at">Created At</SelectItem>
-                <SelectItem value="updated-at">Updated At</SelectItem>
-                <SelectItem value="next-interview-date">
-                  Next Interview Date
-                </SelectItem>
-                <SelectItem value="salary-details">
-                  Salary Details
-                </SelectItem>
-                <SelectItem value="applied-from">
-                  Applied From
-                </SelectItem>
-                <SelectItem value="heard-about-from">
-                  Heard About From
-                </SelectItem>
-                <SelectItem value="map-location">
-                  Map Location
-                </SelectItem>
-                <SelectItem value="todos">Todos</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+    <div className="w-full m-2  overflow-x-auto">
+      <TableHeaderAddon
+        setSearchKeyword={setSearchKeyword}
+        jobApplications={jobApplications}
+      />
       <div className="mt-4 w-full">
         <div className="border rounded-lg w-full">
           <div className="relative w-full overflow-auto">
@@ -155,30 +96,55 @@ export default function JATable({
                   </TableHead>
                   <TableHead>Company</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Next Step</TableHead>
+                  <TableHead>Interview Date</TableHead>
                   <TableHead>Created At</TableHead>
+                  <TableHead>Actions</TableHead>
                   {/* <TableHead>User ID</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {jobApplicationsToShow.map((ja, idx) => {
-                  const createdAtDate = parseISO(
-                    ja.createdAt.toString()
+                  const nextInterviewDateFormatted = formatDate(
+                    ja.nextInterviewDate,
+                    "MMMM dd, yyyy HH:mm"
                   );
-                  const createdAtFormatted = format(
-                    createdAtDate,
+
+                  const createdAtFormatted = formatDate(
+                    ja.createdAt,
                     "MMMM dd, yyyy HH:mm:ss"
                   );
                   return (
                     <TableRow key={ja.id}>
                       <TableCell className="font-bold">
-                        {idx}
+                        {idx + 1}
                       </TableCell>
                       <TableCell className="font-medium">
                         {ja.jobPositionTitle}
                       </TableCell>
                       <TableCell>{ja.companyName}</TableCell>
-                      <TableCell>{ja.status}</TableCell>
+                      <TableCell>
+                        <Popover>
+                          <PopoverTrigger className="text-left w-min">
+                            {ja.status}
+                          </PopoverTrigger>
+                          <PopoverContent className="w-full shadow-2xl">
+                            <StatusChanger ja={ja} />
+                          </PopoverContent>
+                        </Popover>
+                      </TableCell>
+                      <TableCell>
+                        {ja.waitingFor
+                          ? ja.waitingFor
+                          : "Add What's next"}
+                      </TableCell>
+                      <TableCell>
+                        {nextInterviewDateFormatted}
+                      </TableCell>
                       <TableCell>{createdAtFormatted}</TableCell>
+                      <TableCell>
+                        <ActionList data={ja} />
+                      </TableCell>
                       {/* <TableCell>{ja.userId}</TableCell> */}
                     </TableRow>
                   );

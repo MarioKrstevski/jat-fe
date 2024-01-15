@@ -44,7 +44,7 @@ function RootLayout() {
 function DashboardLayout() {
   return (
     <div>
-      <Toaster richColors closeButton />
+      <Toaster richColors closeButton position="top-center" />
       <Header />
       <Outlet />
     </div>

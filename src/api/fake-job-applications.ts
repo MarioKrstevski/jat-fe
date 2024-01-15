@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import {
-  JobApplication,
   JobApplicationGenerated,
   JobApplicationStatus,
 } from "../types";
@@ -16,7 +15,8 @@ const jobApplicationStatuses: JobApplicationStatus[] = [
   "Take-Home Assignment",
   "Onsite",
   "Behavioral",
-  "Interview",
+  "Interview Scheduled",
+  "Interview Done",
   "Offer",
   "Rejected",
   "Accepted",
@@ -45,6 +45,7 @@ export function generateFakeJobApplications(size: number) {
       jobPositionTitle: faker.person.jobTitle(),
       link: faker.internet.url(),
       status: getRandomJobApplicationStatus(),
+      waitingFor: getRandomJobApplicationStatus(),
       statusOptions: jobApplicationStatuses.join(","),
       timeline: faker.lorem.paragraph(1),
       resumeUsed: faker.lorem.paragraph(1),

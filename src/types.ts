@@ -14,7 +14,8 @@ export type JobApplicationStatus =
   | "Take-Home Assignment"
   | "Onsite"
   | "Behavioral"
-  | "Interview"
+  | "Interview Scheduled"
+  | "Interview Done"
   | "Offer"
   | "Rejected"
   | "Accepted"
@@ -32,6 +33,7 @@ export interface JobApplicationGenerated {
   jobPositionTitle: string;
   link: string;
   status: string;
+  waitingFor: string;
   timeline: string;
   statusOptions: string;
   resumeUsed: string;
@@ -59,6 +61,7 @@ export interface JobApplication {
   jobPositionTitle: string;
   link: string;
   status: string;
+  waitingFor: string;
   timeline: string;
   statusOptions: string;
   resumeUsed: string;
