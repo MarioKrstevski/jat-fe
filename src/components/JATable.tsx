@@ -6,6 +6,18 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { JobApplication, JobApplicationStatus } from "@/types";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
@@ -21,6 +33,33 @@ import { Button } from "./ui/button";
 function formatDate(date: Date, formatString: string) {
   const dateParsed = parseISO(date.toString());
   return format(dateParsed, formatString);
+}
+function StatusChanger2({ ja }: { ja: JobApplication }) {
+  const statusOptions = ja.statusOptions.split(
+    ","
+  ) as JobApplicationStatus[];
+  return (
+    <Dialog>
+      <DialogTrigger>
+        {ja.waitingFor ? ja.waitingFor : "Add What's next"}
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Update your status</DialogTitle>
+          <DialogDescription>
+            <StatusChanger ja={ja} />
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="sm:justify-end">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 function StatusChanger({ ja }: { ja: JobApplication }) {
@@ -134,9 +173,7 @@ export default function JATable({
                         </Popover>
                       </TableCell>
                       <TableCell>
-                        {ja.waitingFor
-                          ? ja.waitingFor
-                          : "Add What's next"}
+                        <StatusChanger2 ja={ja} />
                       </TableCell>
                       <TableCell>
                         {nextInterviewDateFormatted}
