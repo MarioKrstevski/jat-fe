@@ -16,8 +16,9 @@
 
     /* Linting */
     "strict": true,
+    // Allow unused vars for function args, would otherwise faile the build process when deploying to Netlify
     "noUnusedLocals": false,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     /* Path */
 
