@@ -30,6 +30,8 @@ import {
 } from "./ui/popover";
 import StateSelector from "./StateSelector";
 import { Button } from "./ui/button";
+import { DateTime } from "luxon";
+import { DateTimePicker } from "./DateTimePicker";
 function formatDate(date: Date, formatString: string) {
   const dateParsed = parseISO(date.toString());
   return format(dateParsed, formatString);
@@ -43,7 +45,7 @@ function StatusChanger2({ ja }: { ja: JobApplication }) {
       <DialogTrigger>
         {ja.waitingFor ? ja.waitingFor : "Add What's next"}
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="">
         <DialogHeader>
           <DialogTitle>Update your status</DialogTitle>
           <DialogDescription>
@@ -177,6 +179,11 @@ export default function JATable({
                       </TableCell>
                       <TableCell>
                         {nextInterviewDateFormatted}
+
+                        <DateTimePicker
+                          date={ja.nextInterviewDate}
+                          setDate={() => {}}
+                        />
                       </TableCell>
                       <TableCell>{createdAtFormatted}</TableCell>
                       <TableCell>
