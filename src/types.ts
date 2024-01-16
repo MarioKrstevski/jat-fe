@@ -32,6 +32,7 @@ export interface JobApplicationGenerated {
   companyInfo: string;
   jobPositionTitle: string;
   link: string;
+  adText: string;
   status: string;
   waitingFor: string;
   timeline: string;
@@ -60,6 +61,7 @@ export interface JobApplication {
   companyInfo: string;
   jobPositionTitle: string;
   link: string;
+  adText: string;
   status: string;
   waitingFor: string;
   timeline: string;

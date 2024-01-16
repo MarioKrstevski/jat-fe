@@ -32,73 +32,17 @@ import StateSelector from "./StateSelector";
 import { Button } from "./ui/button";
 import { DateTime } from "luxon";
 import { DateTimePicker } from "./DateTimePicker";
-function formatDate(date: Date, formatString: string) {
-  const dateParsed = parseISO(date.toString());
-  return format(dateParsed, formatString);
-}
-function StatusChanger2({ ja }: { ja: JobApplication }) {
-  const statusOptions = ja.statusOptions.split(
-    ","
-  ) as JobApplicationStatus[];
-  return (
-    <Dialog>
-      <DialogTrigger>
-        {ja.waitingFor ? ja.waitingFor : "Add What's next"}
-      </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader>
-          <DialogTitle>Update your status</DialogTitle>
-          <DialogDescription>
-            <StatusChanger ja={ja} />
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="sm:justify-end">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}
+import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
+import { formatDate } from "@/lib/utils";
 
-function StatusChanger({ ja }: { ja: JobApplication }) {
-  const statusOptions = ja.statusOptions.split(
-    ","
-  ) as JobApplicationStatus[];
-  return (
-    <div className="">
-      <div className="flex  gap-2 ">
-        <div>
-          Current Status:
-          <br />
-          <StateSelector
-            current={ja.waitingFor}
-            states={statusOptions}
-          />
-        </div>
-        <div>
-          Next Step: <br />{" "}
-          <StateSelector
-            current={ja.waitingFor}
-            states={statusOptions}
-          />
-        </div>
-      </div>
-      <div className="flex justify-end">
-        <Button className="mt-4 "> Save Changes </Button>
-      </div>
-    </div>
-  );
-}
 export default function JATable({
   jobApplications,
 }: {
   jobApplications: JobApplication[];
 }) {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const statusChangeModal = useStatusChangeModal();
+  const [isOpen, setIsOpen] = useState(false);
   if (jobApplications.length === 0) {
     return (
       <div>No job applications found. Create your first one</div>
@@ -119,8 +63,20 @@ export default function JATable({
     );
   });
 
+  function handleChangeStatus(ja: JobApplication) {
+    statusChangeModal.setData({
+      ja: ja,
+      status: ja.status,
+      nextStep: ja.waitingFor,
+      statusOptions: ja.statusOptions,
+    });
+    setTimeout(() => {
+      statusChangeModal.onOpen();
+    }, 100);
+  }
+
   return (
-    <div className="w-full m-2  overflow-x-auto">
+    <div className="w-full m-2  overflow-x-auto border-red-500 border ">
       <TableHeaderAddon
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
@@ -165,23 +121,26 @@ export default function JATable({
                       </TableCell>
                       <TableCell>{ja.companyName}</TableCell>
                       <TableCell>
-                        <Popover>
-                          <PopoverTrigger className="text-left w-min">
-                            {ja.status}
-                          </PopoverTrigger>
-                          <PopoverContent className="w-full shadow-2xl">
-                            <StatusChanger ja={ja} />
-                          </PopoverContent>
-                        </Popover>
+                        <button
+                          className="text-left"
+                          onClick={() => handleChangeStatus(ja)}
+                        >
+                          {ja.status}
+                        </button>
                       </TableCell>
                       <TableCell>
-                        <StatusChanger2 ja={ja} />
+                        <button
+                          className="text-left"
+                          onClick={() => handleChangeStatus(ja)}
+                        >
+                          {ja.waitingFor}
+                        </button>
                       </TableCell>
                       <TableCell>
                         {nextInterviewDateFormatted}
 
                         <DateTimePicker
-                          date={ja.nextInterviewDate}
+                          date={undefined}
                           setDate={() => {}}
                         />
                       </TableCell>

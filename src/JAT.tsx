@@ -13,6 +13,7 @@ import ArchivedPage from "./pages/ArchivedPage";
 import Header from "./components/Header";
 import { useEffect } from "react";
 import { Toaster } from "./components/ui/sonner";
+import ModalProvider from "./providers/ModalProvider";
 
 function HandleRedirect() {
   return <Navigate to={"/"} />;
@@ -45,6 +46,7 @@ function DashboardLayout() {
   return (
     <div>
       <Toaster richColors closeButton position="top-center" />
+      <ModalProvider />
       <Header />
       <Outlet />
     </div>

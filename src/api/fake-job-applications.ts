@@ -44,6 +44,7 @@ export function generateFakeJobApplications(size: number) {
       companyInfo: faker.lorem.paragraph(1),
       jobPositionTitle: faker.person.jobTitle(),
       link: faker.internet.url(),
+      adText: faker.lorem.paragraph(1),
       status: getRandomJobApplicationStatus(),
       waitingFor: getRandomJobApplicationStatus(),
       statusOptions: jobApplicationStatuses.join(","),
