@@ -14,18 +14,40 @@ import {
 } from "./ui/dropdown-menu";
 import { toast } from "sonner";
 import { JobApplication } from "@/types";
+import AlertModal from "./modals/AlertModal";
+import { useState } from "react";
+import { set } from "date-fns";
 
 export default function ActionList({
   data,
 }: {
   data: JobApplication;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   function onCopy(id: string) {
     navigator.clipboard.writeText(id);
     toast.success("Id copied to clipboard");
   }
+
+  function onDelete() {
+    toast.success("Job Application Deleted");
+    setIsOpen(false);
+  }
+
   return (
     <>
+      {/* we use isOpen conditional to not have multiple alert modals that are not rendered altough its not hurting it */}
+      {isOpen && (
+        <AlertModal
+          isOpen={isOpen}
+          isLoading={isLoading}
+          onConfirm={onDelete}
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        />
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant={"ghost"} className="h-8 w-8 p-0">
@@ -35,7 +57,11 @@ export default function ActionList({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => {}}>
+          <DropdownMenuItem
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
             <EditIcon className="mr-2 h-4 w-4" />
             Update
           </DropdownMenuItem>
@@ -47,7 +73,11 @@ export default function ActionList({
             <CopyIcon className="mr-2 h-4 w-4" />
             Copy Id
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>
+          <DropdownMenuItem
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
             <TrashIcon className="mr-2 h-4 w-4" />
             Delete
           </DropdownMenuItem>

@@ -76,12 +76,12 @@ export default function JATable({
   }
 
   return (
-    <div className="w-full m-2  overflow-x-auto border-red-500 border ">
+    <div className="w-full p-2  overflow-x-auto">
       <TableHeaderAddon
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />
-      <div className="mt-4 w-full">
+      <div className="mt-4 w-full ">
         <div className="border rounded-lg w-full">
           <div className="relative w-full overflow-auto">
             <Table className="w-full">
