@@ -61,7 +61,8 @@ export default function StatusChangeModal() {
     defaultValues: {
       status: status,
       waitingFor: nextStep,
-      date: new Date(),
+      //  undefined because they need to select a date
+      date: undefined,
     },
   });
 
@@ -149,7 +150,7 @@ export default function StatusChangeModal() {
                         <Select
                           value={field.value}
                           onValueChange={(selection) => {
-                            form.setValue("status", selection);
+                            form.setValue("waitingFor", selection);
                           }}
                         >
                           <SelectTrigger className="w-[180px]">
@@ -183,7 +184,7 @@ export default function StatusChangeModal() {
                   id="to-timeline"
                   checked={addToTimeline}
                   onCheckedChange={(e) => {
-                    console.log("e", e);
+                    // console.log("e", e);
                     setAddToTimeline(e as boolean);
                   }}
                 />
@@ -215,7 +216,7 @@ export default function StatusChangeModal() {
                         <FormControl>
                           <DateTimePicker
                             // Create new date here because otherwise the value that is set is made when component loads and it loads on page load
-                            date={new Date()}
+                            date={field.value}
                             setDate={(date) => {
                               form.setValue("date", date);
                             }}

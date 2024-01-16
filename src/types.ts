@@ -43,6 +43,7 @@ export interface JobApplicationGenerated {
   createdAt: Date;
   updatedAt: Date;
   nextInterviewDate: Date;
+  postedDate: Date;
   salaryDetails: string;
   appliedFrom: string;
   heardAboutFrom: string;
@@ -72,6 +73,7 @@ export interface JobApplication {
   createdAt: Date;
   updatedAt: Date;
   nextInterviewDate: Date;
+  postedDate: Date;
   salaryDetails: string;
   appliedFrom: string;
   heardAboutFrom: string;
