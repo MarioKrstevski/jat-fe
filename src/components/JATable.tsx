@@ -117,7 +117,7 @@ export default function JATable({
                         {idx + 1}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {ja.jobPositionTitle}
+                        {ja.jobTitle}
                       </TableCell>
                       <TableCell>{ja.companyName}</TableCell>
                       <TableCell>
