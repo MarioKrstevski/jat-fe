@@ -33,7 +33,10 @@ import { Button } from "./ui/button";
 import { DateTime } from "luxon";
 import { DateTimePicker } from "./DateTimePicker";
 import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { Checkbox } from "./ui/checkbox";
+import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
 
 export default function JATable({
   jobApplications,
@@ -41,7 +44,11 @@ export default function JATable({
   jobApplications: JobApplication[];
 }) {
   const [searchKeyword, setSearchKeyword] = useState("");
+  const navigate = useNavigate();
   const statusChangeModal = useStatusChangeModal();
+  const interviewDateChangeModal = useInterviewDateChangeModal();
+
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   if (jobApplications.length === 0) {
     return (
@@ -49,6 +56,9 @@ export default function JATable({
     );
   }
 
+  function navgiateToJob(jobId: string) {
+    navigate("/jobs/" + jobId);
+  }
   const jobApplicationsToShow = jobApplications.filter((ja) => {
     if (!searchKeyword) {
       return true;
@@ -62,6 +72,26 @@ export default function JATable({
         .includes(searchKeyword.toLocaleLowerCase())
     );
   });
+
+  function handleInterviewDate(ja: JobApplication) {
+    interviewDateChangeModal.setData({
+      ja: ja,
+      date: ja.nextInterviewDate,
+    });
+    setTimeout(() => {
+      interviewDateChangeModal.onOpen();
+    }, 100);
+  }
+
+  function handleSelectRow(id: string) {
+    // add id to array or remove it if its there
+    if (selectedRows.includes(id)) {
+      // remove id from array
+      setSelectedRows((prev) => prev.filter((rowId) => rowId !== id));
+    } else {
+      setSelectedRows((prev) => [...prev, id]);
+    }
+  }
 
   function handleChangeStatus(ja: JobApplication) {
     statusChangeModal.setData({
@@ -78,6 +108,7 @@ export default function JATable({
   return (
     <div className="w-full p-2  overflow-x-auto">
       <TableHeaderAddon
+        selectedCount={selectedRows.length}
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />
@@ -86,9 +117,9 @@ export default function JATable({
           <div className="relative w-full overflow-auto">
             <Table className="w-full">
               <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[30px]">#</TableHead>
-                  <TableHead className="w-[300px]">
+                <TableRow className="text-sm">
+                  <TableHead className="min-w-[30px]">#</TableHead>
+                  <TableHead className="w-[260px]">
                     Position
                   </TableHead>
                   <TableHead>Company</TableHead>
@@ -96,7 +127,6 @@ export default function JATable({
                   <TableHead>Next Step</TableHead>
                   <TableHead>Interview Date</TableHead>
                   <TableHead>Created At</TableHead>
-                  <TableHead>Actions</TableHead>
                   {/* <TableHead>User ID</TableHead> */}
                 </TableRow>
               </TableHeader>
@@ -111,15 +141,37 @@ export default function JATable({
                     ja.createdAt,
                     "MMMM dd, yyyy HH:mm:ss"
                   );
+                  const isRowSelected = selectedRows.includes(ja.id);
                   return (
-                    <TableRow key={ja.id}>
-                      <TableCell className="font-bold">
-                        {idx + 1}
+                    <TableRow
+                      key={ja.id}
+                      data-state={isRowSelected ? "selected" : ""}
+                    >
+                      <TableCell className="font-bold pl-1 ">
+                        <div className="flex flex-col gap-0.5 text-center">
+                          {idx + 1}
+                          <Checkbox
+                            className="mx-auto h-5 w-5"
+                            onClick={() => {
+                              handleSelectRow(ja.id);
+                            }}
+                            name={"row-" + ja.id}
+                            id={"row-checked-" + ja.id}
+                          />
+                        </div>
                       </TableCell>
-                      <TableCell className="font-medium">
+                      <TableCell
+                        className="font-medium job-title cursor-pointer"
+                        onClick={() => navgiateToJob(ja.id)}
+                      >
                         {ja.jobTitle}
                       </TableCell>
-                      <TableCell>{ja.companyName}</TableCell>
+                      <TableCell
+                        className="company-name cursor-pointer"
+                        onClick={() => navgiateToJob(ja.id)}
+                      >
+                        {ja.companyName}
+                      </TableCell>
                       <TableCell>
                         <button
                           className="text-left"
@@ -137,17 +189,14 @@ export default function JATable({
                         </button>
                       </TableCell>
                       <TableCell>
-                        {nextInterviewDateFormatted}
-
-                        <DateTimePicker
-                          date={undefined}
-                          setDate={() => {}}
-                        />
+                        <button
+                          onClick={() => handleInterviewDate(ja)}
+                        >
+                          {nextInterviewDateFormatted}
+                        </button>
                       </TableCell>
                       <TableCell>{createdAtFormatted}</TableCell>
-                      <TableCell>
-                        <ActionList data={ja} />
-                      </TableCell>
+
                       {/* <TableCell>{ja.userId}</TableCell> */}
                     </TableRow>
                   );

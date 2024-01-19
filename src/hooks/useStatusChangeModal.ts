@@ -23,7 +23,7 @@ export const useStatusChangeModal = create<useStatusChangeModalStore>(
       nextStep: "",
       statusOptions: "",
     },
-    setData: (data) => set({ data }),
+    setData: (data: StatusChangeData) => set({ data }),
     onOpen: () => set({ isOpen: true }),
     onClose: () => set({ isOpen: false }),
   })

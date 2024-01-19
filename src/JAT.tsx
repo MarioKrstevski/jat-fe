@@ -14,9 +14,10 @@ import Header from "./components/Header";
 import { useEffect } from "react";
 import { Toaster } from "./components/ui/sonner";
 import ModalProvider from "./providers/ModalProvider";
+import SingleJobPage from "./pages/SingleJobPage";
 
 function HandleRedirect() {
-  return <Navigate to={"/"} />;
+  return <Navigate to={"/jobs"} />;
 }
 
 function RootLayout() {
@@ -26,7 +27,8 @@ function RootLayout() {
   //effect description
   useEffect(() => {
     if (isLoaded && userId) {
-      navigate("/dashboard");
+      // console.log("recorded", window.location.href);
+      // navigate("/jobs");
     } else if (isLoaded && !userId) {
       navigate("/signin");
     }
@@ -65,7 +67,12 @@ export default function JAT() {
             {
               element: <DashboardPage />,
               index: true,
-              path: "/dashboard",
+              path: "/jobs",
+            },
+            {
+              element: <SingleJobPage />,
+              index: true,
+              path: "/jobs/:jobId",
             },
             {
               element: <ArchivedPage />,

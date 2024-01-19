@@ -32,6 +32,7 @@ export interface JobApplicationGenerated {
   companyInfo: string;
   jobTitle: string;
   jobDescription: string;
+  applylink: string;
   link: string;
   status: string;
   waitingFor: string;
@@ -40,10 +41,12 @@ export interface JobApplicationGenerated {
   resumeUsed: string;
   motivationalLetter: string;
   notes: string;
+  interestLevel: number;
   createdAt: Date;
   updatedAt: Date;
   nextInterviewDate: Date;
   postedDate: Date;
+  applicationDeadline: Date;
   salaryDetails: string;
   appliedFrom: string;
   heardAboutFrom: string;
@@ -63,6 +66,7 @@ export interface JobApplication {
   jobTitle: string;
   jobDescription: string;
   link: string;
+  applylink: string;
   status: string;
   waitingFor: string;
   timeline: string;
@@ -70,10 +74,12 @@ export interface JobApplication {
   resumeUsed: string;
   motivationalLetter: string;
   notes: string;
+  interestLevel: number;
   createdAt: Date;
   updatedAt: Date;
   nextInterviewDate: Date;
   postedDate: Date;
+  applicationDeadline: Date;
   salaryDetails: string;
   appliedFrom: string;
   heardAboutFrom: string;

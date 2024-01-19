@@ -74,3 +74,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Style two rows when hovering on either */
+.company-name:hover {
+  background-color:rgb(226 232 240);
+}
+.job-title:has(+ .company-name:hover) {
+  background-color: rgb(226 232 240);
+}
+.job-title:hover {
+  background-color:rgb(226 232 240);
+}
+.job-title:hover + .company-name {
+  background-color:rgb(226 232 240);
+}
+

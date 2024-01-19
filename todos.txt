@@ -1,0 +1,153 @@
+Next Todos
+------------------------------------------------------------------------
+- make a interview date selector modal from list view
+- dont reload data when switching pages. Only load on start and on edit stuff
+- archived jobs should be easily seen just is archived (remove archived from status)
+- add a ui for no jobs found
+- design the single page view just add data to screen
+- create a page for adding new item similar looking to single page item preview
+- create a page for edit item similar looking to single page item preview
+- add the column picker button?
+ 
+
+
+
+
+------------------------------------------------------------------------
+
+
+- add table view group by status
+- Add top right columns selector
+- For date selector add clear button
+- Add date posted field
+- add first selection column to be frozen and always visible
+- when item is selected allow on top to change the status/archive/delete instead of actions at the end
+- archived to not be a status but a separate field, every job should end with 
+- when we have a positive status add confeti 
+- add a nice ui when there are no jobs
+- rename link to URL for Original Posting
+- job description field
+- when creating a job applicatin it starts with status of bookmarked
+- clicking on name or job title acts as open in seperate page
+
+- mark is paid field
+- prevent edit and create actions if is not paid user
+- 2-3 free job applications for each account (to try things off)
+- ai features are paid 
+- limit to 100 posts before they need to pay again 
+
+- add contacts as a whole ( and contacts to be able to be connected to a job)
+- add a map view of all the ja created and visualize them on map
+
+- add job sources (a simple list), places where people go to find jobs (job boards)
+- add application deadline
+
+- on date selection ask if they want to be reminded and add when (options in the future), 
+and everytime they log in we show them the reminder and also ask to connect to google calendar
+
+
+
+Singe Post View 
+
+- other app , has tabs with 
+Info (entered data)
+Notes (multiple notes)
+Contacts (add contacts)
+Todos
+Timeline (button log event)
+
+on the left side menu we have Contacts and Todos each pulling data from the job ad and being able to see all 
+the things we have at once
+Reports tab for graphs 
+
+- on left side is a side menu for changing jobs fast 
+- add job comparison based on packages and on benefits 
+- change status and stuff from within a single page view
+- Tabs section - notes, contacts, email templates, check list
+- Dates section (all date fields here)
+- Job description is here (on side hard skills are tracked searched through and highlighted)
+- option to edit job description 
+- Contact  has firstname lastname , email, phone, and notes and they appear as cards below/on the side
+- Email templates have categories (select) and for each category they have a few prewritten templates 
+ (categories  - leverage my network, respond to recruiters, personalized connection request on linkedin)
+
+ex:
+
+Looking for my next challenge
+Hi friends and colleagues,
+
+I hope you're well! As many of you know, I have been at my current position as a [ROLE] at [COMPANY] for [X YEARS] and have recently decided to look for a new challenge in the [INDUSTRY] field. I'm reaching out to you to ask for your help with any leads or contacts—I'd so appreciate any introductions you're willing to make or roles you'd suggest I apply for.
+
+A little more about what I'm looking for in my next opportunity:
+
+I'm seeking a [LEVEL] [ROLE] position in [LOCATION], ideally in the [INDUSTRY] field at a [SIZE OF COMPANY] company. I'm passionate about [X, Y, AND Z] and look forward to leveraging my skills in [X AND Y] in this new role.
+
+I'm attaching my resume for your reference, along with a brief paragraph should you want to copy and paste it for any introductions.
+
+[INSERT BRIEF PARAGRAPH IN THE 3RD PERSON HERE.]
+
+Thanks in advance for your help! I hope to catch up with you individually soon.
+
+Best,
+[YOUR NAME]
+
+
+and two buttons [Copy subject] [Copy Message]
+
+Checklist for each stage/status 
+
+BOOKMARKED
+
+Check if the job description aligns with your interests and values
+
+Review the highlighted skills to see if the role is a good fit
+
+Research the company or role and mark your excitement level
+APPLYING
+
+Find and research someone who works at the company and add as a contact
+
+Set up an informational interview to learn more about the role / company
+
+Identify potential referrals to help get your application on the top of the pile
+
+Customize your work achievements using the job description keywords
+
+Submit your application on the company website if possible
+APPLIED
+
+Reach out to the hiring manager or recruiter
+
+Follow up on your application via email weekly
+
+Continue identifying and saving similar job opportunities
+
+Set up weekly networking calls to explore similar companies / roles
+INTERVIEWING
+
+Prepare your blurb or “tell me about yourself” response
+
+Practice answering behavioral interview questions
+
+Research the company and your interviewers
+
+Set up your virtual interview space and test your tech
+
+Send thank you emails within 24 hours
+NEGOTIATING
+
+Research your market value and know your numbers
+
+Prepare your negotiation scripts
+
+Evaluate your offer and decline or accept
+ACCEPTED
+
+Plan your resignation if applicable
+
+Take some time to relax and recharge
+
+Prepare for your first day of onboarding
+
+Declined Rejected Accepted Ghosted No Response,
+which should automatically make the job archived?

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { SelectSingleEventHandler } from "react-day-picker";
 import { cn, formatDate } from "@/lib/utils";
@@ -16,12 +16,14 @@ import { format } from "date-fns";
 
 interface DateTimePickerProps {
   date: Date | undefined;
-  setDate: (date: Date) => void;
+  setDate: (date: Date | undefined) => void;
+  enableClear?: boolean;
 }
 
 export function DateTimePicker({
   date,
   setDate,
+  enableClear,
 }: DateTimePickerProps) {
   console.log("Date", date);
   const [selectedDateTime, setSelectedDateTime] = useState<
@@ -29,12 +31,15 @@ export function DateTimePicker({
   >(date);
 
   const handleSelect: SelectSingleEventHandler = (day, selected) => {
-    if (!selected || !selectedDateTime) {
+    console.log("date inside", date, selected);
+    if (!selected) {
       return;
     }
     const modifiedDay = new Date(selected);
-    modifiedDay.setHours(selectedDateTime.getHours());
-    modifiedDay.setMinutes(selectedDateTime.getMinutes());
+    if (selectedDateTime) {
+      modifiedDay.setHours(selectedDateTime.getHours());
+      modifiedDay.setMinutes(selectedDateTime.getMinutes());
+    }
 
     setSelectedDateTime(modifiedDay);
     setDate(modifiedDay);
@@ -58,17 +63,23 @@ export function DateTimePicker({
     setDate(modifiedDay);
   };
 
+  function handleRemoveSelection() {
+    setSelectedDateTime(undefined);
+    setDate(undefined);
+  }
   const footer = (
     <>
       {selectedDateTime ? (
-        <div className="px-4 pt-0 pb-4">
-          <Label>Time</Label>
-          <Input
-            type="time"
-            onChange={handleTimeChange}
-            value={format(selectedDateTime, "HH:mm")}
-          />
-        </div>
+        <>
+          <div className="px-4 pt-0 pb-4">
+            <Label>Time</Label>
+            <Input
+              type="time"
+              onChange={handleTimeChange}
+              value={format(selectedDateTime, "HH:mm")}
+            />
+          </div>
+        </>
       ) : (
         <p className="px-4 pt-0 pb-4">Please pick a day.</p>
       )}
@@ -76,32 +87,47 @@ export function DateTimePicker({
   );
 
   return (
-    <Popover>
-      <PopoverTrigger asChild className="z-10">
+    <div className="flex items-center">
+      <Popover>
+        <PopoverTrigger asChild className="z-10">
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[280px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {selectedDateTime ? (
+              format(selectedDateTime, "do MMM yyyy - HH:mm")
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Calendar
+            mode="single"
+            selected={selectedDateTime}
+            onSelect={handleSelect}
+            initialFocus
+          />
+
+          {footer}
+        </PopoverContent>
+      </Popover>
+      {enableClear && (
         <Button
+          type="button"
+          className="ml-1"
           variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
+          onClick={() => {
+            handleRemoveSelection();
+          }}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {selectedDateTime ? (
-            format(selectedDateTime, "do MMM yyyy - HH:mm")
-          ) : (
-            <span>Pick a date</span>
-          )}
+          Clear
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={selectedDateTime}
-          onSelect={handleSelect}
-          initialFocus
-        />
-        {footer}
-      </PopoverContent>
-    </Popover>
+      )}
+    </div>
   );
 }
