@@ -1,9 +1,9 @@
 Next Todos
 ------------------------------------------------------------------------
 -X make a interview date selector modal from list view
-- dont reload data when switching pages. Only load on start and on edit stuff
-- archived jobs should be easily seen just is archived (remove archived from status)
-- add a ui for no jobs found
+-X dont reload data when switching pages. Only load on start and on edit stuff
+-X archived jobs should be easily seen just is archived (remove archived from status)
+-X add a ui for no jobs found
 - design the single page view just add data to screen
 - create a page for adding new item similar looking to single page item preview
 - create a page for edit item similar looking to single page item preview

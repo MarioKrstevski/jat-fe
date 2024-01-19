@@ -193,6 +193,11 @@ export default function Archived({
             </Table>
           </div>
         </div>
+        {jobApplicationsToShow.length === 0 && (
+          <div className="flex justify-center w-full py-2">
+            No job applications found that are achived
+          </div>
+        )}
       </div>
     </div>
   );

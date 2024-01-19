@@ -1,3 +1,5 @@
+import JobApplicationDetails from "@/components/JobApplicationDetails";
+import { useJobApplications } from "@/hooks/useJobApplications";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,6 +18,12 @@ export default function SingleJobPage() {
   const { jobId } = useParams();
   const navigate = useNavigate();
 
+  const jobApplications = useJobApplications(
+    (state) => state.jobApplications
+  );
+  const jobApplication = jobApplications.find(
+    (ja) => ja.id === jobId
+  );
   console.log("jobId", jobId);
   useEffect(() => {
     if (!jobIdExists(jobId)) {
@@ -23,10 +31,13 @@ export default function SingleJobPage() {
     }
   }, []);
 
+  if (!jobApplication) {
+    return <div>Job Application not found</div>;
+  }
+
   return (
     <div>
-      Archived
-      {jobId}
+      <JobApplicationDetails jobApplication={jobApplication} />
     </div>
   );
 }

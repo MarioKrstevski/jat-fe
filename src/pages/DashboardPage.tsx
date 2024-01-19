@@ -12,7 +12,9 @@ import { useJobApplications } from "@/hooks/useJobApplications";
 export default function () {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  const jobApplications = useJobApplications((state) => state.ja);
+  const jobApplications = useJobApplications(
+    (state) => state.jobApplications
+  );
 
   function handleCreateDbRecords() {
     const jobApplications = getFakeJobApplications();

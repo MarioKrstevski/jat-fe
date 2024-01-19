@@ -205,6 +205,12 @@ export default function JATable({
             </Table>
           </div>
         </div>
+        {jobApplicationsToShow.length === 0 && (
+          <div className="flex flex-col items-center justify-center w-full mt-5 py-2">
+            You have no job applications created
+            <Button className="w-max my-2">Add new</Button>
+          </div>
+        )}
       </div>
     </div>
   );
