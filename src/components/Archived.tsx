@@ -37,6 +37,7 @@ import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
+import AddNewButton from "./AddNewButton";
 
 export default function Archived({
   jobApplications,
@@ -100,6 +101,10 @@ export default function Archived({
 
   return (
     <div className="w-full p-2  overflow-x-auto">
+      <h1 className="text-2xl font-bold">
+        Archived Applications <AddNewButton />{" "}
+      </h1>
+
       <div className="mt-4 w-full ">
         <div className="border rounded-lg w-full">
           <div className="relative w-full overflow-auto">

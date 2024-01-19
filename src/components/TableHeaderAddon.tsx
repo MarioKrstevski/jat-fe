@@ -1,8 +1,9 @@
 import { JobApplication } from "@/types";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import { PlusCircleIcon, PlusIcon, SearchIcon } from "lucide-react";
 import ColumnSelector from "./ColumnSelector";
 import { Button } from "./ui/button";
+import AddNewButton from "./AddNewButton";
 
 export default function TableHeaderAddon({
   setSearchKeyword,
@@ -15,7 +16,9 @@ export default function TableHeaderAddon({
 }) {
   return (
     <>
-      <h1 className="text-2xl font-bold">Job Applications</h1>
+      <h1 className="text-2xl font-bold">
+        Job Applications <AddNewButton />
+      </h1>
       <div className="flex items-start mt-4 gap-4">
         <div className="min-w-[300px]">
           <form>

@@ -4,13 +4,48 @@ Next Todos
 -X dont reload data when switching pages. Only load on start and on edit stuff
 -X archived jobs should be easily seen just is archived (remove archived from status)
 -X add a ui for no jobs found
-- design the single page view just add data to screen
+-X design the single page view just add data to screen
 - create a page for adding new item similar looking to single page item preview
 - create a page for edit item similar looking to single page item preview
 - add the column picker button?
  
 
 
+   --   id: faker.string.uuid(),
+   --   isArchived: false,
+   --   isRemote: faker.datatype.boolean(),
+   --   wasReffered: faker.datatype.boolean(),
+    --  refferedBy: faker.person.fullName(),
+    --  companyId: faker.string.uuid(),
+    --companyName: faker.company.name(),
+   --   companyInfo: faker.lorem.paragraph(1),
+    --  interestLevel: faker.number.int({ min: 1, max: 5 }),
+     -- jobTitle: faker.person.jobTitle(),
+   --   jobLocation:
+        faker.location.city() + ", " + faker.location.country(),
+    --  link: faker.internet.url(),
+    --  applylink: faker.internet.url(),
+   --   postedDate: faker.date.past(),
+   --   applicationDeadline: faker.date.future(),
+   --   jobDescription: faker.lorem.paragraph(1),
+    --  status: getRandomJobApplicationStatus(),
+     -- waitingFor: getRandomJobApplicationStatus(),
+   --   statusOptions: jobApplicationStatuses.join(","),
+    --  timeline: faker.lorem.paragraph(1),
+    --  resumeUsed: faker.lorem.paragraph(1),
+    --  motivationalLetter: faker.lorem.paragraph(1),
+     -- notes: faker.lorem.paragraph(1),
+     -- createdAt: faker.date.past(),
+     -- updatedAt: faker.date.past(),
+   --   nextInterviewDate: faker.date.future(),
+      salaryDetails: faker.lorem.paragraph(1),
+     -- appliedFrom: faker.lorem.paragraph(1),
+    --  heardAboutFrom: faker.lorem.paragraph(1),
+    --  mapLocation:
+        faker.location.latitude().toString() +
+        "," +
+        faker.location.longitude().toString(),
+  --    todos: "",
 
 
 ------------------------------------------------------------------------

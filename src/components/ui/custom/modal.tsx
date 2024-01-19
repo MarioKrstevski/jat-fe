@@ -33,12 +33,12 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Dialog open={isOpen} modal onOpenChange={onChange}>
-      <DialogContent>
+      <DialogContent className="overflow-y-auto max-h-[95dvh]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <div>{children}</div>
+        <div className="">{children}</div>
       </DialogContent>
     </Dialog>
   );

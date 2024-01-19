@@ -34,24 +34,7 @@ export default function () {
         Create a few fake entries
       </button>
       <div className="m-2">My ID: {userId}</div>
-      <div>
-        {/* <div className="my-16">
-          {ja.map((jobApplication: any) => (
-            <div key={jobApplication?.id}>
-              <h3>Name: {jobApplication?.name}</h3>
-            </div>
-          ))}
-        </div> */}
-
-        <JATable jobApplications={jobApplications} />
-        {/* <div>
-          {jobApplications.map((jobApplication) => (
-            <div key={jobApplication.id}>
-              <pre>{JSON.stringify(jobApplication, null, 2)}</pre>
-            </div>
-          ))}
-        </div> */}
-      </div>
+      <JATable jobApplications={jobApplications} />
     </div>
   );
 }

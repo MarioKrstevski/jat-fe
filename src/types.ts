@@ -6,6 +6,7 @@ export type JobApplicationStatus =
   | "Wishlist"
   | "OA - Online Assessment"
   | "Applied"
+  | "Applying"
   | "Waiting Referral"
   | "No Response"
   | "Ghosted"
@@ -25,12 +26,13 @@ export interface JobApplicationGenerated {
   id: string;
   isArchived: boolean;
   isRemote: boolean;
-  wasReffered: boolean;
-  refferedBy: string;
+  wasReferred: boolean;
+  referredBy: string;
   companyId: string | null;
   companyName: string;
   companyInfo: string;
   jobTitle: string;
+  jobLocation: string;
   jobDescription: string;
   applylink: string;
   link: string;
@@ -58,13 +60,15 @@ export interface JobApplication {
   id: string;
   isArchived: boolean;
   isRemote: boolean;
-  wasReffered: boolean;
-  refferedBy: string;
+  wasReferred: boolean;
+  referredBy: string;
   companyId: string | null;
   companyName: string;
   companyInfo: string;
   jobTitle: string;
   jobDescription: string;
+  jobLocation: string;
+
   link: string;
   applylink: string;
   status: string;

@@ -156,8 +156,8 @@ export default function JobApplicationDetails({
             Referral Information
           </h2>
           <div className="text-gray-600 dark:text-gray-400">
-            <div>Referred by {ja.refferedBy}</div>
-            <div>Was referred: {ja.wasReffered ? "Yes" : "No"}</div>
+            <div>Referred by {ja.referredBy}</div>
+            <div>Was referred: {ja.wasReferred ? "Yes" : "No"}</div>
           </div>
         </section>
 
