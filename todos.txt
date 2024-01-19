@@ -1,6 +1,6 @@
 Next Todos
 ------------------------------------------------------------------------
-- make a interview date selector modal from list view
+-X make a interview date selector modal from list view
 - dont reload data when switching pages. Only load on start and on edit stuff
 - archived jobs should be easily seen just is archived (remove archived from status)
 - add a ui for no jobs found

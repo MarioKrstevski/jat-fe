@@ -1,9 +1,12 @@
+import Archived from "@/components/Archived";
+import { useJobApplications } from "@/hooks/useJobApplications";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ArchivedPage() {
   const { userId, isLoaded } = useAuth();
+  const jobApplications = useJobApplications((state) => state.ja);
   const navigate = useNavigate();
   console.log("test", userId);
 
@@ -19,6 +22,7 @@ export default function ArchivedPage() {
   return (
     <div>
       Archived
+      <Archived jobApplications={jobApplications} />
       {/* <SignOutButton /> */}
     </div>
   );

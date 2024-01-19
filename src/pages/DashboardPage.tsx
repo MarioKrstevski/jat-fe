@@ -7,21 +7,12 @@ import { toast } from "sonner";
 import { api } from "@/api/backend";
 import { JobApplication } from "@/types";
 import JATable from "@/components/JATable";
+import { useJobApplications } from "@/hooks/useJobApplications";
 
 export default function () {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-
-  const [ja, setJa] = useState<JobApplication[]>([]);
-
-  //effect description
-  useEffect(() => {
-    if (isLoaded && !userId) {
-      // console.log("should go back");
-      navigate("/signin");
-      return;
-    }
-  }, [userId, isLoaded]);
+  const jobApplications = useJobApplications((state) => state.ja);
 
   function handleCreateDbRecords() {
     const jobApplications = getFakeJobApplications();
@@ -31,19 +22,6 @@ export default function () {
         console.log("Success", res);
       });
   }
-  function handleFetchingJobApplications() {
-    api
-      .be_getJobApplications(userId)
-      .then((res) => {
-        setJa(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
-  useEffect(() => {
-    handleFetchingJobApplications();
-  }, []);
 
   return (
     <div>
@@ -63,7 +41,7 @@ export default function () {
           ))}
         </div> */}
 
-        <JATable jobApplications={ja} />
+        <JATable jobApplications={jobApplications} />
         {/* <div>
           {jobApplications.map((jobApplication) => (
             <div key={jobApplication.id}>

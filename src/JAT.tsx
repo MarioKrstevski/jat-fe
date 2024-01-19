@@ -15,6 +15,8 @@ import { useEffect } from "react";
 import { Toaster } from "./components/ui/sonner";
 import ModalProvider from "./providers/ModalProvider";
 import SingleJobPage from "./pages/SingleJobPage";
+import { api } from "./api/backend";
+import { useJobApplications } from "./hooks/useJobApplications";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -45,6 +47,31 @@ function RootLayout() {
   );
 }
 function DashboardLayout() {
+  const { userId, isLoaded } = useAuth();
+  const navigate = useNavigate();
+  const jobApplicationStore = useJobApplications();
+
+  //effect description
+  useEffect(() => {
+    if (isLoaded && !userId) {
+      // console.log("should go back");
+      navigate("/signin");
+      return;
+    }
+  }, [userId, isLoaded]);
+  function handleFetchingJobApplications() {
+    api
+      .be_getJobApplications(userId)
+      .then((res) => {
+        jobApplicationStore.setData(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }
+  useEffect(() => {
+    handleFetchingJobApplications();
+  }, []);
   return (
     <div>
       <Toaster richColors closeButton position="top-center" />
