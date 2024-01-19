@@ -38,7 +38,7 @@ Next Todos
      -- createdAt: faker.date.past(),
      -- updatedAt: faker.date.past(),
    --   nextInterviewDate: faker.date.future(),
-      salaryDetails: faker.lorem.paragraph(1),
+   --   salaryDetails: faker.lorem.paragraph(1),
      -- appliedFrom: faker.lorem.paragraph(1),
     --  heardAboutFrom: faker.lorem.paragraph(1),
     --  mapLocation:

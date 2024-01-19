@@ -39,6 +39,12 @@ import { defaultStatusOptions } from "@/global/values";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
+import { ChevronsUpDownIcon } from "lucide-react";
 
 const formSchema = z.object({
   userId: z.string(),
@@ -76,7 +82,7 @@ export default function CreateNewJobApplicationModal() {
   const { userId } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -254,429 +260,453 @@ export default function CreateNewJobApplicationModal() {
               />
             </div>
             <Separator />
-            <div className="my-2 rounded border border-blue-300 bg-blue-50 text-center py-4  font-extralight">
-              Everything below is optional and you cann add it later
+            <div className="my-2 p-3 rounded border border-blue-300 bg-blue-50 text-center py-4  font-extralight">
+              Everything below is optional and you can add it later
             </div>
             <Separator />
 
-            {/* Link */}
-            <div>
-              <FormField
-                control={form.control}
-                name="link"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="pb-2">
-                      <FormLabel>Job Posting Link</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="www.linkedin.com/jobs/..."
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Job Location */}
-            <div>
-              <FormField
-                control={form.control}
-                name="jobLocation"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="pb-2">
-                      <FormLabel>Job Location</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="City, Country, Address"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-              {/* Is Remote */}
-              <FormField
-                control={form.control}
-                name="isRemote"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="pb-2">
-                      {/* <FormLabel>Remote option</FormLabel> */}
-                      <FormControl>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="is-remote"
-                            checked={field.value}
-                            onCheckedChange={(value) => {
-                              console.log("value", value);
-                              form.setValue(
-                                "isRemote",
-                                value as boolean
-                              );
-                            }}
-                          />
-                          <label
-                            htmlFor="is-remote"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Is Remote
-                          </label>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Job Description */}
-            <div>
-              <FormField
-                control={form.control}
-                name="link"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="pb-2">
-                      <FormLabel>
-                        Job Description{" "}
-                        <span className="text-slate-500 font-normal text-sm">
-                          (copy paste it)
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Salary Details */}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="salaryDetails"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Salary details</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="ex: $400,000/year; $200/hour; 30K-60K"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Applicatoin Deadline */}
-            <div className="flex gap-4 mb-3">
-              <FormField
-                control={form.control}
-                name="applicationDeadline"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Application Deadline</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center">
-                          <DateTimePicker
-                            date={field.value}
-                            enableClear
-                            setDate={(date) => {
-                              form.setValue(
-                                "applicationDeadline",
-                                date
-                              );
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Posted At */}
-            <div className="flex gap-4 mb-3">
-              <FormField
-                control={form.control}
-                name="postedDate"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Posted At Date</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center">
-                          <DateTimePicker
-                            date={field.value}
-                            enableClear
-                            setDate={(date) => {
-                              form.setValue("postedDate", date);
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
+            <Collapsible
+              open={isOpen}
+              onOpenChange={setIsOpen}
+              className="w-full space-y-2"
+            >
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full my-2 p-0"
+                >
+                  Add more data about the job
+                  <ChevronsUpDownIcon className="h-4 w-4" />
+                  <span className="sr-only">Toggle</span>
+                </Button>
+              </CollapsibleTrigger>
 
-            {/* Next Interview Date */}
-            <div className="flex gap-4 mb-3 ">
-              <FormField
-                control={form.control}
-                name="nextInterviewDate"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Next Interview Date</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center">
-                          <DateTimePicker
-                            date={field.value}
-                            enableClear
-                            setDate={(date) => {
-                              form.setValue(
-                                "nextInterviewDate",
-                                date
-                              );
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Was Referred and Referred by */}
-            <div className="flex gap-1 mb-3 items-end">
-              <FormField
-                control={form.control}
-                name="wasReferred"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      {/* <FormLabel>Next Interview Date</FormLabel> */}
-                      <FormControl>
-                        <div className="flex items-center mb-3">
-                          <Checkbox
-                            id="was-referred"
-                            checked={field.value}
-                            onCheckedChange={(value) => {
-                              form.setValue(
-                                "wasReferred",
-                                value as boolean
-                              );
-                            }}
-                          />
-                          <label
-                            htmlFor="was-referred"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
-                          >
-                            I was referred
-                          </label>
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="referredBy"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-[2]">
-                      <FormLabel>Referrered by</FormLabel>
-                      <FormControl>
-                        <Input
-                          className="w-full"
-                          {...field}
-                          placeholder="Referrered by"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
+              <CollapsibleContent className="space-y-2">
+                {/* Link */}
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="link"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="pb-2">
+                          <FormLabel>Job Posting Link</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="www.linkedin.com/jobs/..."
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Job Location */}
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="jobLocation"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="pb-2">
+                          <FormLabel>Job Location</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="City, Country, Address"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  {/* Is Remote */}
+                  <FormField
+                    control={form.control}
+                    name="isRemote"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="pb-2">
+                          {/* <FormLabel>Remote option</FormLabel> */}
+                          <FormControl>
+                            <div className="flex items-center space-x-2">
+                              <Checkbox
+                                id="is-remote"
+                                checked={field.value}
+                                onCheckedChange={(value) => {
+                                  console.log("value", value);
+                                  form.setValue(
+                                    "isRemote",
+                                    value as boolean
+                                  );
+                                }}
+                              />
+                              <label
+                                htmlFor="is-remote"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Is Remote
+                              </label>
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Job Description */}
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="link"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="pb-2">
+                          <FormLabel>
+                            Job Description{" "}
+                            <span className="text-slate-500 font-normal text-sm">
+                              (copy paste it)
+                            </span>
+                          </FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Salary Details */}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="salaryDetails"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Salary details</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="ex: $400,000/year; $200/hour; 30K-60K"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Applicatoin Deadline */}
+                <div className="flex gap-4 mb-3">
+                  <FormField
+                    control={form.control}
+                    name="applicationDeadline"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Application Deadline</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <DateTimePicker
+                                date={field.value}
+                                enableClear
+                                setDate={(date) => {
+                                  form.setValue(
+                                    "applicationDeadline",
+                                    date
+                                  );
+                                }}
+                              />
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Posted At */}
+                <div className="flex gap-4 mb-3">
+                  <FormField
+                    control={form.control}
+                    name="postedDate"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Posted At Date</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <DateTimePicker
+                                date={field.value}
+                                enableClear
+                                setDate={(date) => {
+                                  form.setValue("postedDate", date);
+                                }}
+                              />
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
 
-            {/* Interest Level */}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="interestLevel"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Interest Level</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          onChange={(e) => {
-                            form.setValue(
-                              "interestLevel",
-                              Number(e.target.value)
-                            );
-                          }}
-                          type="number"
-                          min={0}
-                          max={5}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Resume Used + Motivational Used */}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="resumeUsed"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Used Resume Link</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="Resume Link" />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="motivationalLetter"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Motivational Letter</FormLabel>
-                      <FormControl>
-                        <Input {...field} placeholder="ML Link" />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Notes */}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="notes"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Add notes</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Applied Link + Applied from*/}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="applyLink"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Link for applying</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="www.linkedin.com/jobs/..."
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="appliedFrom"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>How did you apply</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="ex: With link, email, in person"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
-            {/* Todos */}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="todos"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Add todos</FormLabel>
-                      <FormControl>
-                        <Textarea {...field} />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
+                {/* Next Interview Date */}
+                <div className="flex gap-4 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="nextInterviewDate"
+                    render={({ field }) => {
+                      return (
+                        <FormItem>
+                          <FormLabel>Next Interview Date</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <DateTimePicker
+                                date={field.value}
+                                enableClear
+                                setDate={(date) => {
+                                  form.setValue(
+                                    "nextInterviewDate",
+                                    date
+                                  );
+                                }}
+                              />
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Was Referred and Referred by */}
+                <div className="flex gap-1 mb-3 items-end">
+                  <FormField
+                    control={form.control}
+                    name="wasReferred"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          {/* <FormLabel>Next Interview Date</FormLabel> */}
+                          <FormControl>
+                            <div className="flex items-center mb-3">
+                              <Checkbox
+                                id="was-referred"
+                                checked={field.value}
+                                onCheckedChange={(value) => {
+                                  form.setValue(
+                                    "wasReferred",
+                                    value as boolean
+                                  );
+                                }}
+                              />
+                              <label
+                                htmlFor="was-referred"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
+                              >
+                                I was referred
+                              </label>
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="referredBy"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-[2]">
+                          <FormLabel>Referrered by</FormLabel>
+                          <FormControl>
+                            <Input
+                              className="w-full"
+                              {...field}
+                              placeholder="Referrered by"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
 
-            {/* Heard about from + Map location*/}
-            <div className="flex gap-1 mb-3 ">
-              <FormField
-                control={form.control}
-                name="heardAboutFrom"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Job Source</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="ex: Friend, LinkedIn, Indeed"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-              <FormField
-                control={form.control}
-                name="mapLocation"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex-1">
-                      <FormLabel>Latitude,Longitude</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder="ex: 40.7128,74.0060"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              />
-            </div>
+                {/* Interest Level */}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="interestLevel"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Interest Level</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              onChange={(e) => {
+                                form.setValue(
+                                  "interestLevel",
+                                  Number(e.target.value)
+                                );
+                              }}
+                              type="number"
+                              min={0}
+                              max={5}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Resume Used + Motivational Used */}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="resumeUsed"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Used Resume Link</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Resume Link"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="motivationalLetter"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Motivational Letter</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="ML Link" />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Notes */}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="notes"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Add notes</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Applied Link + Applied from*/}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="applyLink"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Link for applying</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="www.linkedin.com/jobs/..."
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="appliedFrom"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>How did you apply</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="ex: With link, email, in person"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+                {/* Todos */}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="todos"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Add todos</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+
+                {/* Heard about from + Map location*/}
+                <div className="flex gap-1 mb-3 ">
+                  <FormField
+                    control={form.control}
+                    name="heardAboutFrom"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Job Source</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="ex: Friend, LinkedIn, Indeed"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="mapLocation"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="flex-1">
+                          <FormLabel>Latitude,Longitude</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="ex: 40.7128,74.0060"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+
             <div className="pt-6 space-x-2 flex items-center justify-end">
               <Button
                 disabled={isLoading}
