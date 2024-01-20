@@ -118,6 +118,7 @@ export default function InterviewDateChangeModal() {
               <Button
                 disabled={isLoading}
                 variant={"outline"}
+                type="button"
                 onClick={interviewDateChangeModal.onClose}
               >
                 Cancel

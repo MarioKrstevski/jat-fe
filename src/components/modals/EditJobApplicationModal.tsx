@@ -113,9 +113,15 @@ export default function EditJobApplicationModal() {
       isRemote: jae?.isRemote,
       wasReferred: jae?.wasReferred,
       referredBy: jae?.referredBy,
-      postedDate: jae?.postedDate,
-      applicationDeadline: jae?.applicationDeadline,
-      nextInterviewDate: jae?.nextInterviewDate,
+      postedDate: jae?.postedDate
+        ? new Date(jae?.postedDate)
+        : undefined,
+      applicationDeadline: jae?.applicationDeadline
+        ? new Date(jae?.applicationDeadline)
+        : undefined,
+      nextInterviewDate: jae?.nextInterviewDate
+        ? new Date(jae?.nextInterviewDate)
+        : undefined,
     },
   });
 
@@ -151,18 +157,30 @@ export default function EditJobApplicationModal() {
         isRemote: jae.isRemote,
         wasReferred: jae.wasReferred,
         referredBy: jae.referredBy,
-        postedDate: jae.postedDate,
-        applicationDeadline: jae.applicationDeadline,
-        nextInterviewDate: jae.nextInterviewDate,
+        postedDate: jae.postedDate
+          ? new Date(jae.postedDate)
+          : undefined,
+        applicationDeadline: jae.applicationDeadline
+          ? new Date(jae.applicationDeadline)
+          : undefined,
+        nextInterviewDate: jae.nextInterviewDate
+          ? new Date(jae.nextInterviewDate)
+          : undefined,
       });
     }
   }, [editModal.data.ja]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("add new", values);
+    console.log("edit values", values);
 
     // editModal.onClose();
   }
+
+  //effect description
+  useEffect(() => {
+    // minimise collapsable after closing the edit modal
+    setIsOpen(false);
+  }, [editModal.isOpen]);
 
   return (
     <Modal
@@ -749,12 +767,19 @@ export default function EditJobApplicationModal() {
             <div className="pt-6 space-x-2 flex items-center justify-end">
               <Button
                 disabled={isLoading}
+                type="button"
                 variant={"outline"}
                 onClick={editModal.onClose}
               >
                 Cancel
               </Button>
-              <Button disabled={isLoading} type="submit">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                // onClick={() => {
+                //   onSubmit(form.getValues());
+                // }}
+              >
                 Continue
               </Button>
             </div>

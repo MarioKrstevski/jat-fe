@@ -233,6 +233,7 @@ export default function StatusChangeModal() {
               <Button
                 disabled={isLoading}
                 variant={"outline"}
+                type="button"
                 onClick={statusChangeModal.onClose}
               >
                 Cancel

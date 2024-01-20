@@ -718,6 +718,7 @@ export default function CreateNewJobApplicationModal() {
               <Button
                 disabled={isLoading}
                 variant={"outline"}
+                type="button"
                 onClick={createNewModal.onClose}
               >
                 Cancel

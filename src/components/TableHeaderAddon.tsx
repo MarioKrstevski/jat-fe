@@ -82,18 +82,16 @@ export default function TableHeaderAddon({
             )}
             {selectedCount === 1 && <EditButton ja={ja} />}
 
+            <Button variant={"outline"} onClick={handleArchiving}>
+              Archive
+            </Button>
             <Button
               variant={"destructive"}
               onClick={() => {
                 setIsOpen(true);
               }}
             >
-              {" "}
-              Delete{" "}
-            </Button>
-            <Button variant={"outline"} onClick={handleArchiving}>
-              {" "}
-              Archive{" "}
+              Delete
             </Button>
           </div>
         )}
