@@ -105,10 +105,26 @@ export default function JATable({
     }, 100);
   }
 
+  function handleSelectedChangeStatus() {
+    const ja = jobApplications.find(
+      (ja) => ja.id === selectedRows[0]
+    )!;
+    statusChangeModal.setData({
+      ja: ja,
+      status: ja.status,
+      nextStep: ja.waitingFor,
+      statusOptions: ja.statusOptions,
+    });
+    setTimeout(() => {
+      statusChangeModal.onOpen();
+    }, 100);
+  }
+
   return (
     <div className="w-full p-2  overflow-x-auto">
       <TableHeaderAddon
-        selectedCount={selectedRows.length}
+        handleSelectedChangeStatus={handleSelectedChangeStatus}
+        selectedRows={selectedRows}
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />

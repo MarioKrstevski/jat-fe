@@ -2,8 +2,9 @@ import { JobApplication } from "@/types";
 import { Textarea } from "./ui/textarea";
 import { dateDistance } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { Undo2Icon, UndoIcon } from "lucide-react";
+import { EditIcon, Undo2Icon, UndoIcon } from "lucide-react";
 import { format } from "date-fns";
+import EditButton from "./EditButton";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -11,6 +12,7 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
       {!ja.isArchived && (
@@ -22,39 +24,50 @@ export default function JobApplicationDetails({
         </div>
       )}
       <main className="flex-1 overflow-y-auto p-6 pt-0">
-        <section className=" flex justify-between items-start mb-2 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
-          <div className="  text-gray-800 dark:text-gray-100">
-            <div className="text-xl font-semibold">
-              {ja.companyName}
+        <section className="  mb-2 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
+          <h2 className=" flex justify-between text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
+            <div>Important information</div>
+            <EditButton
+              ja={ja}
+              icon
+              className="px-1.5 h-6"
+              variant={"outline"}
+            />
+          </h2>
+          <div className="flex justify-between items-start">
+            <div className="  text-gray-800 dark:text-gray-100">
+              <div className="text-xl font-semibold">
+                {ja.companyName}
+              </div>
+              <div>
+                {ja.jobTitle}
+                <span>
+                  {ja.isRemote ? " - Remote" : " - On-Site"}
+                </span>{" "}
+              </div>
+              <div className="text-sm text-slate-600 my-1">
+                Salary $400 {ja.salaryDetails}
+              </div>
+              <div className="text-sm font-semibold">
+                Priority {ja.interestLevel}/5
+              </div>
             </div>
-            <div>
-              {ja.jobTitle}
-              <span>
-                {ja.isRemote ? " - Remote" : " - On-Site"}
-              </span>{" "}
-            </div>
-            <div className="text-sm text-slate-600 my-1">
-              Salary $400 {ja.salaryDetails}
-            </div>
-            <div className="text-sm font-semibold">
-              Priority {ja.interestLevel}/5
-            </div>
-          </div>
-          <div className="text-right text-sm">
-            <div>Posted {dateDistance(ja.postedDate)}</div>
-            <div>Saved {dateDistance(ja.createdAt)}</div>
-            <div>Laste Update {dateDistance(ja.updatedAt)}</div>
-            <div>
-              Posting Link:{" "}
-              <a className="text-blue-500" href={ja.link}>
-                {ja.link}
-              </a>
-            </div>
-            <div>
-              Apply here:{" "}
-              <a className="text-blue-500" href={ja.link}>
-                {ja.applylink}
-              </a>
+            <div className="text-right text-sm">
+              <div>Posted {dateDistance(ja.postedDate)}</div>
+              <div>Saved {dateDistance(ja.createdAt)}</div>
+              <div>Laste Update {dateDistance(ja.updatedAt)}</div>
+              <div>
+                Posting Link:{" "}
+                <a className="text-blue-500" href={ja.link}>
+                  {ja.link}
+                </a>
+              </div>
+              <div>
+                Apply here:{" "}
+                <a className="text-blue-500" href={ja.link}>
+                  {ja.applylink}
+                </a>
+              </div>
             </div>
           </div>
         </section>

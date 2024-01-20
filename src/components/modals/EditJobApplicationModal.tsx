@@ -16,7 +16,6 @@ import {
 import {
   SelectValue,
   SelectTrigger,
-  SelectLabel,
   SelectItem,
   SelectGroup,
   SelectContent,
@@ -33,7 +32,6 @@ import { JobApplication, JobApplicationStatus } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import { DateTimePicker } from "../DateTimePicker";
 import { set } from "date-fns";
-import { useCreateNewModal } from "@/hooks/useCreateNewModal";
 import { useAuth } from "@clerk/clerk-react";
 import { defaultStatusOptions } from "@/global/values";
 import { Textarea } from "../ui/textarea";
@@ -45,6 +43,7 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { ChevronsUpDownIcon } from "lucide-react";
+import { useEditModal } from "@/hooks/useEditModal";
 
 const formSchema = z.object({
   userId: z.string(),
@@ -77,67 +76,100 @@ const formSchema = z.object({
   companyId: z.string().nullable(),
 });
 
-export default function CreateNewJobApplicationModal() {
-  const createNewModal = useCreateNewModal();
+export default function EditJobApplicationModal() {
   const { userId } = useAuth();
+  const editModal = useEditModal();
+  const jobApplicationEditted = editModal.data.ja;
+  const jae = jobApplicationEditted;
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       userId: userId!,
-      companyName: "",
-      jobTitle: "",
-      jobLocation: "",
-      status: "Wishlist",
-      jobDescription: "",
-      companyInfo: "",
-      applylink: "",
-      link: "",
-      waitingFor: "Applying",
-      timeline: "",
-      statusOptions: defaultStatusOptions.join(","),
-      resumeUsed: "",
-      motivationalLetter: "",
-      notes: "",
-      salaryDetails: "",
-      appliedFrom: "",
-      heardAboutFrom: "",
-      mapLocation: "",
-      todos: "",
-      companyId: null,
-      interestLevel: 0,
-      isRemote: false,
-      wasReferred: false,
-      referredBy: "",
-      postedDate: undefined,
-      applicationDeadline: undefined,
-      nextInterviewDate: undefined,
+      companyName: jae?.companyName,
+      jobTitle: jae?.jobTitle,
+      jobLocation: jae?.jobLocation,
+      status: jae?.status,
+      jobDescription: jae?.jobDescription,
+      companyInfo: jae?.companyInfo,
+      applylink: jae?.applylink,
+      link: jae?.link,
+      waitingFor: jae?.waitingFor,
+      timeline: jae?.timeline,
+      statusOptions: jae?.statusOptions,
+      resumeUsed: jae?.resumeUsed,
+      motivationalLetter: jae?.motivationalLetter,
+      notes: jae?.notes,
+      salaryDetails: jae?.salaryDetails,
+      appliedFrom: jae?.appliedFrom,
+      heardAboutFrom: jae?.heardAboutFrom,
+      mapLocation: jae?.mapLocation,
+      todos: jae?.todos,
+      companyId: jae?.companyId,
+      interestLevel: jae?.interestLevel,
+      isRemote: jae?.isRemote,
+      wasReferred: jae?.wasReferred,
+      referredBy: jae?.referredBy,
+      postedDate: jae?.postedDate,
+      applicationDeadline: jae?.applicationDeadline,
+      nextInterviewDate: jae?.nextInterviewDate,
     },
   });
 
   // this reset is important to update the data if we open a job close it and open
   // another one which has a new date, this needs to update it since we are using one
   // modal for all the jobs
-  // useEffect(() => {
-  // form.reset({
-  //   date: dateSelected,
-  // });
-  // }, [createNewModal.data]);
+
+  useEffect(() => {
+    if (jae) {
+      form.reset({
+        userId: userId!,
+        companyName: jae.companyName,
+        jobTitle: jae.jobTitle,
+        jobLocation: jae.jobLocation,
+        status: jae.status,
+        jobDescription: jae.jobDescription,
+        companyInfo: jae.companyInfo,
+        applylink: jae.applylink,
+        link: jae.link,
+        waitingFor: jae.waitingFor,
+        timeline: jae.timeline,
+        statusOptions: jae.statusOptions,
+        resumeUsed: jae.resumeUsed,
+        motivationalLetter: jae.motivationalLetter,
+        notes: jae.notes,
+        salaryDetails: jae.salaryDetails,
+        appliedFrom: jae.appliedFrom,
+        heardAboutFrom: jae.heardAboutFrom,
+        mapLocation: jae.mapLocation,
+        todos: jae.todos,
+        companyId: jae.companyId,
+        interestLevel: jae.interestLevel,
+        isRemote: jae.isRemote,
+        wasReferred: jae.wasReferred,
+        referredBy: jae.referredBy,
+        postedDate: jae.postedDate,
+        applicationDeadline: jae.applicationDeadline,
+        nextInterviewDate: jae.nextInterviewDate,
+      });
+    }
+  }, [editModal.data.ja]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("add new", values);
 
-    // createNewModal.onClose();
+    // editModal.onClose();
   }
 
   return (
     <Modal
-      title="Create a new job application entry"
-      description={`You don't have to fill out everything now`}
-      isOpen={createNewModal.isOpen}
-      onClose={createNewModal.onClose}
+      title="Edit information"
+      description={`Change what you need`}
+      isOpen={editModal.isOpen}
+      onClose={editModal.onClose}
     >
       <div className="space-y-4 py-2 pb-4 ">
         <Form {...form}>
@@ -718,7 +750,7 @@ export default function CreateNewJobApplicationModal() {
               <Button
                 disabled={isLoading}
                 variant={"outline"}
-                onClick={createNewModal.onClose}
+                onClick={editModal.onClose}
               >
                 Cancel
               </Button>
