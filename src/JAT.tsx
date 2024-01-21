@@ -17,6 +17,7 @@ import ModalProvider from "./providers/ModalProvider";
 import SingleJobPage from "./pages/SingleJobPage";
 import { api } from "./api/backend";
 import { useJobApplicationsStore } from "./hooks/useJobApplicationsStore";
+import Footer from "./components/Footer";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -80,6 +81,7 @@ function DashboardLayout() {
       <ModalProvider />
       <Header />
       <Outlet />
+      <Footer />
     </div>
   );
 }

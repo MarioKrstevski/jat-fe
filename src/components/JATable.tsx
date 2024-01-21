@@ -142,7 +142,7 @@ export default function JATable() {
   }
 
   return (
-    <div className="w-full p-2  overflow-x-auto">
+    <div className="w-full p-2 relative">
       <TableHeaderAddon
         handleSelectedChangeStatus={handleSelectedChangeStatus}
         selectedRows={selectedRows}
@@ -150,7 +150,7 @@ export default function JATable() {
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />
-      <div className="mt-4 w-full ">
+      <div className="mt-4 w-full h-[60vh] overflow-y-auto">
         <div className="border rounded-lg w-full">
           <div className="relative w-full overflow-auto">
             <Table className="w-full">
