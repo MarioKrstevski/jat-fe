@@ -55,12 +55,6 @@ export default function JATable() {
     setSelectedRows([]);
   }, [jobApplications]);
 
-  if (jobApplications.length === 0) {
-    return (
-      <div>No job applications found. Create your first one</div>
-    );
-  }
-
   //effect description
 
   function navgiateToJob(jobId: string) {
@@ -247,6 +241,7 @@ export default function JATable() {
             </Table>
           </div>
         </div>
+
         {jobApplicationsToShow.length === 0 && (
           <div className="flex flex-col items-center justify-center w-full mt-5 py-2">
             You have no job applications created

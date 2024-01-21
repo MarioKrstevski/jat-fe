@@ -50,11 +50,6 @@ export default function Archived({
 
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  if (jobApplications.length === 0) {
-    return (
-      <div>No job applications found. Create your first one</div>
-    );
-  }
 
   function navgiateToJob(jobId: string) {
     navigate("/jobs/" + jobId);
