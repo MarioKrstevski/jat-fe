@@ -1,5 +1,5 @@
 import JobApplicationDetails from "@/components/JobApplicationDetails";
-import { useJobApplications } from "@/hooks/useJobApplications";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function SingleJobPage() {
   const { jobId } = useParams();
   const navigate = useNavigate();
 
-  const jobApplications = useJobApplications(
+  const jobApplications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
   const jobApplication = jobApplications.find(

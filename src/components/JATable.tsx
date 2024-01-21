@@ -20,7 +20,7 @@ import {
 
 import { JobApplication, JobApplicationStatus } from "@/types";
 import { format, parseISO } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TableHeaderAddon from "./TableHeaderAddon";
 import ActionList from "./ActionList";
 import {
@@ -37,48 +37,69 @@ import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 
-export default function JATable({
-  jobApplications,
-}: {
-  jobApplications: JobApplication[];
-}) {
+export default function JATable() {
+  const jobApplications = useJobApplicationsStore(
+    (state) => state.jobApplications
+  );
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const statusChangeModal = useStatusChangeModal();
-  const interviewDateChangeModal = useInterviewDateChangeModal();
 
+  const interviewDateChangeModal = useInterviewDateChangeModal();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setSelectedRows([]);
+  }, [jobApplications]);
+
   if (jobApplications.length === 0) {
     return (
       <div>No job applications found. Create your first one</div>
     );
   }
 
+  //effect description
+
   function navgiateToJob(jobId: string) {
     navigate("/jobs/" + jobId);
   }
-  const jobApplicationsToShow = jobApplications.filter((ja) => {
-    if (!searchKeyword) {
-      return true;
-    }
-    return (
-      ja.companyName
-        .toLocaleLowerCase()
-        .includes(searchKeyword.toLocaleLowerCase()) ||
-      ja.status
-        .toLocaleLowerCase()
-        .includes(searchKeyword.toLocaleLowerCase())
-    );
-  });
+  const jobApplicationsToShow = jobApplications
+    .filter((ja) => {
+      if (!searchKeyword) {
+        return true;
+      }
+      return (
+        ja.companyName
+          .toLocaleLowerCase()
+          .includes(searchKeyword.toLocaleLowerCase()) ||
+        ja.status
+          .toLocaleLowerCase()
+          .includes(searchKeyword.toLocaleLowerCase())
+      );
+    })
+    .filter((ja) => !ja.isArchived)
+    // sort by created time
+    .sort((a, b) => {
+      return (
+        DateTime.fromISO(b.createdAt.toString()).toMillis() -
+        DateTime.fromISO(a.createdAt.toString()).toMillis()
+      );
+    });
 
   function handleInterviewDate(ja: JobApplication) {
     interviewDateChangeModal.setData({
       ja: ja,
-      date: ja.nextInterviewDate,
+      nextInterviewDate: ja.nextInterviewDate,
     });
     setTimeout(() => {
+      console.log("here", {
+        ja: ja,
+        nextInterviewDate: ja.nextInterviewDate,
+      });
+      console.log("intem", interviewDateChangeModal.data);
       interviewDateChangeModal.onOpen();
     }, 100);
   }
@@ -125,6 +146,7 @@ export default function JATable({
       <TableHeaderAddon
         handleSelectedChangeStatus={handleSelectedChangeStatus}
         selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />
@@ -148,19 +170,23 @@ export default function JATable({
               </TableHeader>
               <TableBody>
                 {jobApplicationsToShow.map((ja, idx) => {
-                  const nextInterviewDateFormatted = formatDate(
-                    ja.nextInterviewDate,
-                    "MMMM dd, yyyy HH:mm"
-                  );
+                  const nextInterviewDateFormatted =
+                    ja.nextInterviewDate
+                      ? formatDate(
+                          ja.nextInterviewDate,
+                          "MMMM dd, yyyy HH:mm"
+                        )
+                      : "N/A";
 
                   const createdAtFormatted = formatDate(
                     ja.createdAt,
                     "MMMM dd, yyyy HH:mm:ss"
                   );
                   const isRowSelected = selectedRows.includes(ja.id);
+                  const key = ja.id + ja.updatedAt.toString();
                   return (
                     <TableRow
-                      key={ja.id}
+                      key={key}
                       data-state={isRowSelected ? "selected" : ""}
                     >
                       <TableCell className="font-bold pl-1 ">
@@ -204,7 +230,7 @@ export default function JATable({
                           {ja.waitingFor}
                         </button>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         <button
                           onClick={() => handleInterviewDate(ja)}
                         >

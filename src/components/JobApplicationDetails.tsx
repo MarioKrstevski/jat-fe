@@ -1,10 +1,23 @@
-import { JobApplication } from "@/types";
+import { JobApplication, TimelineEntry } from "@/types";
 import { Textarea } from "./ui/textarea";
 import { dateDistance } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { EditIcon, Undo2Icon, UndoIcon } from "lucide-react";
-import { format } from "date-fns";
+import {
+  DeleteIcon,
+  EditIcon,
+  TrashIcon,
+  Undo2Icon,
+  UndoIcon,
+} from "lucide-react";
+import { format, set } from "date-fns";
 import EditButton from "./EditButton";
+import { useState } from "react";
+import AlertModal from "./modals/AlertModal";
+import { api } from "@/api/backend";
+import { useAuth } from "@clerk/clerk-react";
+import { toast } from "sonner";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { useNavigate } from "react-router-dom";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -12,17 +25,121 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
+  const { userId } = useAuth();
+  const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const jobApplicationStore = useJobApplicationsStore();
+
+  function onDelete() {
+    setIsLoading(true);
+    api
+      .be_deleteJobApplication([ja.id], userId!)
+      .then((res) => {
+        console.log("res", res.data);
+        const updatedJobApplications =
+          jobApplicationStore.jobApplications.filter(
+            (ja) => ja.id !== jobApplication.id
+          );
+
+        jobApplicationStore.setData(updatedJobApplications);
+        toast.success("Job Application Deleted");
+        setIsOpen(false);
+        navigate("/jobs");
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  function handleUnarchiving() {
+    setIsLoading(true);
+    api
+      .be_archiveJobApplication([jobApplication.id], userId!, false)
+      .then((res) => {
+        console.log("res", res.data);
+
+        const updatedJobApplications =
+          jobApplicationStore.jobApplications.map((ja) => {
+            if (jobApplication.id === ja.id) {
+              return {
+                ...ja,
+                isArchived: false,
+                updatedAt: new Date(),
+              };
+            } else {
+              return ja;
+            }
+          });
+
+        jobApplicationStore.setData(updatedJobApplications);
+        toast.success("Job Application Archived");
+        navigate("/jobs");
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
+
+  const applicationDeadline = ja.applicationDeadline
+    ? format(ja.applicationDeadline, "dd.MM.yyyy HH:mm") +
+      " (" +
+      dateDistance(ja.applicationDeadline) +
+      ")"
+    : "N/A";
+
+  const nextInterviewDate = ja.nextInterviewDate
+    ? format(ja.nextInterviewDate, "dd.MM.yyyy HH:mm") +
+      " (" +
+      dateDistance(ja.nextInterviewDate) +
+      ")"
+    : "N/A";
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
-      {!ja.isArchived && (
-        <div className=" flex items-center gap-2 px-6 py-2 text-lg align-bottom">
-          <span> This job was archived </span>
-          <Button variant={"outline"} size={"sm"}>
-            Undo <Undo2Icon className="ml-1 h-3 w-3" />
-          </Button>{" "}
+      <AlertModal
+        isOpen={isOpen}
+        isLoading={isLoading}
+        onConfirm={onDelete}
+        onClose={() => {
+          if (!isLoading) {
+            setIsOpen(false);
+          }
+        }}
+      />
+      <div className="flex items-center my-2">
+        <div className=" flex items-center gap-2 px-6  text-lg align-bottom">
+          {ja.isArchived && (
+            <>
+              <span> This job was archived </span>
+              <Button
+                variant={"outline"}
+                size={"sm"}
+                onClick={handleUnarchiving}
+              >
+                Undo <Undo2Icon className="ml-1 h-3 w-3" />
+              </Button>{" "}
+            </>
+          )}
         </div>
-      )}
+        <Button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          variant={"destructive"}
+          size={"sm"}
+          className="ml-auto mr-6 bg-red-300 text-black hover:text-white border border-red-500"
+        >
+          Delete <TrashIcon className="ml-1 h-3 w-3" />
+        </Button>
+      </div>
       <main className="flex-1 overflow-y-auto p-6 pt-0">
         <section className="  mb-2 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
           <h2 className=" flex justify-between text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
@@ -46,14 +163,19 @@ export default function JobApplicationDetails({
                 </span>{" "}
               </div>
               <div className="text-sm text-slate-600 my-1">
-                Salary $400 {ja.salaryDetails}
+                {ja.salaryDetails
+                  ? ja.salaryDetails
+                  : "No salary info"}
               </div>
               <div className="text-sm font-semibold">
                 Priority {ja.interestLevel}/5
               </div>
             </div>
             <div className="text-right text-sm">
-              <div>Posted {dateDistance(ja.postedDate)}</div>
+              <div>
+                Posted{" "}
+                {ja.postedDate ? dateDistance(ja.postedDate) : "N/A"}
+              </div>
               <div>Saved {dateDistance(ja.createdAt)}</div>
               <div>Laste Update {dateDistance(ja.updatedAt)}</div>
               <div>
@@ -79,20 +201,8 @@ export default function JobApplicationDetails({
             <div className="text-gray-700 dark:text-gray-400">
               <div>Current status: {ja.status}</div>
               <div>Next step: {ja.waitingFor}</div>
-              <div>
-                Application deadline:{" "}
-                {format(ja.applicationDeadline, "dd.MM.yyyy HH:mm")}
-                {" ("}
-                {dateDistance(ja.applicationDeadline)}
-                {")"}
-              </div>
-              <div>
-                Next Interview:{" "}
-                {format(ja.nextInterviewDate, "dd.MM.yyyy HH:mm")}
-                {" ("}
-                {dateDistance(ja.nextInterviewDate)}
-                {")"}
-              </div>
+              <div>Application deadline: {applicationDeadline}</div>
+              <div>Next Interview: {nextInterviewDate}</div>
             </div>
             <div className="text-slate-700 text-right">
               <div>
@@ -122,10 +232,7 @@ export default function JobApplicationDetails({
             Upcoming Deadlines
           </h2>
           <div className="text-gray-600 dark:text-gray-400">
-            Phone Interview: January 10, 2024
-          </div>
-          <div className="text-gray-600 dark:text-gray-400">
-            Onsite Interview: January 20, 2024
+            Important info here
           </div>
         </section>
         <section className="mb-6 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
@@ -161,6 +268,25 @@ export default function JobApplicationDetails({
           <div>
             <code>
               <pre>Timeline Component</pre>
+              <pre>
+                {ja.timeline && (
+                  <ul>
+                    {JSON.parse(ja.timeline).map(
+                      (e: TimelineEntry, idx: number) => {
+                        return (
+                          <li key={idx}>
+                            {format(
+                              new Date(Number(e.date)),
+                              "dd.MM.yyyy HH:mm"
+                            )}{" "}
+                            - {e.status}
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
+                )}
+              </pre>
             </code>
           </div>
         </section>

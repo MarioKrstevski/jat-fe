@@ -6,9 +6,8 @@ interface useJobApplicationsStore {
   setData: (data: JobApplication[]) => void;
 }
 
-export const useJobApplications = create<useJobApplicationsStore>(
-  (set) => ({
+export const useJobApplicationsStore =
+  create<useJobApplicationsStore>((set) => ({
     jobApplications: [],
     setData: (data) => set({ jobApplications: data }),
-  })
-);
+  }));

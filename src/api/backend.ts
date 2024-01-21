@@ -1,5 +1,9 @@
 import { backendURL } from "@/global/variables";
-import { JobApplication, JobApplicationGenerated } from "@/types";
+import {
+  EditTypes,
+  JobApplication,
+  JobApplicationGenerated,
+} from "@/types";
 import axios, { AxiosResponse } from "axios";
 
 const jatbe = axios.create({
@@ -25,7 +29,56 @@ async function be_createJobApplications(
     userId,
   });
 }
+
+async function be_createJobApplication(
+  jobApplication: any,
+  userId: string | null | undefined
+) {
+  return jatbe.post("createJobApplication", {
+    jobApplication,
+    userId,
+  });
+}
+
+async function be_editJobApplication(
+  jobApplication: any,
+  userId: string,
+  type: EditTypes
+) {
+  return jatbe.patch("editJobApplication", {
+    jobApplication,
+    userId,
+    type,
+  });
+}
+async function be_archiveJobApplication(
+  ids: string[],
+  userId: string,
+  isArchived: boolean
+) {
+  return jatbe.patch("archiveJobApplication", {
+    ids,
+    userId,
+    isArchived,
+  });
+}
+async function be_deleteJobApplication(
+  ids: string[],
+  userId: string
+) {
+  return jatbe.delete("deleteJobApplication", {
+    data: {
+      ids,
+      userId,
+    },
+  });
+}
+
 export const api = {
+  be_deleteJobApplication,
+  be_archiveJobApplication,
+  be_editJobApplication,
   be_getJobApplications,
+  be_createJobApplication,
   be_createJobApplications,
 };

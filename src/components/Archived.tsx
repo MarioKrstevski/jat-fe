@@ -59,18 +59,25 @@ export default function Archived({
   function navgiateToJob(jobId: string) {
     navigate("/jobs/" + jobId);
   }
-  const jobApplicationsToShow = jobApplications.filter((ja) => {
-    if (ja.isArchived) {
-      return true;
-    }
+  const jobApplicationsToShow = jobApplications
+    .filter((ja) => {
+      if (ja.isArchived) {
+        return true;
+      }
 
-    return false;
-  });
-
+      return false;
+    })
+    // sort by created time
+    .sort((a, b) => {
+      return (
+        DateTime.fromISO(b.createdAt.toString()).toMillis() -
+        DateTime.fromISO(a.createdAt.toString()).toMillis()
+      );
+    });
   function handleInterviewDate(ja: JobApplication) {
     interviewDateChangeModal.setData({
       ja: ja,
-      date: ja.nextInterviewDate,
+      nextInterviewDate: ja.nextInterviewDate,
     });
     setTimeout(() => {
       interviewDateChangeModal.onOpen();
@@ -125,19 +132,23 @@ export default function Archived({
               </TableHeader>
               <TableBody>
                 {jobApplicationsToShow.map((ja, idx) => {
-                  const nextInterviewDateFormatted = formatDate(
-                    ja.nextInterviewDate,
-                    "MMMM dd, yyyy HH:mm"
-                  );
+                  const nextInterviewDateFormatted =
+                    ja.nextInterviewDate
+                      ? formatDate(
+                          ja.nextInterviewDate,
+                          "MMMM dd, yyyy HH:mm"
+                        )
+                      : "N/A";
 
                   const createdAtFormatted = formatDate(
                     ja.createdAt,
                     "MMMM dd, yyyy HH:mm:ss"
                   );
                   const isRowSelected = selectedRows.includes(ja.id);
+                  const key = ja.id + ja.updatedAt.toString();
                   return (
                     <TableRow
-                      key={ja.id}
+                      key={key}
                       data-state={isRowSelected ? "selected" : ""}
                     >
                       <TableCell className="font-bold pl-1 ">

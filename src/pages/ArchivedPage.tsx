@@ -1,12 +1,12 @@
 import Archived from "@/components/Archived";
-import { useJobApplications } from "@/hooks/useJobApplications";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function ArchivedPage() {
   const { userId, isLoaded } = useAuth();
-  const jobApplications = useJobApplications(
+  const jobApplications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
   const navigate = useNavigate();

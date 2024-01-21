@@ -1,11 +1,6 @@
 import { JobApplication } from "@/types";
 import { Input } from "@/components/ui/input";
-import {
-  Edit,
-  PlusCircleIcon,
-  PlusIcon,
-  SearchIcon,
-} from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import ColumnSelector from "./ColumnSelector";
 import { Button } from "./ui/button";
 import AddNewButton from "./AddNewButton";
@@ -14,32 +9,82 @@ import AlertModal from "./modals/AlertModal";
 import { useState } from "react";
 import { toast } from "sonner";
 import { set } from "date-fns";
+import { api } from "@/api/backend";
+import { useAuth } from "@clerk/clerk-react";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 
 export default function TableHeaderAddon({
   handleSelectedChangeStatus,
   setSearchKeyword,
   selectedRows,
+  setSelectedRows,
   jobApplications,
 }: {
   handleSelectedChangeStatus: () => void;
   selectedRows: string[];
+  setSelectedRows: any;
   setSearchKeyword: any;
   jobApplications: JobApplication[];
 }) {
+  const { userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  function onCopy(id: string) {
-    navigator.clipboard.writeText(id);
-    toast.success("Id copied to clipboard");
-  }
+  const jobApplicationStore = useJobApplicationsStore();
 
   function onDelete() {
-    toast.success("Job Application Deleted");
-    setIsOpen(false);
+    setIsLoading(true);
+    api
+      .be_deleteJobApplication(selectedRows, userId!)
+      .then((res) => {
+        console.log("res", res.data);
+
+        const updatedJobApplications = jobApplications.filter(
+          (ja) => !selectedRows.includes(ja.id)
+        );
+
+        jobApplicationStore.setData(updatedJobApplications);
+        setSelectedRows([]);
+        toast.success("Job Application Deleted");
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   function handleArchiving() {
-    toast.success("Job Application Archived");
+    setIsLoading(true);
+    api
+      .be_archiveJobApplication(selectedRows, userId!, true)
+      .then((res) => {
+        console.log("res", res.data);
+
+        const updatedJobApplications = jobApplications.map((ja) => {
+          if (selectedRows.includes(ja.id)) {
+            return {
+              ...ja,
+              isArchived: true,
+              updatedAt: new Date(),
+            };
+          } else {
+            return ja;
+          }
+        });
+
+        jobApplicationStore.setData(updatedJobApplications);
+        setSelectedRows([]);
+        toast.success("Job Application Archived");
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
   const selectedCount = selectedRows.length;
   const ja = jobApplications.find((ja) => ja.id === selectedRows[0])!;
@@ -69,23 +114,33 @@ export default function TableHeaderAddon({
               isLoading={isLoading}
               onConfirm={onDelete}
               onClose={() => {
-                setIsOpen(false);
+                if (!isLoading) {
+                  setIsOpen(false);
+                }
               }}
             />
             {selectedCount === 1 && (
               <Button
+                disabled={isLoading}
                 variant={"default"}
                 onClick={handleSelectedChangeStatus}
               >
                 Status
               </Button>
             )}
-            {selectedCount === 1 && <EditButton ja={ja} />}
+            {selectedCount === 1 && (
+              <EditButton disabled={isLoading} ja={ja} />
+            )}
 
-            <Button variant={"outline"} onClick={handleArchiving}>
+            <Button
+              variant={"outline"}
+              disabled={isLoading}
+              onClick={handleArchiving}
+            >
               Archive
             </Button>
             <Button
+              disabled={isLoading}
               variant={"destructive"}
               onClick={() => {
                 setIsOpen(true);

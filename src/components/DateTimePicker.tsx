@@ -15,7 +15,7 @@ import { Calendar } from "./ui/calendar";
 import { format } from "date-fns";
 
 interface DateTimePickerProps {
-  date: Date | undefined;
+  date: Date | undefined | null;
   setDate: (date: Date | undefined) => void;
   enableClear?: boolean;
 }
@@ -26,8 +26,9 @@ export function DateTimePicker({
   enableClear,
 }: DateTimePickerProps) {
   console.log("Date", date);
+
   const [selectedDateTime, setSelectedDateTime] = useState<
-    Date | undefined
+    Date | undefined | null
   >(date);
 
   const handleSelect: SelectSingleEventHandler = (day, selected) => {
@@ -108,7 +109,8 @@ export function DateTimePicker({
         <PopoverContent className="w-auto p-0">
           <Calendar
             mode="single"
-            selected={selectedDateTime}
+            // cannot accept null must have undefined
+            selected={selectedDateTime || undefined}
             onSelect={handleSelect}
             initialFocus
           />

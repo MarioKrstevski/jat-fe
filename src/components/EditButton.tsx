@@ -11,10 +11,12 @@ export default function EditButton({
   icon,
   size = "default",
   variant = "default",
+  disabled,
 }: {
   ja: JobApplication;
   className?: string;
   icon?: boolean;
+  disabled?: boolean;
   size?: "icon" | "sm" | "default" | "lg" | null | undefined;
   variant?:
     | "default"
@@ -40,6 +42,7 @@ export default function EditButton({
       size={size}
       className={cn("", className)}
       onClick={handleEditJobApplication}
+      disabled={disabled}
     >
       Edit
       {icon && <EditIcon className="ml-1 h-3 w-3" />}

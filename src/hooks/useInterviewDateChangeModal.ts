@@ -2,7 +2,7 @@ import { JobApplication } from "@/types";
 import { create } from "zustand";
 export type InterviewDateChangeData = {
   ja: JobApplication;
-  date: Date | undefined;
+  nextInterviewDate: Date | undefined | null;
 };
 interface useInterviewDateChangeModalStore {
   data: InterviewDateChangeData;
@@ -17,7 +17,7 @@ export const useInterviewDateChangeModal =
     isOpen: false,
     data: {
       ja: {} as JobApplication,
-      date: undefined,
+      nextInterviewDate: undefined,
     },
     setData: (data: InterviewDateChangeData) => set({ data }),
     onOpen: () => set({ isOpen: true }),

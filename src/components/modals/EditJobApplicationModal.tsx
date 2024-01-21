@@ -44,9 +44,12 @@ import {
 } from "../ui/collapsible";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEditModal } from "@/hooks/useEditModal";
+import { api } from "@/api/backend";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 
 const formSchema = z.object({
-  userId: z.string(),
+  // userId: z.string(),
+  id: z.string(),
   companyName: z.string(),
   jobTitle: z.string(),
   status: z.string(),
@@ -79,6 +82,8 @@ const formSchema = z.object({
 export default function EditJobApplicationModal() {
   const { userId } = useAuth();
   const editModal = useEditModal();
+  const jobApplicationStore = useJobApplicationsStore();
+
   const jobApplicationEditted = editModal.data.ja;
   const jae = jobApplicationEditted;
 
@@ -88,7 +93,8 @@ export default function EditJobApplicationModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userId: userId!,
+      // userId: userId!,
+      id: jae?.id!,
       companyName: jae?.companyName,
       jobTitle: jae?.jobTitle,
       jobLocation: jae?.jobLocation,
@@ -132,7 +138,8 @@ export default function EditJobApplicationModal() {
   useEffect(() => {
     if (jae) {
       form.reset({
-        userId: userId!,
+        // userId: userId!,
+        id: jae.id!,
         companyName: jae.companyName,
         jobTitle: jae.jobTitle,
         jobLocation: jae.jobLocation,
@@ -170,9 +177,40 @@ export default function EditJobApplicationModal() {
     }
   }, [editModal.data.ja]);
 
+  function handleEditJobApplication(
+    jobApplication: any,
+    userId: string
+  ) {
+    setIsLoading(true);
+    api
+      .be_editJobApplication(jobApplication, userId, "allChange")
+      .then((res) => {
+        console.log("res.data", res.data);
+
+        const newJobApplicationsArray =
+          jobApplicationStore.jobApplications.map((ja) => {
+            if (ja.id === jobApplication.id) {
+              return res.data;
+            } else {
+              return ja;
+            }
+          });
+
+        jobApplicationStore.setData(newJobApplicationsArray);
+        form.reset();
+        toast.success("Job application updated");
+        editModal.onClose();
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("edit values", values);
-
+    handleEditJobApplication(values, userId!);
     // editModal.onClose();
   }
 
@@ -190,6 +228,9 @@ export default function EditJobApplicationModal() {
       onClose={editModal.onClose}
     >
       <div className="space-y-4 py-2 pb-4 ">
+        {/* {form.formState.errors && (
+          <div>{JSON.stringify(form.formState.errors)}</div>
+        )} */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             {/* Company Name */}

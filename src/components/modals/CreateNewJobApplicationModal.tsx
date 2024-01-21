@@ -45,9 +45,11 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { ChevronsUpDownIcon } from "lucide-react";
+import { api } from "@/api/backend";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 
 const formSchema = z.object({
-  userId: z.string(),
+  // userId: z.string().optional(),
   companyName: z.string(),
   jobTitle: z.string(),
   status: z.string(),
@@ -79,6 +81,7 @@ const formSchema = z.object({
 
 export default function CreateNewJobApplicationModal() {
   const createNewModal = useCreateNewModal();
+  const jobApplicationStore = useJobApplicationsStore();
   const { userId } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -86,7 +89,7 @@ export default function CreateNewJobApplicationModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userId: userId!,
+      // userId: userId!,
       companyName: "",
       jobTitle: "",
       jobLocation: "",
@@ -126,10 +129,42 @@ export default function CreateNewJobApplicationModal() {
   // });
   // }, [createNewModal.data]);
 
+  function handleCreateJobApplication(
+    jobApplication: any,
+    userId: string
+  ) {
+    setIsLoading(true);
+    api
+      .be_createJobApplication(jobApplication, userId)
+      .then((res) => {
+        console.log("res", res);
+        toast.success("Job application created successfully");
+
+        const newJobApplicationsArray = [
+          ...jobApplicationStore.jobApplications,
+          res.data,
+        ];
+        jobApplicationStore.setData(newJobApplicationsArray);
+
+        form.reset();
+        createNewModal.onClose();
+      })
+      .catch((err) => {
+        toast.error(
+          "Job application creation failed, check error in console"
+        );
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("add new", values);
 
-    // createNewModal.onClose();
+    const jobApplication = { ...values };
+    // @ts-ignore
+    handleCreateJobApplication(jobApplication, userId);
   }
 
   return (

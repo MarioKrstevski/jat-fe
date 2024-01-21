@@ -16,7 +16,7 @@ import { Toaster } from "./components/ui/sonner";
 import ModalProvider from "./providers/ModalProvider";
 import SingleJobPage from "./pages/SingleJobPage";
 import { api } from "./api/backend";
-import { useJobApplications } from "./hooks/useJobApplications";
+import { useJobApplicationsStore } from "./hooks/useJobApplicationsStore";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -49,7 +49,7 @@ function RootLayout() {
 function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  const jobApplicationStore = useJobApplications();
+  const jobApplicationStore = useJobApplicationsStore();
 
   //effect description
   useEffect(() => {
@@ -63,6 +63,8 @@ function DashboardLayout() {
     api
       .be_getJobApplications(userId)
       .then((res) => {
+        // addCustomKeyValue
+
         jobApplicationStore.setData(res.data);
       })
       .catch((err) => {

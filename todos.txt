@@ -10,6 +10,7 @@ Next Todos
 - add the column picker button?
  
 -X make add post work api
+- Add N/A to wheerever things are missing
 - make edit post work api
 - make posts to be added to list by default
 - make list sortable by time, last job is first

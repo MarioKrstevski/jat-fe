@@ -7,12 +7,12 @@ import { toast } from "sonner";
 import { api } from "@/api/backend";
 import { JobApplication } from "@/types";
 import JATable from "@/components/JATable";
-import { useJobApplications } from "@/hooks/useJobApplications";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 
 export default function () {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  const jobApplications = useJobApplications(
+  const jobApplications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
 
@@ -34,7 +34,7 @@ export default function () {
         Create a few fake entries
       </button>
       <div className="m-2">My ID: {userId}</div>
-      <JATable jobApplications={jobApplications} />
+      <JATable />
     </div>
   );
 }

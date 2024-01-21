@@ -24,25 +24,28 @@ import {
   Select,
 } from "@/components/ui/select";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "sonner";
-import StateSelector from "../StateSelector";
-import { JobApplication, JobApplicationStatus } from "@/types";
+import { JobApplicationStatus, TimelineEntry } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import { DateTimePicker } from "../DateTimePicker";
+import { api } from "@/api/backend";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { useAuth } from "@clerk/clerk-react";
 import { set } from "date-fns";
 
 const formSchema = z.object({
-  status: z.string().min(3),
+  id: z.string(),
+  status: z.string(),
   waitingFor: z.string().optional(),
   date: z.date().optional(),
 });
 
 export default function StatusChangeModal() {
   const statusChangeModal = useStatusChangeModal();
+  const { userId } = useAuth();
+  const jobApplicationStore = useJobApplicationsStore();
   const status = useStatusChangeModal((store) => store.data.status);
   const nextStep = useStatusChangeModal(
     (store) => store.data.nextStep
@@ -59,6 +62,7 @@ export default function StatusChangeModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      id: statusChangeModal.data.ja.id,
       status: status,
       waitingFor: nextStep,
       //  undefined because they need to select a date
@@ -67,22 +71,70 @@ export default function StatusChangeModal() {
   });
 
   useEffect(() => {
-    if (!statusChangeModal.data.status) {
-      return;
-    }
     form.reset({
+      id: statusChangeModal.data.ja.id,
       status: status,
       waitingFor: nextStep,
       date: new Date(),
     });
+    setAddToTimeline(false);
   }, [statusChangeModal.data]);
 
+  function handleEditJobApplication(
+    jobApplication: any,
+    userId: string
+  ) {
+    setIsLoading(true);
+    api
+      .be_editJobApplication(jobApplication, userId, "statusChange")
+      .then((res) => {
+        console.log("res.data", res.data);
+
+        const newJobApplicationsArray =
+          jobApplicationStore.jobApplications.map((ja) => {
+            if (ja.id === jobApplication.id) {
+              return res.data;
+            } else {
+              return ja;
+            }
+          });
+
+        jobApplicationStore.setData(newJobApplicationsArray);
+        form.reset();
+        toast.success("Job application updated");
+        statusChangeModal.onClose();
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // TODO: create store
     console.log("values", values);
     // also use addToTimeline to request to include or omit date
-
-    statusChangeModal.onClose();
+    const valueToSend = { ...values } as any;
+    if (!addToTimeline) {
+      delete valueToSend.date;
+    } else {
+      let existingTimeline: TimelineEntry[];
+      if (!statusChangeModal.data.ja.timeline) {
+        existingTimeline = [];
+      } else {
+        existingTimeline = JSON.parse(
+          statusChangeModal.data.ja.timeline
+        );
+      }
+      existingTimeline.push({
+        date: valueToSend.date.getTime().toString(),
+        status: valueToSend.status,
+      });
+      valueToSend.timeline = JSON.stringify(existingTimeline);
+      delete valueToSend.date;
+    }
+    handleEditJobApplication(valueToSend, userId!);
   }
   if (!statusChangeModal.data.ja) {
     return null;
@@ -98,6 +150,9 @@ export default function StatusChangeModal() {
       onClose={statusChangeModal.onClose}
     >
       <div className="space-y-4 py-2 pb-4">
+        {form.formState.errors && (
+          <div>{JSON.stringify(form.formState.errors)}</div>
+        )}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="flex gap-4 mb-3">
@@ -208,10 +263,9 @@ export default function StatusChangeModal() {
                   control={form.control}
                   name="date"
                   render={({ field }) => {
-                    console.log("field date", field);
                     return (
                       <FormItem>
-                        <FormLabel>Next Step</FormLabel>
+                        <FormLabel>Date for timeline</FormLabel>
                         <br />
                         <FormControl>
                           <DateTimePicker
