@@ -38,6 +38,7 @@ import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import AddNewButton from "./AddNewButton";
 
 export default function JATable() {
   const jobApplications = useJobApplicationsStore(
@@ -245,7 +246,7 @@ export default function JATable() {
         {jobApplicationsToShow.length === 0 && (
           <div className="flex flex-col items-center justify-center w-full mt-5 py-2">
             You have no job applications created
-            <Button className="w-max my-2">Add new</Button>
+            <AddNewButton />
           </div>
         )}
       </div>

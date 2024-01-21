@@ -153,7 +153,10 @@ export default function CreateNewJobApplicationModal() {
         toast.error(
           "Job application creation failed, check error in console"
         );
-        console.log("err", err);
+
+        toast.error(JSON.stringify(err));
+        console.log("err", JSON.stringify(err.response.data));
+        console.log("err", JSON.stringify(err));
       })
       .finally(() => {
         setIsLoading(false);
