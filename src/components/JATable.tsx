@@ -184,8 +184,8 @@ export default function JATable() {
                       key={key}
                       data-state={isRowSelected ? "selected" : ""}
                     >
-                      <TableCell className="font-bold pl-1 ">
-                        <div className="flex flex-col gap-0.5 text-center">
+                      <TableCell className="font-bold  sticky left-[-2px] pl-0 z-10 bg-white border-r ">
+                        <div className="flex flex-col gap-0.5 text-center px-1 border-r h-full justify-stretch">
                           {idx + 1}
                           <Checkbox
                             className="mx-auto h-5 w-5"

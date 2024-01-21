@@ -135,9 +135,9 @@ export default function TableHeaderAddon({
           Job Applications
           <AddNewButton />
         </h1>
-        <div className="flex items-start mt-4 gap-4">
-          <div className="min-w-[300px]">
-            <form>
+        <div className="flex flex-col items-center  sm:items-start mt-4 gap-4 sm:flex-row">
+          <div className="min-w-[300px]  ">
+            <form className="">
               <div className="relative w-full">
                 <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
                 <Input

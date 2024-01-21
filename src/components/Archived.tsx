@@ -104,7 +104,8 @@ export default function Archived({
   return (
     <div className="w-full p-2  overflow-x-auto">
       <h1 className="text-2xl font-bold">
-        Archived Applications <AddNewButton />{" "}
+        Archived Applications
+        {/* <AddNewButton />{" "} */}
       </h1>
 
       <div className="mt-4 w-full ">
@@ -143,10 +144,11 @@ export default function Archived({
                   const key = ja.id + ja.updatedAt.toString();
                   return (
                     <TableRow
+                      className=""
                       key={key}
                       data-state={isRowSelected ? "selected" : ""}
                     >
-                      <TableCell className="font-bold pl-1 ">
+                      <TableCell className="font-bold pl-1">
                         <div className="flex flex-col gap-0.5 text-center">
                           {idx + 1}
                           <Checkbox

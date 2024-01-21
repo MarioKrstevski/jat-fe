@@ -27,13 +27,13 @@ export default function () {
 
   return (
     <div>
-      <button
+      {/* <button
         className="border py-1 px-2 m-2 bg-black text-white rounded"
         onClick={handleCreateDbRecords}
       >
         Create a few fake entries
       </button>
-      <div className="m-2">My ID: {userId}</div>
+      <div className="m-2">My ID: {userId}</div> */}
       <JATable />
     </div>
   );
