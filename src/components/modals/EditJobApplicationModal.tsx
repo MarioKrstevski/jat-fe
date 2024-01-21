@@ -451,7 +451,7 @@ export default function EditJobApplicationModal() {
                 <div>
                   <FormField
                     control={form.control}
-                    name="link"
+                    name="jobDescription"
                     render={({ field }) => {
                       return (
                         <FormItem className="pb-2">
@@ -462,7 +462,10 @@ export default function EditJobApplicationModal() {
                             </span>
                           </FormLabel>
                           <FormControl>
-                            <Textarea {...field} />
+                            <Textarea
+                              {...field}
+                              value={field.value}
+                            />
                           </FormControl>
                         </FormItem>
                       );

@@ -395,7 +395,7 @@ export default function CreateNewJobApplicationModal() {
                 <div>
                   <FormField
                     control={form.control}
-                    name="link"
+                    name="jobDescription"
                     render={({ field }) => {
                       return (
                         <FormItem className="pb-2">
