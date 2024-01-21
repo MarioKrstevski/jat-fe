@@ -5,10 +5,14 @@ Next Todos
 -X archived jobs should be easily seen just is archived (remove archived from status)
 -X add a ui for no jobs found
 -X design the single page view just add data to screen
-- create a page for adding new item similar looking to single page item preview
-- create a page for edit item similar looking to single page item preview
+-X create a page for adding new item similar looking to single page item preview
+-X create a page for edit item similar looking to single page item preview
 - add the column picker button?
  
+-X make add post work api
+- make edit post work api
+- make posts to be added to list by default
+- make list sortable by time, last job is first
 
 
    --   id: faker.string.uuid(),
