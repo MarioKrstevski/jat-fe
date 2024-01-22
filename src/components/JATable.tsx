@@ -45,6 +45,7 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import AddNewButton from "./AddNewButton";
 import { columns } from "@/global/values";
 import ColumnSelector from "./ColumnSelector";
+const selectableColumnsKeys = columns.map((column) => column.key);
 
 export default function JATable() {
   const jobApplications = useJobApplicationsStore(
@@ -53,7 +54,9 @@ export default function JATable() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const statusChangeModal = useStatusChangeModal();
-  const [selectedColumns, setSelectedColumns] = useState(columns);
+  const [selectedColumns, setSelectedColumns] = useState(
+    selectableColumnsKeys
+  );
 
   const interviewDateChangeModal = useInterviewDateChangeModal();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -317,7 +320,6 @@ export default function JATable() {
                 <TableRow className="text-sm">
                   <TableHead className="min-w-[30px]">#</TableHead>
                   {headers}
-                  {/* <TableHead>User ID</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -1,6 +1,4 @@
 import { columns } from "@/global/values";
-import { JobApplication } from "@/types";
-import { useState } from "react";
 
 export default function ColumnSelector({
   selectedColumns,
@@ -9,8 +7,6 @@ export default function ColumnSelector({
   selectedColumns: string[];
   setSelectedColumns: any;
 }) {
-  // const [selectedColumns, setSelectedColumns] = useState(columns);
-
   const handleColumnToggle = (column: string) => {
     if (selectedColumns.includes(column)) {
       setSelectedColumns(
@@ -24,13 +20,13 @@ export default function ColumnSelector({
   return (
     <div>
       {columns.map((column) => (
-        <div key={column} className="inline m-1">
+        <div key={column.key} className="inline m-1">
           <input
             type="checkbox"
-            checked={selectedColumns.includes(column)}
-            onChange={() => handleColumnToggle(column)}
+            checked={selectedColumns.includes(column.key)}
+            onChange={() => handleColumnToggle(column.key)}
           />
-          {column}
+          {column.label}
         </div>
       ))}
     </div>
