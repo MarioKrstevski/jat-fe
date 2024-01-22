@@ -7,35 +7,11 @@ import {
   Table,
 } from "@/components/ui/table";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import {
-  Column,
-  JobApplication,
-  JobApplicationStatus,
-} from "@/types";
-import { format, parseISO } from "date-fns";
+import { Column, JobApplication } from "@/types";
 import { useEffect, useMemo, useState } from "react";
 import TableHeaderAddon from "./TableHeaderAddon";
-import ActionList from "./ActionList";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./ui/popover";
-import StateSelector from "./StateSelector";
-import { Button } from "./ui/button";
+
 import { DateTime } from "luxon";
-import { DateTimePicker } from "./DateTimePicker";
 import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
 import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -43,10 +19,14 @@ import { Checkbox } from "./ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import AddNewButton from "./AddNewButton";
-import { columns } from "@/global/values";
-import ColumnSelector from "./ColumnSelector";
-const selectableColumnsKeys = columns.map((column) => column.key);
 
+const mustShowColumns = ["jobTitle", "companyName"];
+const startingSelectedKeys = [
+  "status",
+  "waitingFor",
+  "nextInterviewDate",
+  "createdAt",
+];
 export default function JATable() {
   const jobApplications = useJobApplicationsStore(
     (state) => state.jobApplications
@@ -54,13 +34,15 @@ export default function JATable() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const statusChangeModal = useStatusChangeModal();
+
   const [selectedColumns, setSelectedColumns] = useState(
-    selectableColumnsKeys
+    startingSelectedKeys
   );
+
+  const usedColumns = [...mustShowColumns, ...selectedColumns];
 
   const interviewDateChangeModal = useInterviewDateChangeModal();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setSelectedRows([]);
@@ -252,8 +234,8 @@ export default function JATable() {
     ];
   }
   const columnData = useMemo(() => {
-    return determineHeaders(selectedColumns);
-  }, [selectedColumns]);
+    return determineHeaders(usedColumns);
+  }, [usedColumns]);
 
   const visibleColumns: Column[] = columnData.filter(
     (column) => column.isVisible
@@ -300,17 +282,17 @@ export default function JATable() {
   }
   return (
     <div className="w-full p-2 relative">
-      <TableHeaderAddon
-        handleSelectedChangeStatus={handleSelectedChangeStatus}
-        selectedRows={selectedRows}
-        setSelectedRows={setSelectedRows}
-        setSearchKeyword={setSearchKeyword}
-        jobApplications={jobApplications}
-      />
-      <ColumnSelector
-        selectedColumns={selectedColumns}
-        setSelectedColumns={setSelectedColumns}
-      />
+      <div className="flex flex-row flex-wrap items-center">
+        <TableHeaderAddon
+          handleSelectedChangeStatus={handleSelectedChangeStatus}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          selectedColumns={selectedColumns}
+          setSelectedColumns={setSelectedColumns}
+          setSearchKeyword={setSearchKeyword}
+          jobApplications={jobApplications}
+        />
+      </div>
 
       <div className="mt-4 w-full h-[60vh] overflow-y-auto">
         <div className="border rounded-lg w-full">

@@ -14,7 +14,7 @@ Next Todos
 - make edit post work api
 - make posts to be added to list by default
 - make list sortable by time, last job is first
-
+- save selected keys to some store or localstorage
 
    --   id: faker.string.uuid(),
    --   isArchived: false,

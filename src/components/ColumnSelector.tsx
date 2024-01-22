@@ -1,4 +1,13 @@
-import { columns } from "@/global/values";
+import {
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectGroup,
+  SelectContent,
+  Select,
+} from "@/components/ui/select";
+import { selectableColumns } from "@/global/values";
+import CustomMultipleSelect from "./ui/CustomMultipleSelect";
 
 export default function ColumnSelector({
   selectedColumns,
@@ -18,17 +27,13 @@ export default function ColumnSelector({
   };
 
   return (
-    <div>
-      {columns.map((column) => (
-        <div key={column.key} className="inline m-1">
-          <input
-            type="checkbox"
-            checked={selectedColumns.includes(column.key)}
-            onChange={() => handleColumnToggle(column.key)}
-          />
-          {column.label}
-        </div>
-      ))}
+    <div className="relative top-[-3px]">
+      <CustomMultipleSelect
+        options={selectableColumns}
+        selected={selectedColumns}
+        onSelected={setSelectedColumns}
+        nothingSelectedText="Select additional columns"
+      />
     </div>
   );
 }

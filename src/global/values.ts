@@ -20,36 +20,50 @@ export const defaultStatusOptions = [
 ];
 
 //{ key: which of these should they able to select
-export const columns = [
+export const selectableColumns = [
+  // never selectable
   // { key: "userId", label: "" },
   // { key: "id", label: "" },
-  { key: "isArchived", label: "Archived" },
-  { key: "isRemote", label: "Remote" },
-  { key: "mapLocation", label: "Map Coords" },
-  { key: "wasReferred", label: "Referred" },
-  { key: "referredBy", label: "Referred By" },
   // { key: "companyId", label: "" },
-  { key: "companyName", label: "Company" },
   // { key: "companyInfo", label: "" },
-  { key: "jobTitle", label: "Position" },
-  { key: "jobLocation", label: "Location" },
-  // { key: "link", label: "Job Link" },
-  // { key: "applylink", label: "Apply Link" },
-  // { key: "jobDescription", label: "Description" },
+
+  // must visible
+  // { key: "companyName", label: "Company" },
+  // { key: "jobTitle", label: "Position" },
   { key: "status", label: "Status" },
   { key: "waitingFor", label: "Next Step" },
+  { key: "nextInterviewDate", label: "Next Interview" },
+
+  // selectable in this order shown
+  // { key: "statusOptions", label: "Statuses" },
+
+  { key: "createdAt", label: "Created" },
+  { key: "updatedAt", label: "Last Updated" },
+
+  { key: "applicationDeadline", label: "Application Deadline" },
+  { key: "postedDate", label: "Job Posted At" },
+
+  { key: "interestLevel", label: "Interest Level" },
+  { key: "salaryDetails", label: "Salary" },
+  { key: "isRemote", label: "Remote" },
+  { key: "jobDescription", label: "Description" },
+
+  { key: "wasReferred", label: "Referred" },
+  { key: "referredBy", label: "Referred By" },
+
+  { key: "link", label: "Job Link" },
+  { key: "applylink", label: "Apply Link" },
+
+  { key: "jobLocation", label: "Location" },
+  { key: "mapLocation", label: "Map Coords" },
+
   { key: "timeline", label: "Timeline" },
-  { key: "statusOptions", label: "Statuses" },
+
+  // { key: "isArchived", label: "Archived" },
   { key: "resumeUsed", label: "Resume" },
   { key: "motivationalLetter", label: "Motivational Letter" },
   { key: "notes", label: "Notes" },
-  { key: "createdAt", label: "Created" },
-  { key: "updatedAt", label: "Last Updated" },
-  { key: "interestLevel", label: "Interest Level" },
-  { key: "nextInterviewDate", label: "Next Interview" },
-  { key: "postedDate", label: "Job Posted At" },
-  { key: "applicationDeadline", label: "Application Deadline" },
-  { key: "salaryDetails", label: "Salary" },
+
   { key: "appliedFrom", label: "Applied From" },
   { key: "heardAboutFrom", label: "Heard From" },
   { key: "todos", label: "Todos" },

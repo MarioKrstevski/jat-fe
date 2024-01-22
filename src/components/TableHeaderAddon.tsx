@@ -22,12 +22,16 @@ export default function TableHeaderAddon({
   selectedRows,
   setSelectedRows,
   jobApplications,
+  selectedColumns,
+  setSelectedColumns,
 }: {
   handleSelectedChangeStatus: () => void;
   selectedRows: string[];
   setSelectedRows: any;
   setSearchKeyword: any;
   jobApplications: JobApplication[];
+  selectedColumns: string[];
+  setSelectedColumns: (newValue: string[]) => void;
 }) {
   const { userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
@@ -136,7 +140,7 @@ export default function TableHeaderAddon({
           Job Applications
           <AddNewButton />
         </h1>
-        <div className="flex flex-col items-center  sm:items-start mt-4 gap-4 sm:flex-row">
+        <div className="flex flex-col items-start mt-4 gap-4 sm:flex-row flex-wrap">
           <div className="min-w-[300px]  ">
             <form className="">
               <div className="relative w-full">
@@ -150,6 +154,11 @@ export default function TableHeaderAddon({
               </div>
             </form>
           </div>
+
+          <ColumnSelector
+            selectedColumns={selectedColumns}
+            setSelectedColumns={setSelectedColumns}
+          />
           {selectedCount > 0 && (
             <div className="flex gap-1">
               <AlertModal
@@ -193,7 +202,6 @@ export default function TableHeaderAddon({
               </Button>
             </div>
           )}
-          {/* <ColumnSelector2 jobApplications={jobApplications} /> */}
         </div>
       </div>
     </>
