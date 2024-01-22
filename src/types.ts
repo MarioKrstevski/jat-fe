@@ -68,7 +68,6 @@ export interface JobApplication {
   jobTitle: string;
   jobDescription: string;
   jobLocation: string;
-
   link: string;
   applylink: string;
   status: string;
@@ -98,3 +97,17 @@ export type EditTypes =
   | "statusChange"
   | "nextInterviewDateChange"
   | "allChange";
+
+export interface Column {
+  isVisible: boolean;
+  label: string;
+  key: keyof JobApplication;
+  headerCustomCss: string;
+  cell: {
+    customCss: string;
+    events: {
+      onClick?: (ja: JobApplication) => void;
+    };
+    row?: (ja: JobApplication) => JSX.Element;
+  };
+}

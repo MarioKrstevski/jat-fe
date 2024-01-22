@@ -18,9 +18,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { JobApplication, JobApplicationStatus } from "@/types";
+import {
+  Column,
+  JobApplication,
+  JobApplicationStatus,
+} from "@/types";
 import { format, parseISO } from "date-fns";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TableHeaderAddon from "./TableHeaderAddon";
 import ActionList from "./ActionList";
 import {
@@ -39,6 +43,8 @@ import { Checkbox } from "./ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import AddNewButton from "./AddNewButton";
+import { columns } from "@/global/values";
+import ColumnSelector from "./ColumnSelector";
 
 export default function JATable() {
   const jobApplications = useJobApplicationsStore(
@@ -47,6 +53,7 @@ export default function JATable() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
   const statusChangeModal = useStatusChangeModal();
+  const [selectedColumns, setSelectedColumns] = useState(columns);
 
   const interviewDateChangeModal = useInterviewDateChangeModal();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -136,6 +143,158 @@ export default function JATable() {
     }, 100);
   }
 
+  function determineHeaders(selectedColumns: string[]): Column[] {
+    return [
+      {
+        isVisible: selectedColumns.includes("jobTitle"),
+        label: "Position",
+        key: "jobTitle",
+        headerCustomCss: "w-[260px]",
+        cell: {
+          customCss: "font-medium job-title cursor-pointer",
+          events: {
+            onClick(ja) {
+              navgiateToJob(ja.id);
+            },
+          },
+        },
+      },
+      {
+        isVisible: selectedColumns.includes("companyName"),
+        label: "Company",
+        key: "companyName",
+        headerCustomCss: "",
+        cell: {
+          customCss: "company-name cursor-pointer",
+          events: {
+            onClick(ja) {
+              navgiateToJob(ja.id);
+            },
+          },
+        },
+      },
+      {
+        isVisible: selectedColumns.includes("status"),
+        label: "Status",
+        key: "status",
+        headerCustomCss: "",
+        cell: {
+          customCss: "text-left cursor-pointer",
+          events: {
+            onClick(ja) {
+              handleChangeStatus(ja);
+            },
+          },
+        },
+      },
+      {
+        isVisible: selectedColumns.includes("waitingFor"),
+        label: "Next Step",
+        key: "waitingFor",
+        headerCustomCss: "",
+        cell: {
+          customCss: "text-left cursor-pointer",
+          events: {
+            onClick(ja) {
+              handleChangeStatus(ja);
+            },
+          },
+        },
+      },
+      {
+        isVisible: selectedColumns.includes("nextInterviewDate"),
+        label: "Interview Date",
+        key: "nextInterviewDate",
+        headerCustomCss: "",
+        cell: {
+          customCss: "text-center ",
+          events: {
+            onClick(ja) {
+              handleInterviewDate(ja);
+            },
+          },
+          row(ja) {
+            const nextInterviewDateFormatted = ja.nextInterviewDate
+              ? formatDate(
+                  ja.nextInterviewDate,
+                  "MMMM dd, yyyy HH:mm"
+                )
+              : "N/A";
+            return (
+              <span className="cursor-pointer">
+                {nextInterviewDateFormatted}
+              </span>
+            );
+          },
+        },
+      },
+      {
+        isVisible: selectedColumns.includes("createdAt"),
+        label: "Created At",
+        key: "createdAt",
+        headerCustomCss: "",
+        cell: {
+          customCss: "",
+          events: {},
+          row(ja) {
+            const createdAtFormatted = formatDate(
+              ja.createdAt,
+              "MMMM dd, yyyy HH:mm:ss"
+            );
+
+            return <>{createdAtFormatted}</>;
+          },
+        },
+      },
+    ];
+  }
+  const columnData = useMemo(() => {
+    return determineHeaders(selectedColumns);
+  }, [selectedColumns]);
+
+  const visibleColumns: Column[] = columnData.filter(
+    (column) => column.isVisible
+  );
+
+  const headers = visibleColumns.map((column) => {
+    return (
+      <TableHead
+        key={column.key}
+        className={cn("", column.headerCustomCss)}
+      >
+        {column.label}
+      </TableHead>
+    );
+  });
+
+  function generateCells(
+    ja: JobApplication,
+    visibleFields: Column[]
+  ) {
+    return (
+      <>
+        {visibleFields.map((header: Column) => {
+          return (
+            <TableCell
+              key={header.key}
+              className={cn("", header.cell.customCss)}
+              onClick={() => {
+                if (header.cell.events.onClick) {
+                  header.cell.events.onClick(ja);
+                }
+              }}
+            >
+              {header.cell.row ? (
+                header.cell.row(ja)
+              ) : (
+                <>{ja[header.key]}</>
+              )}
+            </TableCell>
+          );
+        })}
+      </>
+    );
+  }
   return (
     <div className="w-full p-2 relative">
       <TableHeaderAddon
@@ -145,6 +304,11 @@ export default function JATable() {
         setSearchKeyword={setSearchKeyword}
         jobApplications={jobApplications}
       />
+      <ColumnSelector
+        selectedColumns={selectedColumns}
+        setSelectedColumns={setSelectedColumns}
+      />
+
       <div className="mt-4 w-full h-[60vh] overflow-y-auto">
         <div className="border rounded-lg w-full">
           <div className="relative w-full overflow-auto">
@@ -152,31 +316,12 @@ export default function JATable() {
               <TableHeader>
                 <TableRow className="text-sm">
                   <TableHead className="min-w-[30px]">#</TableHead>
-                  <TableHead className="w-[260px]">
-                    Position
-                  </TableHead>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Next Step</TableHead>
-                  <TableHead>Interview Date</TableHead>
-                  <TableHead>Created At</TableHead>
+                  {headers}
                   {/* <TableHead>User ID</TableHead> */}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {jobApplicationsToShow.map((ja, idx) => {
-                  const nextInterviewDateFormatted =
-                    ja.nextInterviewDate
-                      ? formatDate(
-                          ja.nextInterviewDate,
-                          "MMMM dd, yyyy HH:mm"
-                        )
-                      : "N/A";
-
-                  const createdAtFormatted = formatDate(
-                    ja.createdAt,
-                    "MMMM dd, yyyy HH:mm:ss"
-                  );
                   const isRowSelected = selectedRows.includes(ja.id);
                   const key = ja.id + ja.updatedAt.toString();
                   return (
@@ -197,44 +342,7 @@ export default function JATable() {
                           />
                         </div>
                       </TableCell>
-                      <TableCell
-                        className="font-medium job-title cursor-pointer"
-                        onClick={() => navgiateToJob(ja.id)}
-                      >
-                        {ja.jobTitle}
-                      </TableCell>
-                      <TableCell
-                        className="company-name cursor-pointer"
-                        onClick={() => navgiateToJob(ja.id)}
-                      >
-                        {ja.companyName}
-                      </TableCell>
-                      <TableCell>
-                        <button
-                          className="text-left"
-                          onClick={() => handleChangeStatus(ja)}
-                        >
-                          {ja.status}
-                        </button>
-                      </TableCell>
-                      <TableCell>
-                        <button
-                          className="text-left"
-                          onClick={() => handleChangeStatus(ja)}
-                        >
-                          {ja.waitingFor}
-                        </button>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <button
-                          onClick={() => handleInterviewDate(ja)}
-                        >
-                          {nextInterviewDateFormatted}
-                        </button>
-                      </TableCell>
-                      <TableCell>{createdAtFormatted}</TableCell>
-
-                      {/* <TableCell>{ja.userId}</TableCell> */}
+                      {generateCells(ja, visibleColumns)}
                     </TableRow>
                   );
                 })}

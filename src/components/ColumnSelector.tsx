@@ -1,37 +1,38 @@
+import { columns } from "@/global/values";
 import { JobApplication } from "@/types";
-import {
-  SelectValue,
-  SelectTrigger,
-  SelectLabel,
-  SelectItem,
-  SelectGroup,
-  SelectContent,
-  Select,
-} from "@/components/ui/select";
+import { useState } from "react";
+
 export default function ColumnSelector({
-  jobApplications,
+  selectedColumns,
+  setSelectedColumns,
 }: {
-  jobApplications: JobApplication[];
+  selectedColumns: string[];
+  setSelectedColumns: any;
 }) {
+  // const [selectedColumns, setSelectedColumns] = useState(columns);
+
+  const handleColumnToggle = (column: string) => {
+    if (selectedColumns.includes(column)) {
+      setSelectedColumns(
+        selectedColumns.filter((col) => col !== column)
+      );
+    } else {
+      setSelectedColumns([...selectedColumns, column]);
+    }
+  };
+
   return (
-    <div className="flex-1">
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select columns" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            {/* <SelectLabel>Columns</SelectLabel> */}
-            {Object.keys(jobApplications[0]).map((option) => {
-              return (
-                <SelectItem value={option} key={option}>
-                  {option}
-                </SelectItem>
-              );
-            })}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+    <div>
+      {columns.map((column) => (
+        <div key={column} className="inline m-1">
+          <input
+            type="checkbox"
+            checked={selectedColumns.includes(column)}
+            onChange={() => handleColumnToggle(column)}
+          />
+          {column}
+        </div>
+      ))}
     </div>
   );
 }

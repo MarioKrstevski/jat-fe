@@ -1,6 +1,7 @@
 import { JobApplication } from "@/types";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
+import ColumnSelector2 from "./ColumnSelector2";
 import ColumnSelector from "./ColumnSelector";
 import { Button } from "./ui/button";
 import AddNewButton from "./AddNewButton";
@@ -192,7 +193,7 @@ export default function TableHeaderAddon({
               </Button>
             </div>
           )}
-          {/* <ColumnSelector jobApplications={jobApplications} /> */}
+          {/* <ColumnSelector2 jobApplications={jobApplications} /> */}
         </div>
       </div>
     </>

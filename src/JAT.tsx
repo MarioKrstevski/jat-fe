@@ -61,6 +61,7 @@ function DashboardLayout() {
     }
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
+    // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
     api
       .be_getJobApplications(userId)
       .then((res) => {
