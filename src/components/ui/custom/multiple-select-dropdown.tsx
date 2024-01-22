@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
 
-export default function CustomMultipleSelect({
+export default function MultipleSelectDropdown({
   options,
   selected,
   nothingSelectedText = "Start selecting",
@@ -24,14 +24,14 @@ export default function CustomMultipleSelect({
   }, [internallySelected]);
 
   return (
-    <div className="w-32">
+    <div className="w-32 ">
       <Listbox
         value={internallySelected}
         onChange={setInternallySelected}
         multiple
       >
-        <div className="relative mt-1 border rounded-md">
-          <Listbox.Button className="min-h-9 relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+        <div className="relative mt-1 border rounded-md ">
+          <Listbox.Button className=" cursor-pointer min-h-9 relative w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <span className="block truncate">
               {/* {internallySelected.length
                 ? internallySelected
@@ -61,7 +61,7 @@ export default function CustomMultipleSelect({
                 <Listbox.Option
                   key={idx}
                   className={({ active }) =>
-                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                    `relative cursor-pointer  select-none py-2 pl-10 pr-4 ${
                       active
                         ? "bg-amber-100 text-amber-900"
                         : "text-gray-900"

@@ -43,7 +43,7 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { ChevronsUpDownIcon } from "lucide-react";
-import { useEditModal } from "@/hooks/useEditModal";
+import { useEditModal } from "@/hooks/modals/useEditModal";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 

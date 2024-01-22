@@ -1,7 +1,7 @@
 "use client";
 
 import { Modal } from "../ui/custom/modal";
-import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
+import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,7 +34,7 @@ import { JobApplication, JobApplicationStatus } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import { DateTimePicker } from "../DateTimePicker";
 import { set } from "date-fns";
-import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
+import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
 import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
@@ -129,10 +129,8 @@ export default function InterviewDateChangeModal() {
 
   return (
     <Modal
-      title="Status update"
-      description={`Update the status of your job application, you can also change the next step and add a date for this event in your timeline. So that later on you can have a
-      an overview of the time it took you to get a job. You can add custom status if you want to.
-      `}
+      title="Interview Date Update"
+      description={`Set the next interview date to be reminded about it`}
       isOpen={interviewDateChangeModal.isOpen}
       onClose={interviewDateChangeModal.onClose}
     >

@@ -7,7 +7,7 @@ import {
   Select,
 } from "@/components/ui/select";
 import { selectableColumns } from "@/global/values";
-import CustomMultipleSelect from "./ui/CustomMultipleSelect";
+import MultipleSelectDropdown from "./ui/custom/multiple-select-dropdown";
 
 export default function ColumnSelector({
   selectedColumns,
@@ -28,7 +28,7 @@ export default function ColumnSelector({
 
   return (
     <div className="relative top-[-3px]">
-      <CustomMultipleSelect
+      <MultipleSelectDropdown
         options={selectableColumns}
         selected={selectedColumns}
         onSelected={setSelectedColumns}

@@ -18,6 +18,7 @@ import SingleJobPage from "./pages/SingleJobPage";
 import { api } from "./api/backend";
 import { useJobApplicationsStore } from "./hooks/useJobApplicationsStore";
 import Footer from "./components/Footer";
+import DrawerProvider from "./providers/DrawerProvider";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -80,6 +81,7 @@ function DashboardLayout() {
     <div>
       <Toaster richColors closeButton position="top-center" />
       <ModalProvider />
+      <DrawerProvider />
       <Header />
       <Outlet />
       <Footer />

@@ -1,7 +1,7 @@
 "use client";
 
 import { Modal } from "../ui/custom/modal";
-import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
+import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -32,11 +32,11 @@ import StateSelector from "./StateSelector";
 import { Button } from "./ui/button";
 import { DateTime } from "luxon";
 import { DateTimePicker } from "./DateTimePicker";
-import { useStatusChangeModal } from "@/hooks/useStatusChangeModal";
+import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
 import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
-import { useInterviewDateChangeModal } from "@/hooks/useInterviewDateChangeModal";
+import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
 import AddNewButton from "./AddNewButton";
 
 export default function Archived({

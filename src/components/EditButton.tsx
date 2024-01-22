@@ -1,7 +1,7 @@
 import { EditIcon, PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useCreateNewModal } from "@/hooks/useCreateNewModal";
-import { useEditModal } from "@/hooks/useEditModal";
+import { useCreateNewModal } from "@/hooks/modals/useCreateNewModal";
+import { useEditModal } from "@/hooks/modals/useEditModal";
 import { JobApplication } from "@/types";
 import { cn } from "@/lib/utils";
 

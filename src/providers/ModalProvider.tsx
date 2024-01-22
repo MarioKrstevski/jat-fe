@@ -1,5 +1,3 @@
-"use client";
-
 import CreateNewJobApplicationModal from "@/components/modals/CreateNewJobApplicationModal";
 import EditJobApplicationModal from "@/components/modals/EditJobApplicationModal";
 import InterviewDateChangeModal from "@/components/modals/InterviewDateChangeModal";

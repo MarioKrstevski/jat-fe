@@ -33,7 +33,7 @@ import { JobApplication, JobApplicationStatus } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import { DateTimePicker } from "../DateTimePicker";
 import { set } from "date-fns";
-import { useCreateNewModal } from "@/hooks/useCreateNewModal";
+import { useCreateNewModal } from "@/hooks/modals/useCreateNewModal";
 import { useAuth } from "@clerk/clerk-react";
 import { defaultStatusOptions } from "@/global/values";
 import { Textarea } from "../ui/textarea";
@@ -129,6 +129,48 @@ export default function CreateNewJobApplicationModal() {
   // });
   // }, [createNewModal.data]);
 
+  const parseCopiedJobDetails = () => {
+    // Get the copied string from the clipboard
+    const copiedString = navigator.clipboard.readText();
+
+    copiedString.then((text) => {
+      try {
+        // Parse the string into an object
+        const parsedJobDetails = JSON.parse(text);
+
+        // console.log("Parsed job details:", parsedJobDetails);
+
+        const {
+          company: companyName,
+          jobDescription,
+          jobTitle,
+          location,
+        } = parsedJobDetails;
+
+        console.log("jobdesc", jobDescription);
+
+        form.setValue("companyName", companyName);
+        form.setValue("jobDescription", jobDescription);
+        form.setValue("jobTitle", jobTitle);
+        form.setValue("jobLocation", location);
+
+        toast.success("Fields filled successfully");
+        // Update state with the parsed object
+
+        // You can now use the parsedJobDetails object in your app
+        // For example, display the information in a component
+      } catch (error) {
+        console.error("Error parsing job details:", error);
+      }
+    });
+  };
+
+  function handleJatPaste() {
+    parseCopiedJobDetails();
+  }
+  function handleFormReset() {
+    form.reset();
+  }
   function handleCreateJobApplication(
     jobApplication: any,
     userId: string
@@ -753,6 +795,24 @@ export default function CreateNewJobApplicationModal() {
             </Collapsible>
 
             <div className="pt-6 space-x-2 flex items-center justify-end">
+              <Button
+                disabled={isLoading}
+                variant={"outline"}
+                className="mr-auto"
+                type="button"
+                onClick={handleJatPaste}
+              >
+                JAT Paste
+              </Button>
+              <Button
+                disabled={isLoading}
+                variant={"ghost"}
+                className="mr-auto"
+                type="reset"
+                onClick={handleFormReset}
+              >
+                Reset
+              </Button>
               <Button
                 disabled={isLoading}
                 variant={"outline"}
