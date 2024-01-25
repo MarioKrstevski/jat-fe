@@ -2,9 +2,9 @@ import React from "react";
 
 import { Modal } from "@/components/ui/custom/modal";
 import ControllableDrawer from "@/components/ui/custom/controllable-drawer";
-import { useIsClient, useWindowSize } from "usehooks-ts";
+import { useWindowSize } from "usehooks-ts";
 
-interface OverlayProps {
+interface SmartOverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
@@ -12,13 +12,13 @@ interface OverlayProps {
   description: string;
 }
 
-const Overlay = ({
-  children,
+export default function SmartOverlay({
   isOpen,
+  children,
   onClose,
   title,
   description,
-}: OverlayProps) => {
+}: SmartOverlayProps) {
   const { width } = useWindowSize();
   const isMobile = width < 768;
 
@@ -45,6 +45,4 @@ const Overlay = ({
       )}
     </>
   );
-};
-
-export default Overlay;
+}

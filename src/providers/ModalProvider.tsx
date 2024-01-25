@@ -7,7 +7,7 @@ export default function ModalProvider() {
   return (
     <>
       <EditJobApplicationModal />
-      <CreateNewJobApplicationModal />
+      {/* <CreateNewJobApplicationModal /> */}
       <StatusChangeModal />
       <InterviewDateChangeModal />
     </>

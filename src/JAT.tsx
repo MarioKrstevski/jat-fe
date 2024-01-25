@@ -19,6 +19,7 @@ import { api } from "./api/backend";
 import { useJobApplicationsStore } from "./hooks/useJobApplicationsStore";
 import Footer from "./components/Footer";
 import DrawerProvider from "./providers/DrawerProvider";
+import SmartOverlayProvider from "./providers/SmartOverlayProvider";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -61,15 +62,17 @@ function DashboardLayout() {
       // console.log("should go back");
       navigate("/signin");
       return;
+    } else {
+      navigate("/jobs");
     }
 
-    if (!user?.unsafeMetadata?.isPaidUser) {
-      user?.update({
-        unsafeMetadata: {
-          isPaidUser: true,
-        },
-      });
-    }
+    // if (!user?.unsafeMetadata?.isPaidUser) {
+    //   user?.update({
+    //     unsafeMetadata: {
+    //       isPaidUser: true,
+    //     },
+    //   });
+    // }
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
     // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
@@ -92,6 +95,7 @@ function DashboardLayout() {
       <Toaster richColors closeButton position="top-center" />
       <ModalProvider />
       <DrawerProvider />
+      <SmartOverlayProvider />
       <Header />
       <Outlet />
       <Footer />

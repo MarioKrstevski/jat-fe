@@ -39,16 +39,18 @@ export default function ControllableDrawer({
         }}
       >
         {/* <DrawerTrigger>Open</DrawerTrigger> */}
-        <DrawerContent>
+        <DrawerContent className="max-h-[90%] ">
           <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
-          <div className="p-4 pb-0">{children}</div>
+          <div className="p-4 pb-0 overflow-y-auto">{children}</div>
           <DrawerFooter>
             <Button>Submit</Button>
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
             </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
