@@ -1,4 +1,4 @@
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import {
   Navigate,
   Outlet,
@@ -50,6 +50,8 @@ function RootLayout() {
 }
 function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
+  const { user } = useUser();
+  console.log("userr", user);
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
 
@@ -59,6 +61,14 @@ function DashboardLayout() {
       // console.log("should go back");
       navigate("/signin");
       return;
+    }
+
+    if (!user?.unsafeMetadata?.isPaidUser) {
+      user?.update({
+        unsafeMetadata: {
+          isPaidUser: true,
+        },
+      });
     }
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
