@@ -155,7 +155,7 @@ export default function CreateJAForm({}) {
   }
 
   function handleCreateJobApplication(
-    jobApplication: any,
+    jobApplication: z.infer<typeof formSchema>,
     userId: string
   ) {
     setIsLoading(true);
@@ -191,8 +191,15 @@ export default function CreateJAForm({}) {
     console.log("add new", values);
 
     const jobApplication = { ...values };
-    // @ts-ignore
-    handleCreateJobApplication(jobApplication, userId);
+
+    if (userId === null) {
+      // Handle the unexpected absence of userId, perhaps by logging out the user
+      // or showing an error message.
+      throw new Error(
+        "User ID is not available. User must be logged in to submit a job application."
+      );
+    }
+    handleCreateJobApplication(jobApplication, userId!);
   }
   return (
     <div className="space-y-4 py-2 pb-4" ref={formContainerRef}>
@@ -324,9 +331,9 @@ export default function CreateJAForm({}) {
           <Collapsible
             open={isOpen}
             onOpenChange={(open) => {
-              (
-                formContainerRef.current?.parentNode as HTMLElement
-              ).scrollBy(0, 100);
+              const parentElement = formContainerRef.current
+                ?.parentNode as HTMLElement;
+              parentElement?.scrollBy(0, 100);
               setIsOpen(open);
             }}
             className="w-full space-y-2"
