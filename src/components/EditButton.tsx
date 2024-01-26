@@ -1,9 +1,8 @@
 import { EditIcon, PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useCreateNewModal } from "@/hooks/modals/useCreateNewModal";
-import { useEditModal } from "@/hooks/modals/useEditModal";
 import { JobApplication } from "@/types";
 import { cn } from "@/lib/utils";
+import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
 
 export default function EditButton({
   ja,
@@ -28,12 +27,11 @@ export default function EditButton({
     | null
     | undefined;
 }) {
-  const editModal = useEditModal();
+  const dialogControl = useDialogControl();
   function handleEditJobApplication() {
-    editModal.setData(ja);
-    setTimeout(() => {
-      editModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editJA", {
+      value: ja,
+    });
   }
 
   return (
