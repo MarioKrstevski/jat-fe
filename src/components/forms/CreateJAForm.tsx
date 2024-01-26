@@ -36,7 +36,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import { DateTimePicker } from "../DateTimePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
   // userId: z.string().optional(),

@@ -2,7 +2,7 @@ import { EditIcon, PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { JobApplication } from "@/types";
 import { cn } from "@/lib/utils";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function EditButton({
   ja,

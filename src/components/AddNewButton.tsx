@@ -1,6 +1,6 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function AddNewButton() {
   const dialogControl = useDialogControl();

@@ -45,7 +45,7 @@ import {
 import { ChevronsUpDownIcon } from "lucide-react";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
   // userId: z.string(),

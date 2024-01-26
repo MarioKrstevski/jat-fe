@@ -1,6 +1,6 @@
 import EditJAForm from "../forms/EditJAForm";
 import SmartOverlay from "../ui/custom/smart-overlay";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function EditJASmartOverlay({}) {
   const dialogControl = useDialogControl();

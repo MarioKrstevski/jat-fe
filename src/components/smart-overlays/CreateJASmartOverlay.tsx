@@ -1,6 +1,6 @@
 import CreateJAForm from "../forms/CreateJAForm";
 import SmartOverlay from "../ui/custom/smart-overlay";
-import { useDialogControl } from "@/hooks/smart-overlays/useDialogControl";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function CreateJASmartOverlay({}) {
   const dialogControl = useDialogControl();
