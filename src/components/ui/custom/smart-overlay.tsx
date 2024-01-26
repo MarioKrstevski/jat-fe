@@ -8,6 +8,7 @@ interface SmartOverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
   title: string;
   description: string;
 }
@@ -16,6 +17,7 @@ export default function SmartOverlay({
   isOpen,
   children,
   onClose,
+  onConfirm,
   title,
   description,
 }: SmartOverlayProps) {
@@ -29,6 +31,7 @@ export default function SmartOverlay({
           title={title}
           description={description}
           isOpen={isOpen}
+          onConfirm={onConfirm}
           onClose={onClose}
         >
           {children}
@@ -39,6 +42,7 @@ export default function SmartOverlay({
           description={description}
           isOpen={isOpen}
           onClose={onClose}
+          onConfirm={onConfirm}
         >
           {children}
         </Modal>

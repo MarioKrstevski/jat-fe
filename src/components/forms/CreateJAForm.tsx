@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
@@ -72,6 +72,7 @@ const formSchema = z.object({
 export default function CreateJAForm({}) {
   const dialogControl = useDialogControl();
   const jobApplicationStore = useJobApplicationsStore();
+  const formContainerRef = useRef<HTMLDivElement>(null);
   const { userId } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -152,6 +153,7 @@ export default function CreateJAForm({}) {
   function handleFormReset() {
     form.reset();
   }
+
   function handleCreateJobApplication(
     jobApplication: any,
     userId: string
@@ -193,7 +195,7 @@ export default function CreateJAForm({}) {
     handleCreateJobApplication(jobApplication, userId);
   }
   return (
-    <div className="space-y-4 py-2 pb-4 ">
+    <div className="space-y-4 py-2 pb-4" ref={formContainerRef}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Company Name */}
@@ -321,7 +323,12 @@ export default function CreateJAForm({}) {
 
           <Collapsible
             open={isOpen}
-            onOpenChange={setIsOpen}
+            onOpenChange={(open) => {
+              (
+                formContainerRef.current?.parentNode as HTMLElement
+              ).scrollBy(0, 100);
+              setIsOpen(open);
+            }}
             className="w-full space-y-2"
           >
             <CollapsibleTrigger asChild>

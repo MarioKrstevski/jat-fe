@@ -15,6 +15,7 @@ interface ControllableDrawerProps {
   description: string;
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
   children?: React.ReactNode;
 }
 
@@ -23,6 +24,7 @@ export default function ControllableDrawer({
   description,
   isOpen,
   onClose,
+  onConfirm,
   children,
 }: ControllableDrawerProps) {
   return (
@@ -45,14 +47,16 @@ export default function ControllableDrawer({
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0 overflow-y-auto">{children}</div>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
+          {onConfirm && (
+            <DrawerFooter>
+              <Button onClick={onConfirm}>Submit</Button>
+              <DrawerClose asChild>
+                <Button variant="outline" onClick={onClose}>
+                  Cancel
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
+          )}
         </DrawerContent>
       </Drawer>
     </>

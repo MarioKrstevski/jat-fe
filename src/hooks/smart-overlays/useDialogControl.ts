@@ -13,6 +13,7 @@ type ModalName =
 
 type ModalData = {
   value?: any;
+  [key: string]: any;
 };
 
 interface useDialogControlStore {

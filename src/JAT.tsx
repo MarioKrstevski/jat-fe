@@ -52,7 +52,6 @@ function RootLayout() {
 function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
   const { user } = useUser();
-  console.log("userr", user);
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
 
