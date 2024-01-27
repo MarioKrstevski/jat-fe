@@ -7,37 +7,14 @@ import {
   Table,
 } from "@/components/ui/table";
 
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import { JobApplication, JobApplicationStatus } from "@/types";
-import { format, parseISO } from "date-fns";
+import { JobApplication } from "@/types";
 import { useState } from "react";
-import TableHeaderAddon from "./old-stuff/TableHeaderAddon";
-import ActionList from "./old-stuff/ActionList";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./ui/popover";
-import StateSelector from "./StateSelector";
-import { Button } from "./ui/button";
+
 import { DateTime } from "luxon";
-import { DateTimePicker } from "./DateTimePicker";
-import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
-import { cn, formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
-import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
-import AddNewButton from "./AddNewButton";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function Archived({
   jobApplications,
@@ -45,8 +22,11 @@ export default function Archived({
   jobApplications: JobApplication[];
 }) {
   const navigate = useNavigate();
-  const statusChangeModal = useStatusChangeModal();
-  const interviewDateChangeModal = useInterviewDateChangeModal();
+
+  const dialogControl = useDialogControl();
+  const statusChangeModal = dialogControl.modals["editStatus"];
+  const interviewDateChangeModal =
+    dialogControl.modals["editInterviewDate"];
 
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -69,14 +49,9 @@ export default function Archived({
         DateTime.fromISO(a.createdAt.toString()).toMillis()
       );
     });
+
   function handleInterviewDate(ja: JobApplication) {
-    interviewDateChangeModal.setData({
-      ja: ja,
-      nextInterviewDate: ja.nextInterviewDate,
-    });
-    setTimeout(() => {
-      interviewDateChangeModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editInterviewDate", { value: ja });
   }
 
   function handleSelectRow(id: string) {
@@ -90,15 +65,7 @@ export default function Archived({
   }
 
   function handleChangeStatus(ja: JobApplication) {
-    statusChangeModal.setData({
-      ja: ja,
-      status: ja.status,
-      nextStep: ja.waitingFor,
-      statusOptions: ja.statusOptions,
-    });
-    setTimeout(() => {
-      statusChangeModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editStatus", { value: ja });
   }
 
   return (

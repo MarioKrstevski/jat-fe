@@ -15,7 +15,7 @@ import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { toast } from "sonner";
-import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 // import { priorities, statuses } from "../data/data";
 // import { DataTableFacetedFilter } from "./data-table-faceted-filter";
@@ -35,7 +35,9 @@ export function DataTableToolbar<TData>({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
-  const statusChangeModal = useStatusChangeModal();
+  const dialogControl = useDialogControl();
+
+  const statusChangeModal = dialogControl.modals["editStatus"];
 
   //   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedCount = table.getSelectedRowModel().rows.length;
@@ -46,15 +48,7 @@ export function DataTableToolbar<TData>({
     const ja = table.getSelectedRowModel().rows[0]
       .original as JobApplication;
 
-    statusChangeModal.setData({
-      ja: ja,
-      status: ja.status,
-      nextStep: ja.waitingFor,
-      statusOptions: ja.statusOptions,
-    });
-    setTimeout(() => {
-      statusChangeModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editStatus", { value: ja });
   }
 
   function handleArchiving() {

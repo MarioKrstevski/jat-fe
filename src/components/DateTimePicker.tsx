@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { SelectSingleEventHandler } from "react-day-picker";
-import { cn, formatDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";

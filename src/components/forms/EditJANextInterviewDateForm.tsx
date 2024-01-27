@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DateTimePicker } from "../DateTimePicker";
-import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
 import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { JobApplication } from "@/types";

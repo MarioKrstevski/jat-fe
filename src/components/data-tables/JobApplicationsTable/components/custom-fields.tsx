@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
-import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
 
 import { JobApplication } from "@/types";
 import { formatDate } from "@/lib/utils";
@@ -60,17 +58,9 @@ export function StatusField({
   ja: JobApplication;
   label: any;
 }) {
-  const statusChangeModal = useStatusChangeModal();
+  const dialogControl = useDialogControl();
   function handleChangeStatus(ja: JobApplication) {
-    statusChangeModal.setData({
-      ja: ja,
-      status: ja.status,
-      nextStep: ja.waitingFor,
-      statusOptions: ja.statusOptions,
-    });
-    setTimeout(() => {
-      statusChangeModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editStatus", { value: ja });
   }
   return (
     <div
