@@ -132,7 +132,7 @@ export function DataTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-start my-2 mt-4">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex min-w-72 items start space-x-2">
         <Input
           placeholder={placeholder}
           value={
@@ -149,7 +149,7 @@ export function DataTableToolbar<TData>({
         />
       </div>
       {selectedCount > 0 && (
-        <div className="flex gap-1">
+        <div className="flex gap-1 ml-2">
           <AlertModal
             isOpen={isOpen}
             isLoading={isLoading}
