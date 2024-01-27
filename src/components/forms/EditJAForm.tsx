@@ -46,6 +46,7 @@ import { ChevronsUpDownIcon } from "lucide-react";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { parseDateOrUndefined } from "@/lib/utils";
 
 const formSchema = z.object({
   // userId: z.string(),
@@ -121,15 +122,11 @@ export default function EditJAForm() {
       isRemote: jae?.isRemote,
       wasReferred: jae?.wasReferred,
       referredBy: jae?.referredBy,
-      postedDate: jae?.postedDate
-        ? new Date(jae?.postedDate)
-        : undefined,
-      applicationDeadline: jae?.applicationDeadline
-        ? new Date(jae?.applicationDeadline)
-        : undefined,
-      nextInterviewDate: jae?.nextInterviewDate
-        ? new Date(jae?.nextInterviewDate)
-        : undefined,
+      postedDate: parseDateOrUndefined(jae?.postedDate),
+      applicationDeadline: parseDateOrUndefined(
+        jae?.applicationDeadline
+      ),
+      nextInterviewDate: parseDateOrUndefined(jae?.nextInterviewDate),
     },
   });
 
@@ -166,15 +163,13 @@ export default function EditJAForm() {
         isRemote: jae.isRemote,
         wasReferred: jae.wasReferred,
         referredBy: jae.referredBy,
-        postedDate: jae.postedDate
-          ? new Date(jae.postedDate)
-          : undefined,
-        applicationDeadline: jae.applicationDeadline
-          ? new Date(jae.applicationDeadline)
-          : undefined,
-        nextInterviewDate: jae.nextInterviewDate
-          ? new Date(jae.nextInterviewDate)
-          : undefined,
+        postedDate: parseDateOrUndefined(jae.postedDate),
+        applicationDeadline: parseDateOrUndefined(
+          jae.applicationDeadline
+        ),
+        nextInterviewDate: parseDateOrUndefined(
+          jae.nextInterviewDate
+        ),
       });
     }
   }, [editModal.data.ja]);
@@ -210,9 +205,31 @@ export default function EditJAForm() {
         setIsLoading(false);
       });
   }
+
+  function changeDateValuesFromUndefinedToNull(values: any) {
+    // console.log("valls", {
+    //   nextInterviewDate: values.nextInterviewDate,
+    //   applicationDeadline: values.applicationDeadline,
+    //   postedDate: values.postedDate,
+    // });
+    if (values.nextInterviewDate === undefined) {
+      values.nextInterviewDate = null;
+    }
+    if (values.applicationDeadline === undefined) {
+      values.applicationDeadline = null;
+    }
+    if (values.postedDate === undefined) {
+      values.postedDate = null;
+    }
+    return values;
+  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("edit values", values);
-    handleEditJobApplication(values, userId!);
+    // console.log("edit values", values);
+    let valuesToSend = { ...values };
+
+    valuesToSend = changeDateValuesFromUndefinedToNull(valuesToSend);
+
+    handleEditJobApplication(valuesToSend, userId!);
     // editModal.onClose();
   }
 
@@ -423,7 +440,7 @@ export default function EditJAForm() {
                               id="is-remote"
                               checked={field.value}
                               onCheckedChange={(value) => {
-                                console.log("value", value);
+                                // console.log("value", value);
                                 form.setValue(
                                   "isRemote",
                                   value as boolean
@@ -500,6 +517,10 @@ export default function EditJAForm() {
                               date={field.value}
                               enableClear
                               setDate={(date) => {
+                                console.log(
+                                  "date " + field.name,
+                                  date
+                                );
                                 form.setValue(
                                   "applicationDeadline",
                                   date

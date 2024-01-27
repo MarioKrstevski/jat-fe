@@ -19,3 +19,10 @@ export function formatDate(date: Date, formatString: string) {
 export function dateDistance(date: Date) {
   return formatDistance(date, new Date(), { addSuffix: true });
 }
+
+export function parseDateOrUndefined(date: Date | null | undefined) {
+  if (!date) {
+    return undefined;
+  }
+  return new Date(date);
+}

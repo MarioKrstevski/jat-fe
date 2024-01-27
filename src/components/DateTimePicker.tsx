@@ -25,14 +25,12 @@ export function DateTimePicker({
   setDate,
   enableClear,
 }: DateTimePickerProps) {
-  console.log("Date", date);
-
   const [selectedDateTime, setSelectedDateTime] = useState<
     Date | undefined | null
   >(date);
 
   const handleSelect: SelectSingleEventHandler = (day, selected) => {
-    console.log("date inside", date, selected);
+    // console.log("date inside", date, selected);
     if (!selected) {
       return;
     }

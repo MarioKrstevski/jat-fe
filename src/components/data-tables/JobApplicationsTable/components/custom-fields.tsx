@@ -4,6 +4,7 @@ import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChan
 
 import { JobApplication } from "@/types";
 import { formatDate } from "@/lib/utils";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
 export function CompanyNameField({ ja }: { ja: JobApplication }) {
   const navigate = useNavigate();
@@ -33,20 +34,10 @@ export function JobTitleField({ ja }: { ja: JobApplication }) {
 }
 
 export function InterviewDateField({ ja }: { ja: JobApplication }) {
-  const interviewDateChangeModal = useInterviewDateChangeModal();
+  const dialogControl = useDialogControl();
+
   function handleInterviewDate(ja: JobApplication) {
-    interviewDateChangeModal.setData({
-      ja: ja,
-      nextInterviewDate: ja.nextInterviewDate,
-    });
-    setTimeout(() => {
-      console.log("here", {
-        ja: ja,
-        nextInterviewDate: ja.nextInterviewDate,
-      });
-      console.log("intem", interviewDateChangeModal.data);
-      interviewDateChangeModal.onOpen();
-    }, 100);
+    dialogControl.openModal("editInterviewDate", { value: ja });
   }
 
   const nextInterviewDateFormatted = ja.nextInterviewDate
