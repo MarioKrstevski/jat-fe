@@ -24,8 +24,8 @@ import {
 import { Button } from "./button";
 import { useState } from "react";
 import { Input } from "./input";
-import { DataTableViewOptions } from "../data-tables/JobApplicationsTable/data-table-view-options";
-import { DataTableToolbar } from "../data-tables/JobApplicationsTable/data-table-toolbar";
+import { DataTableViewOptions } from "../data-tables/JobApplicationsTable/components/data-table-view-options";
+import { DataTableToolbar } from "../data-tables/JobApplicationsTable/components/data-table-toolbar";
 type ExtendedColumnDef<TData> = ColumnDef<TData> & {
   cellClassName?: string;
 };
@@ -36,7 +36,7 @@ interface DataTableProps<TData, TValue> {
   placeholder: string;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTableModel<TData, TValue>({
   columns,
   data,
   searchKey,

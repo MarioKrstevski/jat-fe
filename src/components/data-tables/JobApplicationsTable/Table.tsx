@@ -1,7 +1,7 @@
 import Heading from "@/components/ui/custom/heading";
-import { DataTable } from "@/components/ui/data-table";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { columns } from "./Columns";
+import { columns } from "./components/columns";
+import { DataTable } from "./components/data-table";
 
 export default function Table() {
   const jobApplications = useJobApplicationsStore(
