@@ -103,6 +103,7 @@ function StatusField({
 export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
   {
     id: "select",
+    cellClassName: "sticky left-0 bg-white z-10",
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -113,7 +114,7 @@ export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
           table.toggleAllPageRowsSelected(!!value)
         }
         aria-label="Select all"
-        className="translate-y-[2px] mr-3"
+        className="translate-y-[2px] mr-3 "
       />
     ),
     cell: ({ row }) => (

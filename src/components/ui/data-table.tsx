@@ -92,12 +92,17 @@ export function DataTable<TData, TValue>({
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="relative">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
+                  const extendedColumnDef = header.column
+                    .columnDef as ExtendedColumnDef<TData>;
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className={extendedColumnDef.cellClassName}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
