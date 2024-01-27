@@ -21,8 +21,8 @@ import {
 import { JobApplication, JobApplicationStatus } from "@/types";
 import { format, parseISO } from "date-fns";
 import { useState } from "react";
-import TableHeaderAddon from "./TableHeaderAddon";
-import ActionList from "./ActionList";
+import TableHeaderAddon from "./old-stuff/TableHeaderAddon";
+import ActionList from "./old-stuff/ActionList";
 import {
   Popover,
   PopoverContent,

@@ -7,7 +7,7 @@ import {
   Select,
 } from "@/components/ui/select";
 import { selectableColumns } from "@/global/values";
-import MultipleSelectDropdown from "./ui/custom/multiple-select-dropdown";
+import MultipleSelectDropdown from "../ui/custom/multiple-select-dropdown";
 
 export default function ColumnSelector({
   selectedColumns,

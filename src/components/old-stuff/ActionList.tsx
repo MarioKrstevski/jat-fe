@@ -4,17 +4,17 @@ import {
   MoreHorizontalIcon,
   TrashIcon,
 } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import { toast } from "sonner";
 import { JobApplication } from "@/types";
-import AlertModal from "./modals/AlertModal";
+import AlertModal from "../modals/AlertModal";
 import { useState } from "react";
 import { set } from "date-fns";
 

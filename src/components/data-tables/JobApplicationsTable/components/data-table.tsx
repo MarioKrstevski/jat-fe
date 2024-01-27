@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DataTableToolbar } from "./data-table-toolbar";
+import AddNewButton from "@/components/AddNewButton";
 type ExtendedColumnDef<TData> = ColumnDef<TData> & {
   cellClassName?: string;
 };
@@ -133,7 +134,10 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <div className="flex flex-col items-center justify-center gap-4 w-full mt-5 py-2">
+                    <span>You have no job applications created</span>
+                    <AddNewButton />
+                  </div>
                 </TableCell>
               </TableRow>
             )}

@@ -15,10 +15,10 @@ import { DateTime } from "luxon";
 import { useStatusChangeModal } from "@/hooks/modals/useStatusChangeModal";
 import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useInterviewDateChangeModal } from "@/hooks/modals/useInterviewDateChangeModal";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import AddNewButton from "./AddNewButton";
+import AddNewButton from "../AddNewButton";
 
 const mustShowColumns = ["jobTitle", "companyName"];
 const startingSelectedKeys = [

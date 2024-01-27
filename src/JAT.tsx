@@ -10,16 +10,17 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import ArchivedPage from "./pages/ArchivedPage";
-import Header from "./components/Header";
+import Header from "./components/layout/Header";
 import { useEffect } from "react";
 import { Toaster } from "./components/ui/sonner";
 import ModalProvider from "./providers/ModalProvider";
 import SingleJobPage from "./pages/SingleJobPage";
 import { api } from "./api/backend";
 import { useJobApplicationsStore } from "./hooks/useJobApplicationsStore";
-import Footer from "./components/Footer";
+import Footer from "./components/layout/Footer";
 import DrawerProvider from "./providers/DrawerProvider";
 import SmartOverlayProvider from "./providers/SmartOverlayProvider";
+import SplashScreen from "./components/layout/SplashScreen";
 
 function HandleRedirect() {
   return <Navigate to={"/jobs"} />;
@@ -40,7 +41,7 @@ function RootLayout() {
   }, [userId, isLoaded]);
 
   if (!isLoaded) {
-    return <div>Navigating</div>;
+    return <SplashScreen />;
   }
 
   return (
