@@ -8,6 +8,7 @@ import { api } from "@/api/backend";
 import { JobApplication } from "@/types";
 import JATable from "@/components/JATable";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import JobApplicationsTable from "@/components/data-tables/JobApplicationsTable/Table";
 
 export default function () {
   const { userId, isLoaded } = useAuth();
@@ -35,6 +36,7 @@ export default function () {
       </button>
       <div className="m-2">My ID: {userId}</div> */}
       <JATable />
+      <JobApplicationsTable />
     </div>
   );
 }

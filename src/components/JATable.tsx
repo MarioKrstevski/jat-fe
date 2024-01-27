@@ -192,7 +192,7 @@ export default function JATable() {
         key: "nextInterviewDate",
         headerCustomCss: "",
         cell: {
-          customCss: "text-center ",
+          customCss: "text-center",
           events: {
             onClick(ja) {
               handleInterviewDate(ja);
