@@ -140,7 +140,6 @@ export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
   {
     accessorKey: "companyName",
     cellClassName: "company-name p-0 cursor-pointer",
-
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Company" />
     ),
@@ -178,12 +177,19 @@ export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
     enableSorting: true,
     enableHiding: true,
   },
-
   {
     accessorKey: "createdAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Created At" />
     ),
+    cell: ({ row }) => {
+      const createdAtFormatted = formatDate(
+        row.original.createdAt,
+        "MMMM dd, yyyy"
+      );
+
+      return <>{createdAtFormatted}</>;
+    },
     enableSorting: true,
     enableHiding: false,
   },

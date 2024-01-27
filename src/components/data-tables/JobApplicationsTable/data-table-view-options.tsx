@@ -31,7 +31,6 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
-  console.table(table.getAllColumns());
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

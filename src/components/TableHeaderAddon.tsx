@@ -111,7 +111,7 @@ export default function TableHeaderAddon({
       const scrollTop =
         window.scrollY || document.documentElement.scrollTop;
 
-      console.log("heade", headerRect.top);
+      // console.log("heade", headerRect.top);
 
       if (!refIsSticky.current === true && headerRect.top <= 0) {
         console.log("Header is now sticky");

@@ -25,6 +25,7 @@ import { Button } from "./button";
 import { useState } from "react";
 import { Input } from "./input";
 import { DataTableViewOptions } from "../data-tables/JobApplicationsTable/data-table-view-options";
+import { DataTableToolbar } from "../data-tables/JobApplicationsTable/data-table-toolbar";
 type ExtendedColumnDef<TData> = ColumnDef<TData> & {
   cellClassName?: string;
 };
@@ -71,24 +72,12 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder={placeholder}
-          value={
-            (table
-              .getColumn(searchKey)
-              ?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table
-              .getColumn(searchKey)
-              ?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DataTableViewOptions table={table} />
-      </div>
+    <div className="space-y-4">
+      <DataTableToolbar
+        searchKey={searchKey}
+        placeholder={placeholder}
+        table={table}
+      />
 
       <div className="rounded-md border">
         <Table>
