@@ -4,7 +4,7 @@ import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import AddNewButton from "@/components/AddNewButton";
 
-export default function Table() {
+export default function JobApplicationsTable() {
   const jobApplications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
