@@ -3,7 +3,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import JobApplicationsTable from "@/components/data-tables/JobApplicationsTable/table";
+import JobApplicationsTable from "../components/data-tables/JobApplicationsTable/table";
 
 export default function () {
   const { userId, isLoaded } = useAuth();
