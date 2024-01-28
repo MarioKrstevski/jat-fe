@@ -1,11 +1,7 @@
 import { getFakeJobApplications } from "@/api/fake-job-applications";
-import { Button } from "../components/ui/button";
 import { useAuth } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { api } from "@/api/backend";
-import { JobApplication } from "@/types";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import JobApplicationsTable from "@/components/data-tables/JobApplicationsTable/table";
 
@@ -27,13 +23,6 @@ export default function () {
 
   return (
     <div>
-      {/* <button
-        className="border py-1 px-2 m-2 bg-black text-white rounded"
-        onClick={handleCreateDbRecords}
-      >
-        Create a few fake entries
-      </button>
-      <div className="m-2">My ID: {userId}</div> */}
       <JobApplicationsTable />
     </div>
   );

@@ -1,7 +1,4 @@
-"use client";
-
-import { Modal } from "../ui/custom/modal";
-import { optional, z } from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,17 +22,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "sonner";
-import StateSelector from "../StateSelector";
 import { JobApplication, JobApplicationStatus } from "@/types";
 import { Checkbox } from "../ui/checkbox";
 import { DateTimePicker } from "../DateTimePicker";
-import { set } from "date-fns";
 import { useAuth } from "@clerk/clerk-react";
 import { defaultStatusOptions } from "@/global/values";
 import { Textarea } from "../ui/textarea";
-import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import {
   Collapsible,

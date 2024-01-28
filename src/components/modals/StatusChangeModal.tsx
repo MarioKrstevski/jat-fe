@@ -1,5 +1,3 @@
-"use client";
-
 import { useDialogControl } from "@/hooks/useDialogControl";
 import EditJAStatusForm from "../forms/EditJAStatusForm";
 import { Modal } from "../ui/custom/modal";
