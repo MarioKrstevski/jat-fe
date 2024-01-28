@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { api } from "@/api/backend";
 import { JobApplication } from "@/types";
-import JATable from "@/components/old-stuff/JATable";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import JobApplicationsTable from "@/components/data-tables/JobApplicationsTable/table";
 
