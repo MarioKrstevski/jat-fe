@@ -6,13 +6,13 @@ import { useDialogControl } from "@/hooks/useDialogControl";
 
 export function CompanyNameField({ ja }: { ja: JobApplication }) {
   const navigate = useNavigate();
-  function navgiateToJob(jobId: string) {
+  function navigateToJob(jobId: string) {
     navigate("/jobs/" + jobId);
   }
   return (
     <div
       className=" p-2 font-medium"
-      onClick={() => navgiateToJob(ja.id)}
+      onClick={() => navigateToJob(ja.id)}
     >
       {ja.companyName}
     </div>
@@ -21,11 +21,11 @@ export function CompanyNameField({ ja }: { ja: JobApplication }) {
 
 export function JobTitleField({ ja }: { ja: JobApplication }) {
   const navigate = useNavigate();
-  function navgiateToJob(jobId: string) {
+  function navigateToJob(jobId: string) {
     navigate("/jobs/" + jobId);
   }
   return (
-    <div className="  p-2 " onClick={() => navgiateToJob(ja.id)}>
+    <div className="  p-2 " onClick={() => navigateToJob(ja.id)}>
       {ja.jobTitle}
     </div>
   );
