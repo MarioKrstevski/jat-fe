@@ -1,5 +1,5 @@
-//let mode = "development";
-let mode = "production";
+let mode = "development";
+// let mode = "production";
 
 let backendURL = "";
 let frontendURL = "";
