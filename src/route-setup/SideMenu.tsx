@@ -115,6 +115,7 @@ const sidenav = [
 ];
 export default function SideMenu() {
   const sideMenuControl = useSideMenuControl();
+  console.log('smstate', smState )
   const smState = sideMenuControl.state;
   function handleToggleSideMenu() {
     if (smState === "open") {
@@ -164,7 +165,6 @@ export default function SideMenu() {
           smState === "minimized" && "px-1"
         )}
       >
-        {smState}
         {sidenav.map((item) => (
           <SideMenuLink
             to={item.to}
@@ -174,6 +174,7 @@ export default function SideMenu() {
         ))}
       </nav>
       <div
+        {smState}
         className={cn(
           "flex flex-col items-start justify-center h-20 mt-auto border-t dark:border-gray-700"
         )}

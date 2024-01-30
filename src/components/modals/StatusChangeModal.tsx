@@ -6,10 +6,10 @@ export default function StatusChangeModal() {
   const dialogControl = useDialogControl();
   const statusChangeModal = dialogControl.modals["editStatus"];
   const isOpen = dialogControl.modals["editStatus"]?.isOpen!;
-  console.log("isOpen", isOpen);
+  // console.log("isOpen", isOpen);
 
   const activeJobApplication = statusChangeModal?.data.value;
-  console.log("activeJobApplication", activeJobApplication);
+  // console.log("activeJobApplication", activeJobApplication);
 
   if (!activeJobApplication) {
     return null;
