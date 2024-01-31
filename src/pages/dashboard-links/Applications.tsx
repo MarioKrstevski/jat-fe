@@ -1,3 +1,9 @@
+import JobApplicationsTable from "@/components/data-tables/JobApplicationsTable/table";
+
 export default function Applications() {
-  return <div>ApplicationsPage works</div>;
+  return (
+    <>
+      <JobApplicationsTable />
+    </>
+  );
 }

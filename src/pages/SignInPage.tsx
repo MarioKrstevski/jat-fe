@@ -4,8 +4,7 @@ export default function SignInPage() {
   const { userId, isLoaded } = useAuth();
 
   if (isLoaded && userId) {
-    return <Navigate to={"/jobs"} />;
+    return <Navigate to={"/dashboard"} />;
   }
-
   return <SignIn />;
 }

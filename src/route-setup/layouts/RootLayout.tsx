@@ -7,8 +7,9 @@ export default function RootLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
 
-  //effect description
+  // effect description
   useEffect(() => {
+    console.log("userId", userId);
     if (isLoaded && userId) {
       // console.log("recorded", window.location.href);
       // navigate("/jobs");

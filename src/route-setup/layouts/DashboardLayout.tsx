@@ -23,7 +23,7 @@ export default function DashboardLayout() {
       navigate("/signin");
       return;
     } else {
-      navigate("/jobs");
+      // navigate("/jobs");
     }
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
@@ -41,18 +41,22 @@ export default function DashboardLayout() {
   useEffect(() => {
     handleFetchingJobApplications();
   }, []);
+
+  if (!isLoaded || !userId) {
+    return null;
+  }
+
   return (
     <div>
       <Toaster richColors closeButton position="top-center" />
       <ModalProvider />
       <DrawerProvider />
       <SmartOverlayProvider />
-
       <main className="flex  overflx">
         <SideMenu />
         <section className="flex-1 overflow-x-auto overflow-y-auto">
           <Header />
-          <div className=" ">
+          <div className="mx-3 ">
             <Outlet />
           </div>
           <Footer />
