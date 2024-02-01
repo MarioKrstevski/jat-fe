@@ -18,12 +18,24 @@ async function getJobApplications(
   });
 }
 
+async function getJobApplication(
+  userId: string | null | undefined,
+  applicationId: string
+): Promise<AxiosResponse<JobApplication[]>> {
+  return jatbe.get("applications/", {
+    params: {
+      userId,
+      applicationId,
+    },
+  });
+}
+
 async function createJobApplication(
-  jobApplication: any,
+  application: any,
   userId: string | null | undefined
 ) {
   return jatbe.post("applications/", {
-    jobApplication,
+    application,
     userId,
   });
 }
@@ -64,6 +76,7 @@ const applications = {
   deleteJobApplication,
   editJobApplication,
   getJobApplications,
+  getJobApplication,
   createJobApplication,
 };
 
