@@ -97,6 +97,14 @@ export function DataTableToolbar<TData>({
       .then((res) => {
         console.log("res", res.data);
 
+        // if nothing has been delted
+        if (res.data?.count === 0) {
+          toast.warning(
+            "Nothing has been deleted in the database, probably id didn't match"
+          );
+          return;
+        }
+
         const updatedJobApplications =
           jobApplicationStore.jobApplications.filter(
             (ja) => !selectedApplicationsIds.includes(ja.id)

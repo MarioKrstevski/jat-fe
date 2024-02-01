@@ -37,6 +37,14 @@ export default function JobApplicationDetails({
       .deleteJobApplication([ja.id], userId!)
       .then((res) => {
         console.log("res", res.data);
+
+        if (res.data?.count === 0) {
+          toast.warning(
+            "Nothing has been deleted in the database, probably id didn't match"
+          );
+          return;
+        }
+
         const updatedJobApplications =
           jobApplicationStore.jobApplications.filter(
             (ja) => ja.id !== jobApplication.id

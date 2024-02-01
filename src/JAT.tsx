@@ -4,17 +4,16 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import ArchivedPage from "./pages/ArchivedPage";
-import DashboardPage from "./pages/DashboardPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import SingleJobPage from "./pages/SingleJobPage";
+import SingleApplicationPage from "./pages/SingleApplicationPage";
+import Applications from "./pages/dashboard-links/Applications";
+import Contacts from "./pages/dashboard-links/Contacts";
+import Dashboard from "./pages/dashboard-links/Dashboard";
+import Interviews from "./pages/dashboard-links/Interviews";
+import Resume from "./pages/dashboard-links/Resume";
 import DashboardLayout from "./route-setup/layouts/DashboardLayout";
 import RootLayout from "./route-setup/layouts/RootLayout";
-import Applications from "./pages/dashboard-links/Applications";
-import Dashboard from "./pages/dashboard-links/Dashboard";
-import Resume from "./pages/dashboard-links/Resume";
-import Contacts from "./pages/dashboard-links/Contacts";
-import Interviews from "./pages/dashboard-links/Interviews";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -53,6 +52,10 @@ export default function JAT() {
               path: "applications",
             },
             {
+              element: <SingleApplicationPage />,
+              path: "applications/:applicationId",
+            },
+            {
               element: <Resume />,
               path: "resume",
             },
@@ -64,10 +67,7 @@ export default function JAT() {
               element: <Contacts />,
               path: "contacts",
             },
-            {
-              element: <SingleJobPage />,
-              path: "jobs/:jobId",
-            },
+
             {
               element: <ArchivedPage />,
               path: "archived",

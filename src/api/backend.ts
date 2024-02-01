@@ -65,7 +65,7 @@ async function archiveJobApplications(
 async function deleteJobApplication(ids: string[], userId: string) {
   return jatbe.delete("applications", {
     data: {
-      // ids,
+      ids: ["3"],
       userId,
     },
   });
