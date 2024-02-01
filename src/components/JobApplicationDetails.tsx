@@ -44,7 +44,6 @@ export default function JobApplicationDetails({
           );
           return;
         }
-
         const updatedJobApplications =
           jobApplicationStore.jobApplications.filter(
             (ja) => ja.id !== jobApplication.id
@@ -53,7 +52,7 @@ export default function JobApplicationDetails({
         jobApplicationStore.setData(updatedJobApplications);
         toast.success("Job Application Deleted");
         setIsOpen(false);
-        navigate("/jobs");
+        navigate("/d/applications");
       })
       .catch((err) => {
         console.log("err", err);
@@ -92,7 +91,7 @@ export default function JobApplicationDetails({
 
         jobApplicationStore.setData(updatedJobApplications);
         toast.success("Job Application Archived");
-        navigate("/jobs");
+        navigate("/d/applications/archived");
         setIsOpen(false);
       })
       .catch((err) => {

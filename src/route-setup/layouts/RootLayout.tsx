@@ -12,7 +12,7 @@ export default function RootLayout() {
     console.log("userId", userId);
     if (isLoaded && userId) {
       // console.log("recorded", window.location.href);
-      // navigate("/jobs");
+      // navigate("/d");
     } else if (isLoaded && !userId) {
       navigate("/signin");
     }

@@ -1,4 +1,4 @@
-import Archived from "@/components/Archived";
+import ArchivedTable from "@/components/ArchivedTable";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ArchivedPage() {
   const { userId, isLoaded } = useAuth();
-  const jobApplications = useJobApplicationsStore(
+  const applications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ export default function ArchivedPage() {
 
   return (
     <div>
-      <Archived jobApplications={jobApplications} />
+      <ArchivedTable applications={applications} />
       {/* <SignOutButton /> */}
     </div>
   );

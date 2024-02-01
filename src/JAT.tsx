@@ -14,6 +14,7 @@ import Interviews from "./pages/dashboard-links/Interviews";
 import Resume from "./pages/dashboard-links/Resume";
 import DashboardLayout from "./route-setup/layouts/DashboardLayout";
 import RootLayout from "./route-setup/layouts/RootLayout";
+import ApplicationsLayout from "./route-setup/layouts/ApplicationsLayout";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -48,12 +49,23 @@ export default function JAT() {
               path: "",
             },
             {
-              element: <Applications />,
+              element: <ApplicationsLayout />,
               path: "applications",
-            },
-            {
-              element: <SingleApplicationPage />,
-              path: "applications/:applicationId",
+              children: [
+                {
+                  element: <Applications />,
+                  // path: "",
+                  index: true,
+                },
+                {
+                  element: <SingleApplicationPage />,
+                  path: ":applicationId",
+                },
+                {
+                  element: <ArchivedPage />,
+                  path: "archived",
+                },
+              ],
             },
             {
               element: <Resume />,
@@ -66,11 +78,6 @@ export default function JAT() {
             {
               element: <Contacts />,
               path: "contacts",
-            },
-
-            {
-              element: <ArchivedPage />,
-              path: "archived",
             },
           ],
         },

@@ -16,10 +16,10 @@ import { useNavigate } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
-export default function Archived({
-  jobApplications,
+export default function ArchivedTable({
+  applications,
 }: {
-  jobApplications: JobApplication[];
+  applications: JobApplication[];
 }) {
   const navigate = useNavigate();
 
@@ -31,10 +31,10 @@ export default function Archived({
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  function navgiateToJob(jobId: string) {
-    navigate("/jobs/" + jobId);
+  function navigateToApplication(applicationId: string) {
+    navigate("/d/applications/" + applicationId);
   }
-  const jobApplicationsToShow = jobApplications
+  const jobApplicationsToShow = applications
     .filter((ja) => {
       if (ja.isArchived) {
         return true;
@@ -118,25 +118,26 @@ export default function Archived({
                       <TableCell className="font-bold pl-1">
                         <div className="flex flex-col gap-0.5 text-center">
                           {idx + 1}
-                          <Checkbox
+                          {/* No need to have a selection, i dont want to mass unarchive no point in it */}
+                          {/* <Checkbox
                             className="mx-auto h-5 w-5"
                             onClick={() => {
                               handleSelectRow(ja.id);
                             }}
                             name={"row-" + ja.id}
                             id={"row-checked-" + ja.id}
-                          />
+                          /> */}
                         </div>
                       </TableCell>
                       <TableCell
                         className="font-medium job-title cursor-pointer"
-                        onClick={() => navgiateToJob(ja.id)}
+                        onClick={() => navigateToApplication(ja.id)}
                       >
                         {ja.jobTitle}
                       </TableCell>
                       <TableCell
                         className="company-name cursor-pointer"
-                        onClick={() => navgiateToJob(ja.id)}
+                        onClick={() => navigateToApplication(ja.id)}
                       >
                         {ja.companyName}
                       </TableCell>

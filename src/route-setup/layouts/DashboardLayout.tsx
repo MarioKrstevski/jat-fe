@@ -23,7 +23,7 @@ export default function DashboardLayout() {
       navigate("/signin");
       return;
     } else {
-      // navigate("/jobs");
+      // navigate("/d");
     }
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
