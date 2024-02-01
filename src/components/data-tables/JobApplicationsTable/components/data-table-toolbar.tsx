@@ -59,6 +59,13 @@ export function DataTableToolbar<TData>({
       .then((res) => {
         console.log("res", res.data);
 
+        if (res.data?.count === 0) {
+          toast.warning(
+            "Nothing has been archived in the database, probably id didn't match/ doesnt exist in db"
+          );
+          return;
+        }
+
         const updatedJobApplications =
           jobApplicationStore.jobApplications.map((ja) => {
             if (selectedApplicationsIds.includes(ja.id)) {
