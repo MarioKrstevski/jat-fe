@@ -54,12 +54,8 @@ export function DataTableToolbar<TData>({
       });
 
     setIsLoading(true);
-    api
-      .be_archiveJobApplication(
-        selectedApplicationsIds,
-        userId!,
-        true
-      )
+    api.applications
+      .archiveJobApplications(selectedApplicationsIds, userId!, true)
       .then((res) => {
         console.log("res", res.data);
 

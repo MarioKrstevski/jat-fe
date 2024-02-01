@@ -1,0 +1,33 @@
+{
+  "theme": "dark",
+  "language": "en",
+  "notifications": {
+    "email": true,
+    "push": false,
+    "alerts": true
+  },
+  "privacy": {
+    "profileVisibility": "friends",
+    "activitySharing": false
+  },
+  "displayOptions": {
+    "viewMode": "list",
+    "fontSize": "medium",
+    "itemsPerPage": 20
+  },
+  "accessibility": {
+    "screenReader": false,
+    "highContrast": true
+  },
+  "communication": {
+    "email": true,
+    "sms": false
+  },
+  "dataUsage": {
+    "downloadOverWifi": true
+  },
+  "locationSharing": false,
+  "startup": {
+    "homepage": "dashboard"
+  }
+}

@@ -51,12 +51,12 @@ async function be_editJobApplication(
     type,
   });
 }
-async function be_archiveJobApplication(
+async function archiveJobApplications(
   ids: string[],
   userId: string,
   isArchived: boolean
 ) {
-  return jatbe.patch("archiveJobApplication", {
+  return jatbe.patch("applications/archive", {
     ids,
     userId,
     isArchived,
@@ -73,10 +73,13 @@ async function be_deleteJobApplication(
     },
   });
 }
+const applications = {
+  archiveJobApplications,
+};
 
 export const api = {
+  applications,
   be_deleteJobApplication,
-  be_archiveJobApplication,
   be_editJobApplication,
   be_getJobApplications,
   be_createJobApplication,

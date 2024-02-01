@@ -9,6 +9,10 @@ export default function JobApplicationsTable() {
     (state) => state.jobApplications
   );
 
+  const activeJobApplications = jobApplications.filter(
+    (ja) => !ja.isArchived
+  );
+
   return (
     <div className="p-3">
       <div className="flex items-center justify-start">
@@ -23,7 +27,7 @@ export default function JobApplicationsTable() {
           placeholder="Search by company name"
           searchKey="companyName"
           columns={columns}
-          data={jobApplications}
+          data={activeJobApplications}
         ></DataTable>
       </div>
     </div>
