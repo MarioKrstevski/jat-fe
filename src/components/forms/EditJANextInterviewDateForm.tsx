@@ -53,8 +53,8 @@ export default function EditJANextInterviewDateForm() {
     userId: string
   ) {
     setIsLoading(true);
-    api
-      .be_editJobApplication(
+    api.applications
+      .editJobApplication(
         jobApplication,
         userId,
         "nextInterviewDateChange"

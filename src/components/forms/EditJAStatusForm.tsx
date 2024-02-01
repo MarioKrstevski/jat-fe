@@ -85,8 +85,8 @@ export default function EditJAStatusForm() {
     userId: string
   ) {
     setIsLoading(true);
-    api
-      .be_editJobApplication(jobApplication, userId, "statusChange")
+    api.applications
+      .editJobApplication(jobApplication, userId, "statusChange")
       .then((res) => {
         console.log("res.data", res.data);
 

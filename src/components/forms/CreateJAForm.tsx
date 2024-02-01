@@ -159,8 +159,8 @@ export default function CreateJAForm({}) {
     userId: string
   ) {
     setIsLoading(true);
-    api
-      .be_createJobApplication(jobApplication, userId)
+    api.applications
+      .createJobApplication(jobApplication, userId)
       .then((res) => {
         console.log("res", res);
         toast.success("Job application created successfully");

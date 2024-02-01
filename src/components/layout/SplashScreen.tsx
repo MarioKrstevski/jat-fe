@@ -24,7 +24,7 @@ const SplashScreen = ({}: Props) => {
         <div className="animate-pulse-slow text-label-title">
           {/* <LogoFull /> */}
           <h1 className="text-4xl sm:text-5xl font-bold">
-            Job Application Tracker
+            Job Buddy
           </h1>
         </div>
       </div>

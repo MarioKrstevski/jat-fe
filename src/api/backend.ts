@@ -12,7 +12,7 @@ const jatbe = axios.create({
   headers: {},
 });
 
-async function be_getJobApplications(
+async function getJobApplications(
   userId: string | null | undefined
 ): Promise<AxiosResponse<JobApplication[]>> {
   return jatbe.post("jobApplications", {
@@ -20,17 +20,7 @@ async function be_getJobApplications(
   });
 }
 
-async function be_createJobApplications(
-  jobApplications: JobApplicationGenerated[],
-  userId: string | null | undefined
-) {
-  return jatbe.post("createJobApplications", {
-    jobApplications,
-    userId,
-  });
-}
-
-async function be_createJobApplication(
+async function createJobApplication(
   jobApplication: any,
   userId: string | null | undefined
 ) {
@@ -40,7 +30,7 @@ async function be_createJobApplication(
   });
 }
 
-async function be_editJobApplication(
+async function editJobApplication(
   jobApplication: any,
   userId: string,
   type: EditTypes
@@ -73,12 +63,11 @@ async function deleteJobApplication(ids: string[], userId: string) {
 const applications = {
   archiveJobApplications,
   deleteJobApplication,
+  editJobApplication,
+  getJobApplications,
+  createJobApplication,
 };
 
 export const api = {
   applications,
-  be_editJobApplication,
-  be_getJobApplications,
-  be_createJobApplication,
-  be_createJobApplications,
 };

@@ -28,8 +28,8 @@ export default function DashboardLayout() {
   }, [userId, isLoaded]);
   function handleFetchingJobApplications() {
     // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
-    api
-      .be_getJobApplications(userId)
+    api.applications
+      .getJobApplications(userId)
       .then((res) => {
         // addCustomKeyValue
         jobApplicationStore.setData(res.data);

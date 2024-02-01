@@ -172,8 +172,8 @@ export default function EditJAForm() {
     userId: string
   ) {
     setIsLoading(true);
-    api
-      .be_editJobApplication(jobApplication, userId, "allChange")
+    api.applications
+      .editJobApplication(jobApplication, userId, "allChange")
       .then((res) => {
         console.log("res.data", res.data);
 
