@@ -33,8 +33,8 @@ export default function JobApplicationDetails({
 
   function onDelete() {
     setIsLoading(true);
-    api
-      .be_deleteJobApplication([ja.id], userId!)
+    api.applications
+      .deleteJobApplication([ja.id], userId!)
       .then((res) => {
         console.log("res", res.data);
         const updatedJobApplications =
@@ -57,8 +57,8 @@ export default function JobApplicationDetails({
 
   function handleUnarchiving() {
     setIsLoading(true);
-    api
-      .be_archiveJobApplication([jobApplication.id], userId!, false)
+    api.applications
+      .archiveJobApplications([jobApplication.id], userId!, false)
       .then((res) => {
         console.log("res", res.data);
 

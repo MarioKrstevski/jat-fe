@@ -62,24 +62,21 @@ async function archiveJobApplications(
     isArchived,
   });
 }
-async function be_deleteJobApplication(
-  ids: string[],
-  userId: string
-) {
-  return jatbe.delete("deleteJobApplication", {
+async function deleteJobApplication(ids: string[], userId: string) {
+  return jatbe.delete("applications", {
     data: {
-      ids,
+      // ids,
       userId,
     },
   });
 }
 const applications = {
   archiveJobApplications,
+  deleteJobApplication,
 };
 
 export const api = {
   applications,
-  be_deleteJobApplication,
   be_editJobApplication,
   be_getJobApplications,
   be_createJobApplication,

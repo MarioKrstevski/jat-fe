@@ -92,8 +92,8 @@ export function DataTableToolbar<TData>({
         return (row.original as JobApplication).id;
       });
     setIsLoading(true);
-    api
-      .be_deleteJobApplication(selectedApplicationsIds, userId!)
+    api.applications
+      .deleteJobApplication(selectedApplicationsIds, userId!)
       .then((res) => {
         console.log("res", res.data);
 
