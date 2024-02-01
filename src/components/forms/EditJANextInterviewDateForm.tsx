@@ -22,7 +22,6 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { parseDateOrUndefined } from "@/lib/utils";
 
 const formSchema = z.object({
-  id: z.string(),
   nextInterviewDate: z.date().nullish(),
 });
 export default function EditJANextInterviewDateForm() {
@@ -44,18 +43,19 @@ export default function EditJANextInterviewDateForm() {
       nextInterviewDate: parseDateOrUndefined(
         activeJobApplication?.nextInterviewDate
       ),
-      id: activeJobApplication?.id,
     },
   });
 
   function handleEditJobApplication(
-    jobApplication: any,
+    application: any,
+    applicationId: string,
     userId: string
   ) {
     setIsLoading(true);
     api.applications
       .editJobApplication(
-        jobApplication,
+        application,
+        applicationId,
         userId,
         "nextInterviewDateChange"
       )
@@ -64,7 +64,7 @@ export default function EditJANextInterviewDateForm() {
 
         const newJobApplicationsArray =
           jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === jobApplication.id) {
+            if (ja.id === applicationId) {
               return res.data;
             } else {
               return ja;
@@ -90,7 +90,6 @@ export default function EditJANextInterviewDateForm() {
     // another one which has a new date, this needs to update it since we are using one
     // modal for all the jobs
     form.reset({
-      id: activeJobApplication.id,
       nextInterviewDate: parseDateOrUndefined(
         activeJobApplication.nextInterviewDate
       ),
@@ -108,7 +107,11 @@ export default function EditJANextInterviewDateForm() {
 
     console.log("values", valuesToSend);
 
-    handleEditJobApplication(valuesToSend, userId!);
+    handleEditJobApplication(
+      valuesToSend,
+      activeJobApplication.id,
+      userId!
+    );
   }
   return (
     <div className="space-y-4 py-2 pb-4">

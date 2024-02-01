@@ -42,9 +42,9 @@ import { useDialogControl } from "@/hooks/useDialogControl";
 import { parseDateOrUndefined } from "@/lib/utils";
 
 const formSchema = z.object({
-  // userId: z.string(),
-  id: z.string(),
-  companyName: z.string(),
+  companyName: z
+    .string()
+    .min(1, { message: "Company name is required" }),
   jobTitle: z.string(),
   status: z.string(),
   jobLocation: z.string().optional(),
@@ -89,8 +89,6 @@ export default function EditJAForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // userId: userId!,
-      id: jae?.id!,
       companyName: jae?.companyName,
       jobTitle: jae?.jobTitle,
       jobLocation: jae?.jobLocation,
@@ -130,8 +128,6 @@ export default function EditJAForm() {
   useEffect(() => {
     if (jae) {
       form.reset({
-        // userId: userId!,
-        id: jae.id!,
         companyName: jae.companyName,
         jobTitle: jae.jobTitle,
         jobLocation: jae.jobLocation,
@@ -168,18 +164,24 @@ export default function EditJAForm() {
   }, [editModal.data.ja]);
 
   function handleEditJobApplication(
-    jobApplication: any,
+    application: any,
+    applicationId: string,
     userId: string
   ) {
     setIsLoading(true);
     api.applications
-      .editJobApplication(jobApplication, userId, "allChange")
+      .editJobApplication(
+        application,
+        applicationId,
+        userId,
+        "allChange"
+      )
       .then((res) => {
         console.log("res.data", res.data);
 
         const newJobApplicationsArray =
           jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === jobApplication.id) {
+            if (ja.id === applicationId) {
               return res.data;
             } else {
               return ja;
@@ -222,7 +224,7 @@ export default function EditJAForm() {
 
     valuesToSend = changeDateValuesFromUndefinedToNull(valuesToSend);
 
-    handleEditJobApplication(valuesToSend, userId!);
+    handleEditJobApplication(valuesToSend, jae.id, userId!);
     // editModal.onClose();
   }
 
@@ -234,9 +236,9 @@ export default function EditJAForm() {
 
   return (
     <div className="space-y-4 py-2 pb-4 ">
-      {/* {form.formState.errors && (
-          <div>{JSON.stringify(form.formState.errors)}</div>
-        )} */}
+      {form.formState.errors && (
+        <div>{JSON.stringify(form.formState.errors)}</div>
+      )}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Company Name */}

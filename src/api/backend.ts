@@ -1,9 +1,5 @@
 import { backendURL } from "@/global/variables";
-import {
-  EditTypes,
-  JobApplication,
-  JobApplicationGenerated,
-} from "@/types";
+import { EditTypes, JobApplication } from "@/types";
 import axios, { AxiosResponse } from "axios";
 
 const jatbe = axios.create({
@@ -15,8 +11,10 @@ const jatbe = axios.create({
 async function getJobApplications(
   userId: string | null | undefined
 ): Promise<AxiosResponse<JobApplication[]>> {
-  return jatbe.post("jobApplications", {
-    userId,
+  return jatbe.get("applications/", {
+    params: {
+      userId,
+    },
   });
 }
 
@@ -24,19 +22,20 @@ async function createJobApplication(
   jobApplication: any,
   userId: string | null | undefined
 ) {
-  return jatbe.post("createJobApplication", {
+  return jatbe.post("applications/", {
     jobApplication,
     userId,
   });
 }
 
 async function editJobApplication(
-  jobApplication: any,
+  application: Partial<JobApplication>,
+  applicationId: string,
   userId: string,
   type: EditTypes
 ) {
-  return jatbe.patch("editJobApplication", {
-    jobApplication,
+  return jatbe.patch("applications/edit/" + applicationId, {
+    application,
     userId,
     type,
   });

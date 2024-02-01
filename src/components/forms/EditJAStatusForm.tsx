@@ -37,7 +37,6 @@ import { useAuth } from "@clerk/clerk-react";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
-  id: z.string(),
   status: z.string(),
   waitingFor: z.string().optional(),
   date: z.date().optional(),
@@ -62,7 +61,6 @@ export default function EditJAStatusForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: activeJobApplication.id,
       status: activeJobApplication.status,
       waitingFor: activeJobApplication.waitingFor,
       //  undefined because they need to select a date
@@ -72,7 +70,6 @@ export default function EditJAStatusForm() {
 
   useEffect(() => {
     form.reset({
-      id: activeJobApplication.id,
       status: activeJobApplication.status,
       waitingFor: activeJobApplication.waitingFor,
       date: new Date(),
@@ -81,18 +78,24 @@ export default function EditJAStatusForm() {
   }, [activeJobApplication]);
 
   function handleEditJobApplication(
-    jobApplication: any,
+    application: any,
+    applicationId: string,
     userId: string
   ) {
     setIsLoading(true);
     api.applications
-      .editJobApplication(jobApplication, userId, "statusChange")
+      .editJobApplication(
+        application,
+        applicationId,
+        userId,
+        "statusChange"
+      )
       .then((res) => {
         console.log("res.data", res.data);
 
         const newJobApplicationsArray =
           jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === jobApplication.id) {
+            if (ja.id === applicationId) {
               return res.data;
             } else {
               return ja;
@@ -132,7 +135,11 @@ export default function EditJAStatusForm() {
       valueToSend.timeline = JSON.stringify(existingTimeline);
       delete valueToSend.date;
     }
-    handleEditJobApplication(valueToSend, userId!);
+    handleEditJobApplication(
+      valueToSend,
+      activeJobApplication.id,
+      userId!
+    );
   }
 
   return (
