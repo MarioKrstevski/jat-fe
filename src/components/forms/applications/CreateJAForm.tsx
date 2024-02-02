@@ -551,7 +551,7 @@ export default function CreateJAForm({}) {
                 />
               </div>
 
-              {/* Next Interview Date */}
+              {/* Applied Date */}
               <div className="flex gap-4 mb-3 ">
                 <FormField
                   control={form.control}
@@ -559,7 +559,7 @@ export default function CreateJAForm({}) {
                   render={({ field }) => {
                     return (
                       <FormItem>
-                        <FormLabel>Next Interview Date</FormLabel>
+                        <FormLabel>Applied Date</FormLabel>
                         <FormControl>
                           <div className="flex items-center">
                             <DateTimePicker

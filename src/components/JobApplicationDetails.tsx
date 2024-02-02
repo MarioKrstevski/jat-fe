@@ -116,6 +116,13 @@ export default function JobApplicationDetails({
       ")"
     : "N/A";
 
+  const appliedDate = ja.appliedDate
+    ? format(ja.appliedDate, "dd.MM.yyyy HH:mm") +
+      " (" +
+      dateDistance(ja.appliedDate) +
+      ")"
+    : "N/A";
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
       <AlertModal
@@ -217,6 +224,7 @@ export default function JobApplicationDetails({
               <div>Next step: {ja.nextStep}</div>
               <div>Application deadline: {applicationDeadline}</div>
               <div>Next Interview: {nextInterviewDate}</div>
+              <div>Applied Date: {appliedDate}</div>
             </div>
             <div className="text-slate-700 text-right">
               <div>

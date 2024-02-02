@@ -586,6 +586,32 @@ export default function EditJAForm() {
                   }}
                 />
               </div>
+
+              {/* Applied Date */}
+              <div className="flex gap-4 mb-3 ">
+                <FormField
+                  control={form.control}
+                  name="appliedDate"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Applied Date</FormLabel>
+                        <FormControl>
+                          <div className="flex items-center">
+                            <DateTimePicker
+                              date={field.value}
+                              enableClear
+                              setDate={(date) => {
+                                form.setValue("appliedDate", date);
+                              }}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
               {/* Was Referred and Referred by */}
               <div className="flex gap-1 mb-3 items-end">
                 <FormField
