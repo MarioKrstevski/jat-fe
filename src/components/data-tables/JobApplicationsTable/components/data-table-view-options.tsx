@@ -8,7 +8,7 @@ const mapping = {
   status: "Status",
   dateApplied: "Date Applied",
   nextInterviewDate: "Interview Date",
-  waitingFor: "Next Step",
+  nextStep: "Next Step",
   notes: "Notes",
   actions: "Actions",
 };

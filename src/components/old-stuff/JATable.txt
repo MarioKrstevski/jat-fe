@@ -21,7 +21,7 @@ import AddNewButton from "../AddNewButton";
 const mustShowColumns = ["jobTitle", "companyName"];
 const startingSelectedKeys = [
   "status",
-  "waitingFor",
+  "nextStep",
   "nextInterviewDate",
   "createdAt",
 ];
@@ -103,7 +103,7 @@ export default function JATable() {
     statusChangeModal.setData({
       ja: ja,
       status: ja.status,
-      nextStep: ja.waitingFor,
+      nextStep: ja.nextStep,
       statusOptions: ja.statusOptions,
     });
     setTimeout(() => {
@@ -118,7 +118,7 @@ export default function JATable() {
     statusChangeModal.setData({
       ja: ja,
       status: ja.status,
-      nextStep: ja.waitingFor,
+      nextStep: ja.nextStep,
       statusOptions: ja.statusOptions,
     });
     setTimeout(() => {
@@ -171,9 +171,9 @@ export default function JATable() {
         },
       },
       {
-        isVisible: selectedColumns.includes("waitingFor"),
+        isVisible: selectedColumns.includes("nextStep"),
         label: "Next Step",
-        key: "waitingFor",
+        key: "nextStep",
         headerCustomCss: "",
         cell: {
           customCss: "text-left cursor-pointer",

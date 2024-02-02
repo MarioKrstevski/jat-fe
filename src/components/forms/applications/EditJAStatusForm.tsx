@@ -29,8 +29,8 @@ import {
   JobApplicationStatus,
   TimelineEntry,
 } from "@/types";
-import { Checkbox } from "../ui/checkbox";
-import { DateTimePicker } from "../DateTimePicker";
+import { Checkbox } from "../../ui/checkbox";
+import { DateTimePicker } from "../../DateTimePicker";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
@@ -38,7 +38,7 @@ import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
   status: z.string(),
-  waitingFor: z.string().optional(),
+  nextStep: z.string().optional(),
   date: z.date().optional(),
 });
 
@@ -62,7 +62,7 @@ export default function EditJAStatusForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       status: activeJobApplication.status,
-      waitingFor: activeJobApplication.waitingFor,
+      nextStep: activeJobApplication.nextStep,
       //  undefined because they need to select a date
       date: undefined,
     },
@@ -71,7 +71,7 @@ export default function EditJAStatusForm() {
   useEffect(() => {
     form.reset({
       status: activeJobApplication.status,
-      waitingFor: activeJobApplication.waitingFor,
+      nextStep: activeJobApplication.nextStep,
       date: new Date(),
     });
     setAddToTimeline(false);
@@ -190,7 +190,7 @@ export default function EditJAStatusForm() {
             />
             <FormField
               control={form.control}
-              name="waitingFor"
+              name="nextStep"
               render={({ field }) => {
                 return (
                   <FormItem>
@@ -199,7 +199,7 @@ export default function EditJAStatusForm() {
                       <Select
                         value={field.value}
                         onValueChange={(selection) => {
-                          form.setValue("waitingFor", selection);
+                          form.setValue("nextStep", selection);
                         }}
                       >
                         <SelectTrigger className="w-[180px]">

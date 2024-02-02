@@ -3,24 +3,24 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import ArchivedPage from "./pages/ArchivedPage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import SingleApplicationPage from "./pages/SingleApplicationPage";
-import Applications from "./pages/dashboard-links/Applications";
-import Contacts from "./pages/dashboard-links/Contacts";
-import Dashboard from "./pages/dashboard-links/Dashboard";
-import Interviews from "./pages/dashboard-links/Interviews";
-import Resume from "./pages/dashboard-links/Resume";
+import Contacts from "./pages/dashboard-links/contacts/Contacts";
+import Dashboard from "./pages/dashboard-links/dashboard/Dashboard";
+import Interviews from "./pages/dashboard-links/interviews/Interviews";
+import Resume from "./pages/dashboard-links/resume/Resume";
+import ActiveApplications from "./pages/dashboard-links/applications/ActiveApplications";
+import ArchivedApplications from "./pages/dashboard-links/applications/ArchivedApplications";
+import SingleApplicationView from "./pages/dashboard-links/applications/SingleApplicationView";
+import ApplicationsLayout from "./route-setup/layouts/ApplicationsLayout";
 import DashboardLayout from "./route-setup/layouts/DashboardLayout";
 import RootLayout from "./route-setup/layouts/RootLayout";
-import ApplicationsLayout from "./route-setup/layouts/ApplicationsLayout";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
 }
 
-export default function JAT() {
+export default function JobBuddy() {
   const router = createBrowserRouter([
     {
       element: <RootLayout />,
@@ -53,16 +53,16 @@ export default function JAT() {
               path: "applications",
               children: [
                 {
-                  element: <Applications />,
+                  element: <ActiveApplications />,
                   // path: "",
                   index: true,
                 },
                 {
-                  element: <SingleApplicationPage />,
+                  element: <SingleApplicationView />,
                   path: ":applicationId",
                 },
                 {
-                  element: <ArchivedPage />,
+                  element: <ArchivedApplications />,
                   path: "archived",
                 },
               ],

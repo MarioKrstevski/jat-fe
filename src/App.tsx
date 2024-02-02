@@ -1,9 +1,17 @@
-import JAT from "./JAT";
+import JobBuddy from "./JobBuddy";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <JAT />
+      <QueryClientProvider client={queryClient}>
+        <JobBuddy />
+      </QueryClientProvider>
     </>
   );
 }

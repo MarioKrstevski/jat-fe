@@ -10,12 +10,23 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SideMenu from "../SideMenu";
+import { useQuery } from "@tanstack/react-query";
 
 export default function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
 
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["applications"],
+    queryFn: () =>
+      api.applications.getJobApplications(userId).then((res) => {
+        jobApplicationStore.setData(res.data);
+        return res.data;
+      }),
+  });
+
+  console.log(data, isLoading, error);
   //effect description
   useEffect(() => {
     if (isLoaded && !userId) {
@@ -26,21 +37,21 @@ export default function DashboardLayout() {
       // navigate("/d");
     }
   }, [userId, isLoaded]);
-  function handleFetchingJobApplications() {
-    // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
-    api.applications
-      .getJobApplications(userId)
-      .then((res) => {
-        // addCustomKeyValue
-        jobApplicationStore.setData(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
-  useEffect(() => {
-    handleFetchingJobApplications();
-  }, []);
+  // function handleFetchingJobApplications() {
+  //   // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
+  //   api.applications
+  //     .getJobApplications(userId)
+  //     .then((res) => {
+  //       // addCustomKeyValue
+  //       jobApplicationStore.setData(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  // }
+  // useEffect(() => {
+  //   handleFetchingJobApplications();
+  // }, []);
 
   if (!isLoaded || !userId) {
     return null;

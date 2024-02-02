@@ -4,7 +4,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ArchivedPage() {
+export default function ArchivedApplications() {
   const { userId, isLoaded } = useAuth();
   const applications = useJobApplicationsStore(
     (state) => state.jobApplications

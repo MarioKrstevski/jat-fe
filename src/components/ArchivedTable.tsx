@@ -154,7 +154,7 @@ export default function ArchivedTable({
                           className="text-left"
                           onClick={() => handleChangeStatus(ja)}
                         >
-                          {ja.waitingFor}
+                          {ja.nextStep}
                         </button>
                       </TableCell>
                       <TableCell>

@@ -74,12 +74,12 @@ export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
     ),
   },
   {
-    accessorKey: "waitingFor",
+    accessorKey: "nextStep",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Next Step" />
     ),
     cell: ({ row }) => (
-      <StatusField ja={row.original} label="waitingFor" />
+      <StatusField ja={row.original} label="nextStep" />
     ),
     enableSorting: true,
     enableHiding: true,

@@ -24,17 +24,17 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { JobApplication, JobApplicationStatus } from "@/types";
-import { Checkbox } from "../ui/checkbox";
-import { DateTimePicker } from "../DateTimePicker";
+import { Checkbox } from "../../ui/checkbox";
+import { DateTimePicker } from "../../DateTimePicker";
 import { useAuth } from "@clerk/clerk-react";
 import { defaultStatusOptions } from "@/global/values";
-import { Textarea } from "../ui/textarea";
-import { Separator } from "../ui/separator";
+import { Textarea } from "../../ui/textarea";
+import { Separator } from "../../ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../ui/collapsible";
+} from "../../ui/collapsible";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
@@ -52,7 +52,7 @@ const formSchema = z.object({
   companyInfo: z.string().optional(),
   applylink: z.string().optional(),
   link: z.string().optional(),
-  waitingFor: z.string().optional(),
+  nextStep: z.string().optional(),
   timeline: z.string().optional(),
   statusOptions: z.string().optional(),
   resumeUsed: z.string().optional(),
@@ -66,6 +66,7 @@ const formSchema = z.object({
   applicationDeadline: z.date().optional(),
   salaryDetails: z.string().optional(),
   nextInterviewDate: z.date().optional(),
+  appliedDate: z.date().optional(),
   appliedFrom: z.string().optional(),
   heardAboutFrom: z.string().optional(),
   mapLocation: z.string().optional(),
@@ -97,7 +98,7 @@ export default function EditJAForm() {
       companyInfo: jae?.companyInfo,
       applylink: jae?.applylink,
       link: jae?.link,
-      waitingFor: jae?.waitingFor,
+      nextStep: jae?.nextStep,
       timeline: jae?.timeline,
       statusOptions: jae?.statusOptions,
       resumeUsed: jae?.resumeUsed,
@@ -114,6 +115,7 @@ export default function EditJAForm() {
       wasReferred: jae?.wasReferred,
       referredBy: jae?.referredBy,
       postedDate: parseDateOrUndefined(jae?.postedDate),
+      appliedDate: parseDateOrUndefined(jae?.appliedDate),
       applicationDeadline: parseDateOrUndefined(
         jae?.applicationDeadline
       ),
@@ -136,7 +138,7 @@ export default function EditJAForm() {
         companyInfo: jae.companyInfo,
         applylink: jae.applylink,
         link: jae.link,
-        waitingFor: jae.waitingFor,
+        nextStep: jae.nextStep,
         timeline: jae.timeline,
         statusOptions: jae.statusOptions,
         resumeUsed: jae.resumeUsed,
@@ -153,6 +155,7 @@ export default function EditJAForm() {
         wasReferred: jae.wasReferred,
         referredBy: jae.referredBy,
         postedDate: parseDateOrUndefined(jae.postedDate),
+        appliedDate: parseDateOrUndefined(jae.appliedDate),
         applicationDeadline: parseDateOrUndefined(
           jae.applicationDeadline
         ),
@@ -321,7 +324,7 @@ export default function EditJAForm() {
 
             <FormField
               control={form.control}
-              name="waitingFor"
+              name="nextStep"
               render={({ field }) => {
                 return (
                   <FormItem className="flex-1">
@@ -330,7 +333,7 @@ export default function EditJAForm() {
                       <Select
                         value={field.value}
                         onValueChange={(selection) => {
-                          form.setValue("waitingFor", selection);
+                          form.setValue("nextStep", selection);
                         }}
                       >
                         <SelectTrigger className=" w-full">

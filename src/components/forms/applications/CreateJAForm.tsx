@@ -12,8 +12,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
 import {
   SelectValue,
   SelectTrigger,
@@ -22,19 +22,19 @@ import {
   SelectGroup,
   SelectContent,
   Select,
-} from "../ui/select";
-import { Separator } from "../ui/separator";
+} from "../../ui/select";
+import { Separator } from "../../ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../ui/collapsible";
-import { Button } from "../ui/button";
+} from "../../ui/collapsible";
+import { Button } from "../../ui/button";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { defaultStatusOptions } from "@/global/values";
-import { Checkbox } from "../ui/checkbox";
-import { Textarea } from "../ui/textarea";
-import { DateTimePicker } from "../DateTimePicker";
+import { Checkbox } from "../../ui/checkbox";
+import { Textarea } from "../../ui/textarea";
+import { DateTimePicker } from "../../DateTimePicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
@@ -48,7 +48,7 @@ const formSchema = z.object({
   companyInfo: z.string().optional(),
   applylink: z.string().optional(),
   link: z.string().optional(),
-  waitingFor: z.string().optional(),
+  nextStep: z.string().optional(),
   timeline: z.string().optional(),
   statusOptions: z.string().optional(),
   resumeUsed: z.string().optional(),
@@ -62,6 +62,7 @@ const formSchema = z.object({
   applicationDeadline: z.date().optional(),
   salaryDetails: z.string().optional(),
   nextInterviewDate: z.date().optional(),
+  appliedDate: z.date().optional(),
   appliedFrom: z.string().optional(),
   heardAboutFrom: z.string().optional(),
   mapLocation: z.string().optional(),
@@ -89,7 +90,7 @@ export default function CreateJAForm({}) {
       companyInfo: "",
       applylink: "",
       link: "",
-      waitingFor: "Applying",
+      nextStep: "Applying",
       timeline: "",
       statusOptions: defaultStatusOptions.join(","),
       resumeUsed: "",
@@ -106,6 +107,7 @@ export default function CreateJAForm({}) {
       wasReferred: false,
       referredBy: "",
       postedDate: undefined,
+      appliedDate: undefined,
       applicationDeadline: undefined,
       nextInterviewDate: undefined,
     },
@@ -285,7 +287,7 @@ export default function CreateJAForm({}) {
 
             <FormField
               control={form.control}
-              name="waitingFor"
+              name="nextStep"
               render={({ field }) => {
                 return (
                   <FormItem className="flex-1">
@@ -294,7 +296,7 @@ export default function CreateJAForm({}) {
                       <Select
                         value={field.value}
                         onValueChange={(selection) => {
-                          form.setValue("waitingFor", selection);
+                          form.setValue("nextStep", selection);
                         }}
                       >
                         <SelectTrigger className=" w-full">
@@ -539,6 +541,32 @@ export default function CreateJAForm({}) {
                                   "nextInterviewDate",
                                   date
                                 );
+                              }}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+
+              {/* Next Interview Date */}
+              <div className="flex gap-4 mb-3 ">
+                <FormField
+                  control={form.control}
+                  name="appliedDate"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>Next Interview Date</FormLabel>
+                        <FormControl>
+                          <div className="flex items-center">
+                            <DateTimePicker
+                              date={field.value}
+                              enableClear
+                              setDate={(date) => {
+                                form.setValue("appliedDate", date);
                               }}
                             />
                           </div>

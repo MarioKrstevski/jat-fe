@@ -31,7 +31,7 @@ export const selectableColumns = [
   // { key: "companyName", label: "Company" },
   // { key: "jobTitle", label: "Position" },
   { key: "status", label: "Status" },
-  { key: "waitingFor", label: "Next Step" },
+  { key: "nextStep", label: "Next Step" },
   { key: "nextInterviewDate", label: "Next Interview" },
 
   // selectable in this order shown
@@ -42,6 +42,7 @@ export const selectableColumns = [
 
   { key: "applicationDeadline", label: "Application Deadline" },
   { key: "postedDate", label: "Job Posted At" },
+  { key: "appliedDate", label: "Applied At" },
 
   { key: "interestLevel", label: "Interest Level" },
   { key: "salaryDetails", label: "Salary" },

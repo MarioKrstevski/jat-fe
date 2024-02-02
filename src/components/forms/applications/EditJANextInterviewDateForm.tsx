@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { DateTimePicker } from "../DateTimePicker";
+import { DateTimePicker } from "../../DateTimePicker";
 import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { JobApplication } from "@/types";

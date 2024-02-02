@@ -214,7 +214,7 @@ export default function JobApplicationDetails({
           <div className="flex gap-1 justify-between items-start">
             <div className="text-gray-700 dark:text-gray-400">
               <div>Current status: {ja.status}</div>
-              <div>Next step: {ja.waitingFor}</div>
+              <div>Next step: {ja.nextStep}</div>
               <div>Application deadline: {applicationDeadline}</div>
               <div>Next Interview: {nextInterviewDate}</div>
             </div>
