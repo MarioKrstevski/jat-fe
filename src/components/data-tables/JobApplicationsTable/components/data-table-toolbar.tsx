@@ -26,7 +26,6 @@ export function DataTableToolbar<TData>({
   searchKey,
   placeholder,
 }: DataTableToolbarProps<TData>) {
-  const { userId } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
@@ -55,7 +54,7 @@ export function DataTableToolbar<TData>({
 
     setIsLoading(true);
     api.applications
-      .archiveJobApplications(selectedApplicationsIds, userId!, true)
+      .archiveJobApplications(selectedApplicationsIds, true)
       .then((res) => {
         console.log("res", res.data);
 
@@ -100,7 +99,7 @@ export function DataTableToolbar<TData>({
       });
     setIsLoading(true);
     api.applications
-      .deleteJobApplication(selectedApplicationsIds, userId!)
+      .deleteJobApplication(selectedApplicationsIds)
       .then((res) => {
         console.log("res", res.data);
 

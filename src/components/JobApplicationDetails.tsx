@@ -25,8 +25,6 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
-  const { userId, getToken } = useAuth();
-  console.log(getToken().then((res) => console.log("res", res)));
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +33,7 @@ export default function JobApplicationDetails({
   function onDelete() {
     setIsLoading(true);
     api.applications
-      .deleteJobApplication([ja.id], userId!)
+      .deleteJobApplication([ja.id])
       .then((res) => {
         console.log("res", res.data);
 
@@ -66,7 +64,7 @@ export default function JobApplicationDetails({
   function handleUnarchiving() {
     setIsLoading(true);
     api.applications
-      .archiveJobApplications([jobApplication.id], userId!, false)
+      .archiveJobApplications([jobApplication.id], false)
       .then((res) => {
         console.log("res", res.data);
 

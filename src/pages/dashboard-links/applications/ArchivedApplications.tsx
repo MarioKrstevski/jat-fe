@@ -10,7 +10,6 @@ export default function ArchivedApplications() {
     (state) => state.jobApplications
   );
   const navigate = useNavigate();
-  console.log("test", userId);
 
   //effect description
   useEffect(() => {

@@ -75,7 +75,6 @@ const formSchema = z.object({
 });
 
 export default function EditJAForm() {
-  const { userId } = useAuth();
   const dialogControl = useDialogControl();
   const editModal = dialogControl.modals["editJA"]!;
   const jobApplicationStore = useJobApplicationsStore();
@@ -168,17 +167,11 @@ export default function EditJAForm() {
 
   function handleEditJobApplication(
     application: any,
-    applicationId: string,
-    userId: string
+    applicationId: string
   ) {
     setIsLoading(true);
     api.applications
-      .editJobApplication(
-        application,
-        applicationId,
-        userId,
-        "allChange"
-      )
+      .editJobApplication(application, applicationId, "allChange")
       .then((res) => {
         console.log("res.data", res.data);
 
@@ -227,7 +220,7 @@ export default function EditJAForm() {
 
     valuesToSend = changeDateValuesFromUndefinedToNull(valuesToSend);
 
-    handleEditJobApplication(valuesToSend, jae.id, userId!);
+    handleEditJobApplication(valuesToSend, jae.id);
     // editModal.onClose();
   }
 

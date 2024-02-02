@@ -43,7 +43,6 @@ const formSchema = z.object({
 });
 
 export default function EditJAStatusForm() {
-  const { userId } = useAuth();
   const jobApplicationStore = useJobApplicationsStore();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -79,17 +78,11 @@ export default function EditJAStatusForm() {
 
   function handleEditJobApplication(
     application: any,
-    applicationId: string,
-    userId: string
+    applicationId: string
   ) {
     setIsLoading(true);
     api.applications
-      .editJobApplication(
-        application,
-        applicationId,
-        userId,
-        "statusChange"
-      )
+      .editJobApplication(application, applicationId, "statusChange")
       .then((res) => {
         console.log("res.data", res.data);
 
@@ -135,11 +128,7 @@ export default function EditJAStatusForm() {
       valueToSend.timeline = JSON.stringify(existingTimeline);
       delete valueToSend.date;
     }
-    handleEditJobApplication(
-      valueToSend,
-      activeJobApplication.id,
-      userId!
-    );
+    handleEditJobApplication(valueToSend, activeJobApplication.id);
   }
 
   return (

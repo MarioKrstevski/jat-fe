@@ -39,7 +39,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
-  // userId: z.string().optional(),
   companyName: z.string(),
   jobTitle: z.string(),
   status: z.string(),
@@ -74,14 +73,12 @@ export default function CreateJAForm({}) {
   const dialogControl = useDialogControl();
   const jobApplicationStore = useJobApplicationsStore();
   const formContainerRef = useRef<HTMLDivElement>(null);
-  const { userId } = useAuth();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // userId: userId!,
       companyName: "",
       jobTitle: "",
       jobLocation: "",
@@ -157,12 +154,11 @@ export default function CreateJAForm({}) {
   }
 
   function handleCreateJobApplication(
-    jobApplication: z.infer<typeof formSchema>,
-    userId: string
+    jobApplication: z.infer<typeof formSchema>
   ) {
     setIsLoading(true);
     api.applications
-      .createJobApplication(jobApplication, userId)
+      .createJobApplication(jobApplication)
       .then((res) => {
         console.log("res", res);
         toast.success("Job application created successfully");
@@ -191,17 +187,8 @@ export default function CreateJAForm({}) {
   }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("add new", values);
-
     const jobApplication = { ...values };
-
-    if (userId === null) {
-      // Handle the unexpected absence of userId, perhaps by logging out the user
-      // or showing an error message.
-      throw new Error(
-        "User ID is not available. User must be logged in to submit a job application."
-      );
-    }
-    handleCreateJobApplication(jobApplication, userId!);
+    handleCreateJobApplication(jobApplication);
   }
   return (
     <div className="space-y-4 py-2 pb-4" ref={formContainerRef}>

@@ -5,7 +5,6 @@ import { useAuth } from "@clerk/clerk-react";
 import { Link, useParams } from "react-router-dom";
 
 export default function SingleApplicationView() {
-  const { userId, isLoaded } = useAuth();
   const { applicationId } = useParams();
   console.log("applicationId", applicationId);
 

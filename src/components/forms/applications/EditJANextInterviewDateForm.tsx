@@ -26,7 +26,6 @@ const formSchema = z.object({
 });
 export default function EditJANextInterviewDateForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const { userId } = useAuth();
 
   const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
@@ -48,15 +47,13 @@ export default function EditJANextInterviewDateForm() {
 
   function handleEditJobApplication(
     application: any,
-    applicationId: string,
-    userId: string
+    applicationId: string
   ) {
     setIsLoading(true);
     api.applications
       .editJobApplication(
         application,
         applicationId,
-        userId,
         "nextInterviewDateChange"
       )
       .then((res) => {
@@ -106,12 +103,9 @@ export default function EditJANextInterviewDateForm() {
     }
 
     console.log("values", valuesToSend);
+    console.log("values", typeof valuesToSend.nextInterviewDate);
 
-    handleEditJobApplication(
-      valuesToSend,
-      activeJobApplication.id,
-      userId!
-    );
+    handleEditJobApplication(valuesToSend, activeJobApplication.id);
   }
   return (
     <div className="space-y-4 py-2 pb-4">
