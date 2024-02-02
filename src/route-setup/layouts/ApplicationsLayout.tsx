@@ -14,6 +14,14 @@ const secondaryNavLinks = [
     to: "/d/applications/archived",
     label: "Archived",
   },
+  {
+    to: "/d/applications/import",
+    label: "Import",
+  },
+  {
+    to: "/d/applications/kanban",
+    label: "Kanban Board",
+  },
 ];
 
 export default function ApplicationsLayout() {

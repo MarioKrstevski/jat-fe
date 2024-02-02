@@ -2,7 +2,7 @@ import Heading from "@/components/ui/custom/heading";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
-import AddNewButton from "@/pages/dashboard-links/applications/AddNewButton";
+import AddNewButton from "@/pages/dashboard-links/applications/components/AddNewButton";
 
 export default function JobApplicationsTable() {
   const jobApplications = useJobApplicationsStore(

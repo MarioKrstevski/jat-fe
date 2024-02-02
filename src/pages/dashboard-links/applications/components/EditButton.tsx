@@ -1,5 +1,5 @@
 import { EditIcon, PlusCircleIcon } from "lucide-react";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../../components/ui/button";
 import { JobApplication } from "@/types";
 import { cn } from "@/lib/utils";
 import { useDialogControl } from "@/hooks/useDialogControl";

@@ -31,14 +31,49 @@ export const sidenav = [
     icon: <FileIcon className="h-4 w-4" />,
   },
   {
-    to: "/interviews",
+    to: "/d/interviews",
     label: "Interviews",
     icon: <SendIcon className="h-4 w-4" />,
   },
   {
-    to: "/signup",
+    to: "/d/notes",
     label: "Notes",
     icon: <Trash2Icon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/communities",
+    label: "Communities",
+    icon: <Users2Icon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/reminders",
+    label: "Reminders",
+    icon: <Users2Icon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/job-board",
+    label: "Job Board",
+    icon: <LineChartIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/contacts",
+    label: "Contacts",
+    icon: <PersonIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/tools",
+    label: "Tools",
+    icon: <PackageIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/companies",
+    label: "Companies",
+    icon: <PackageIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/linkedin",
+    label: "LinkedIn",
+    icon: <PackageIcon className="h-4 w-4" />,
   },
   {
     to: current,
@@ -52,16 +87,6 @@ export const sidenav = [
   },
   {
     to: current,
-    label: "Communities",
-    icon: <Users2Icon className="h-4 w-4" />,
-  },
-  {
-    to: current,
-    label: "Job Board",
-    icon: <LineChartIcon className="h-4 w-4" />,
-  },
-  {
-    to: current,
     label: "Mentors",
     icon: <PackageIcon className="h-4 w-4" />,
   },
@@ -69,15 +94,5 @@ export const sidenav = [
     to: current,
     label: "Projects",
     icon: <UsersIcon className="h-4 w-4" />,
-  },
-  {
-    to: current,
-    label: "Contacts",
-    icon: <PersonIcon className="h-4 w-4" />,
-  },
-  {
-    to: current,
-    label: "Companies",
-    icon: <PackageIcon className="h-4 w-4" />,
   },
 ];

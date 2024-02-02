@@ -10,7 +10,7 @@ import {
   UndoIcon,
 } from "lucide-react";
 import { format, set } from "date-fns";
-import EditButton from "./EditButton";
+import EditButton from "./components/EditButton";
 import { useState } from "react";
 import AlertModal from "../../../components/modals/AlertModal";
 import { api } from "@/api/backend";
