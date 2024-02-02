@@ -25,7 +25,8 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
-  const { userId } = useAuth();
+  const { userId, getToken } = useAuth();
+  console.log(getToken().then((res) => console.log("res", res)));
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

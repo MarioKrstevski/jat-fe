@@ -1,8 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  JobApplicationGenerated,
-  JobApplicationStatus,
-} from "../types";
+import { JobApplicationStatus } from "../../types";
 const jobApplicationStatuses: JobApplicationStatus[] = [
   "Wishlist",
   "Applied",
@@ -32,7 +29,7 @@ function getRandomJobApplicationStatus(): JobApplicationStatus {
 export function generateFakeJobApplications(size: number) {
   const jobApplications = [];
   for (let i = 0; i < size; i++) {
-    const jobApplication: JobApplicationGenerated = {
+    const jobApplication: any = {
       // userId: faker.string.uuid(),
       id: faker.string.uuid(),
       isArchived: false,
@@ -76,6 +73,6 @@ export function generateFakeJobApplications(size: number) {
   return jobApplications;
 }
 
-export function getFakeJobApplications(): JobApplicationGenerated[] {
+export function getFakeJobApplications(): any[] {
   return generateFakeJobApplications(30);
 }

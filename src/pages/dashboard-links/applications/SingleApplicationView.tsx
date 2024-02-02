@@ -1,4 +1,5 @@
 import JobApplicationDetails from "@/components/JobApplicationDetails";
+import { SecondaryNavLink } from "@/components/SecondaryNav";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { Link, useParams } from "react-router-dom";
@@ -19,9 +20,11 @@ export default function SingleApplicationView() {
     return (
       <div>
         Job Application not found
-        <Link to={"/applications"}>
-          Go back to Applications table
-        </Link>
+        <br />
+        <SecondaryNavLink
+          to={"/d/applications"}
+          label="Go back to Applications table"
+        />
       </div>
     );
   }

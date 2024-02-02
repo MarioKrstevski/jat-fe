@@ -4,7 +4,7 @@ interface SecondaryNavLink {
   to: string;
   label: string;
 }
-function SecondaryNavLink({ to, label }: SecondaryNavLink) {
+export function SecondaryNavLink({ to, label }: SecondaryNavLink) {
   const isActive = useMatch(to);
   return (
     <Link
