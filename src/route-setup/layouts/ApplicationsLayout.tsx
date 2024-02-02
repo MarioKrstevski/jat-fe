@@ -4,7 +4,11 @@ import SecondaryNav from "@/components/SecondaryNav";
 const secondaryNavLinks = [
   {
     to: "/d/applications",
-    label: "Applications",
+    label: "Active",
+  },
+  {
+    to: "/d/applications/wishlist",
+    label: "Wishlist",
   },
   {
     to: "/d/applications/archived",

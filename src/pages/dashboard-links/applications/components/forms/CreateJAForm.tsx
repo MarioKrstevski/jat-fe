@@ -1,6 +1,10 @@
 import { z } from "zod";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { useAuth } from "@clerk/clerk-react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/api/backend";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -8,43 +12,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-
+} from "../../../../../components/ui/form";
+import { Input } from "../../../../../components/ui/input";
 import {
   SelectValue,
   SelectTrigger,
+  SelectLabel,
   SelectItem,
   SelectGroup,
   SelectContent,
   Select,
-} from "@/components/ui/select";
-
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { JobApplication, JobApplicationStatus } from "@/types";
-import { Checkbox } from "../../ui/checkbox";
-import { DateTimePicker } from "../../DateTimePicker";
-import { useAuth } from "@clerk/clerk-react";
-import { defaultStatusOptions } from "@/global/values";
-import { Textarea } from "../../ui/textarea";
-import { Separator } from "../../ui/separator";
+} from "../../../../../components/ui/select";
+import { Separator } from "../../../../../components/ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../../ui/collapsible";
+} from "../../../../../components/ui/collapsible";
+import { Button } from "../../../../../components/ui/button";
 import { ChevronsUpDownIcon } from "lucide-react";
-import { api } from "@/api/backend";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { defaultStatusOptions } from "@/global/values";
+import { Checkbox } from "../../../../../components/ui/checkbox";
+import { Textarea } from "../../../../../components/ui/textarea";
+import { DateTimePicker } from "../../../../../components/DateTimePicker";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { parseDateOrUndefined } from "@/lib/utils";
 
 const formSchema = z.object({
-  companyName: z
-    .string()
-    .min(1, { message: "Company name is required" }),
+  companyName: z.string(),
   jobTitle: z.string(),
   status: z.string(),
   jobLocation: z.string().optional(),
@@ -74,167 +69,129 @@ const formSchema = z.object({
   companyId: z.string().nullable(),
 });
 
-export default function EditJAForm() {
+export default function CreateJAForm({}) {
   const dialogControl = useDialogControl();
-  const editModal = dialogControl.modals["editJA"]!;
   const jobApplicationStore = useJobApplicationsStore();
-
-  const jobApplicationEditted = editModal.data
-    .value as JobApplication;
-  const jae = jobApplicationEditted;
+  const formContainerRef = useRef<HTMLDivElement>(null);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      companyName: jae?.companyName,
-      jobTitle: jae?.jobTitle,
-      jobLocation: jae?.jobLocation,
-      status: jae?.status,
-      jobDescription: jae?.jobDescription,
-      companyInfo: jae?.companyInfo,
-      applylink: jae?.applylink,
-      link: jae?.link,
-      nextStep: jae?.nextStep,
-      timeline: jae?.timeline,
-      statusOptions: jae?.statusOptions,
-      resumeUsed: jae?.resumeUsed,
-      motivationalLetter: jae?.motivationalLetter,
-      notes: jae?.notes,
-      salaryDetails: jae?.salaryDetails,
-      appliedFrom: jae?.appliedFrom,
-      heardAboutFrom: jae?.heardAboutFrom,
-      mapLocation: jae?.mapLocation,
-      todos: jae?.todos,
-      companyId: jae?.companyId,
-      interestLevel: jae?.interestLevel,
-      isRemote: jae?.isRemote,
-      wasReferred: jae?.wasReferred,
-      referredBy: jae?.referredBy,
-      postedDate: parseDateOrUndefined(jae?.postedDate),
-      appliedDate: parseDateOrUndefined(jae?.appliedDate),
-      applicationDeadline: parseDateOrUndefined(
-        jae?.applicationDeadline
-      ),
-      nextInterviewDate: parseDateOrUndefined(jae?.nextInterviewDate),
+      companyName: "",
+      jobTitle: "",
+      jobLocation: "",
+      status: "Wishlist",
+      jobDescription: "",
+      companyInfo: "",
+      applylink: "",
+      link: "",
+      nextStep: "Applying",
+      timeline: "",
+      statusOptions: defaultStatusOptions.join(","),
+      resumeUsed: "",
+      motivationalLetter: "",
+      notes: "",
+      salaryDetails: "",
+      appliedFrom: "",
+      heardAboutFrom: "",
+      mapLocation: "",
+      todos: "",
+      companyId: null,
+      interestLevel: 0,
+      isRemote: false,
+      wasReferred: false,
+      referredBy: "",
+      postedDate: undefined,
+      appliedDate: undefined,
+      applicationDeadline: undefined,
+      nextInterviewDate: undefined,
     },
   });
 
-  // this reset is important to update the data if we open a job close it and open
-  // another one which has a new date, this needs to update it since we are using one
-  // modal for all the jobs
+  const parseCopiedJobDetails = () => {
+    // Get the copied string from the clipboard
+    const copiedString = navigator.clipboard.readText();
 
-  useEffect(() => {
-    if (jae) {
-      form.reset({
-        companyName: jae.companyName,
-        jobTitle: jae.jobTitle,
-        jobLocation: jae.jobLocation,
-        status: jae.status,
-        jobDescription: jae.jobDescription,
-        companyInfo: jae.companyInfo,
-        applylink: jae.applylink,
-        link: jae.link,
-        nextStep: jae.nextStep,
-        timeline: jae.timeline,
-        statusOptions: jae.statusOptions,
-        resumeUsed: jae.resumeUsed,
-        motivationalLetter: jae.motivationalLetter,
-        notes: jae.notes,
-        salaryDetails: jae.salaryDetails,
-        appliedFrom: jae.appliedFrom,
-        heardAboutFrom: jae.heardAboutFrom,
-        mapLocation: jae.mapLocation,
-        todos: jae.todos,
-        companyId: jae.companyId,
-        interestLevel: jae.interestLevel,
-        isRemote: jae.isRemote,
-        wasReferred: jae.wasReferred,
-        referredBy: jae.referredBy,
-        postedDate: parseDateOrUndefined(jae.postedDate),
-        appliedDate: parseDateOrUndefined(jae.appliedDate),
-        applicationDeadline: parseDateOrUndefined(
-          jae.applicationDeadline
-        ),
-        nextInterviewDate: parseDateOrUndefined(
-          jae.nextInterviewDate
-        ),
-      });
-    }
-  }, [editModal.data.ja]);
+    copiedString.then((text) => {
+      try {
+        // Parse the string into an object
+        const parsedJobDetails = JSON.parse(text);
 
-  function handleEditJobApplication(
-    application: any,
-    applicationId: string
+        // console.log("Parsed job details:", parsedJobDetails);
+
+        const {
+          company: companyName,
+          jobDescription,
+          jobTitle,
+          location,
+        } = parsedJobDetails;
+
+        console.log("jobdesc", jobDescription);
+
+        form.setValue("companyName", companyName);
+        form.setValue("jobDescription", jobDescription);
+        form.setValue("jobTitle", jobTitle);
+        form.setValue("jobLocation", location);
+
+        toast.success("Fields filled successfully");
+        // Update state with the parsed object
+
+        // You can now use the parsedJobDetails object in your app
+        // For example, display the information in a component
+      } catch (error) {
+        console.error("Error parsing job details:", error);
+      }
+    });
+  };
+
+  function handleJatPaste() {
+    parseCopiedJobDetails();
+  }
+  function handleFormReset() {
+    form.reset();
+  }
+
+  function handleCreateJobApplication(
+    jobApplication: z.infer<typeof formSchema>
   ) {
     setIsLoading(true);
     api.applications
-      .editJobApplication(application, applicationId, "allChange")
+      .createJobApplication(jobApplication)
       .then((res) => {
-        console.log("res.data", res.data);
+        console.log("res", res);
+        toast.success("Job application created successfully");
 
-        const newJobApplicationsArray =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === applicationId) {
-              return res.data;
-            } else {
-              return ja;
-            }
-          });
-
+        const newJobApplicationsArray = [
+          ...jobApplicationStore.jobApplications,
+          res.data,
+        ];
         jobApplicationStore.setData(newJobApplicationsArray);
+
         form.reset();
-        toast.success("Job application updated");
-        dialogControl.closeModal("editJA");
+        dialogControl.closeModal("createJA");
       })
       .catch((err) => {
-        console.log("err", err);
+        toast.error(
+          "Job application creation failed, check error in console"
+        );
+
+        toast.error(JSON.stringify(err));
+        console.log("err", JSON.stringify(err.response.data));
+        console.log("err", JSON.stringify(err));
       })
       .finally(() => {
         setIsLoading(false);
       });
   }
-
-  function changeDateValuesFromUndefinedToNull(values: any) {
-    // console.log("valls", {
-    //   nextInterviewDate: values.nextInterviewDate,
-    //   applicationDeadline: values.applicationDeadline,
-    //   postedDate: values.postedDate,
-    // });
-    if (values.nextInterviewDate === undefined) {
-      values.nextInterviewDate = null;
-    }
-    if (values.applicationDeadline === undefined) {
-      values.applicationDeadline = null;
-    }
-    if (values.postedDate === undefined) {
-      values.postedDate = null;
-    }
-    return values;
-  }
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log("edit values", values);
-    let valuesToSend = { ...values };
-
-    valuesToSend = changeDateValuesFromUndefinedToNull(valuesToSend);
-
-    handleEditJobApplication(valuesToSend, jae.id);
-    // editModal.onClose();
+    console.log("add new", values);
+    const jobApplication = { ...values };
+    handleCreateJobApplication(jobApplication);
   }
-
-  //effect description
-  useEffect(() => {
-    // minimise collapsable after closing the edit modal
-    setIsOpen(false);
-  }, [editModal.isOpen]);
-
   return (
-    <div className="space-y-4 py-2 pb-4 ">
-      {form.formState.errors && (
-        <div>{JSON.stringify(form.formState.errors)}</div>
-      )}
+    <div className="space-y-4 py-2 pb-4" ref={formContainerRef}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Company Name */}
@@ -362,7 +319,12 @@ export default function EditJAForm() {
 
           <Collapsible
             open={isOpen}
-            onOpenChange={setIsOpen}
+            onOpenChange={(open) => {
+              const parentElement = formContainerRef.current
+                ?.parentNode as HTMLElement;
+              parentElement?.scrollBy(0, 100);
+              setIsOpen(open);
+            }}
             className="w-full space-y-2"
           >
             <CollapsibleTrigger asChild>
@@ -431,7 +393,7 @@ export default function EditJAForm() {
                               id="is-remote"
                               checked={field.value}
                               onCheckedChange={(value) => {
-                                // console.log("value", value);
+                                console.log("value", value);
                                 form.setValue(
                                   "isRemote",
                                   value as boolean
@@ -466,7 +428,7 @@ export default function EditJAForm() {
                           </span>
                         </FormLabel>
                         <FormControl>
-                          <Textarea {...field} value={field.value} />
+                          <Textarea {...field} />
                         </FormControl>
                       </FormItem>
                     );
@@ -508,10 +470,6 @@ export default function EditJAForm() {
                               date={field.value}
                               enableClear
                               setDate={(date) => {
-                                console.log(
-                                  "date " + field.name,
-                                  date
-                                );
                                 form.setValue(
                                   "applicationDeadline",
                                   date
@@ -842,19 +800,31 @@ export default function EditJAForm() {
           <div className="pt-6 space-x-2 flex items-center justify-end">
             <Button
               disabled={isLoading}
-              type="button"
               variant={"outline"}
-              onClick={() => dialogControl.closeModal("editJA")}
+              className="mr-auto"
+              type="button"
+              onClick={handleJatPaste}
             >
-              Cancel
+              JAT Paste
             </Button>
             <Button
               disabled={isLoading}
-              type="submit"
-              // onClick={() => {
-              //   onSubmit(form.getValues());
-              // }}
+              variant={"ghost"}
+              className="mr-auto"
+              type="reset"
+              onClick={handleFormReset}
             >
+              Reset
+            </Button>
+            <Button
+              disabled={isLoading}
+              variant={"outline"}
+              type="button"
+              onClick={() => dialogControl.closeModal("createJA")}
+            >
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type="submit">
               Continue
             </Button>
           </div>

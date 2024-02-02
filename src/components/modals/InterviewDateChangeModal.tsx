@@ -1,4 +1,4 @@
-import EditJANextInterviewDateForm from "../forms/applications/EditJANextInterviewDateForm";
+import EditJANextInterviewDateForm from "../../pages/dashboard-links/applications/components/forms/EditJANextInterviewDateForm";
 import { Modal } from "../ui/custom/modal";
 import { useDialogControl } from "@/hooks/useDialogControl";
 

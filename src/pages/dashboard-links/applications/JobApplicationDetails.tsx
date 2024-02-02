@@ -1,7 +1,7 @@
 import { JobApplication, TimelineEntry } from "@/types";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../../../components/ui/textarea";
 import { dateDistance } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   DeleteIcon,
   EditIcon,
@@ -12,7 +12,7 @@ import {
 import { format, set } from "date-fns";
 import EditButton from "./EditButton";
 import { useState } from "react";
-import AlertModal from "./modals/AlertModal";
+import AlertModal from "../../../components/modals/AlertModal";
 import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";

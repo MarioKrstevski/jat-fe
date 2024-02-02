@@ -1,5 +1,5 @@
 import { PlusCircleIcon } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../../../components/ui/button";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
 export default function AddNewButton() {

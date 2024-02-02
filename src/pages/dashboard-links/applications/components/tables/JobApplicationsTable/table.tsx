@@ -2,7 +2,7 @@ import Heading from "@/components/ui/custom/heading";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
-import AddNewButton from "@/components/AddNewButton";
+import AddNewButton from "@/pages/dashboard-links/applications/AddNewButton";
 
 export default function JobApplicationsTable() {
   const jobApplications = useJobApplicationsStore(
@@ -10,7 +10,7 @@ export default function JobApplicationsTable() {
   );
 
   const activeJobApplications = jobApplications.filter(
-    (ja) => !ja.isArchived
+    (ja) => !ja.isArchived && ja.status !== "Wishlist"
   );
 
   return (

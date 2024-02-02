@@ -13,42 +13,28 @@ import { useState } from "react";
 import { DateTime } from "luxon";
 import { formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../../../../../components/ui/checkbox";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
-export default function ArchivedTable({
+export default function WishlistTable({
   applications,
 }: {
   applications: JobApplication[];
 }) {
   const navigate = useNavigate();
-
   const dialogControl = useDialogControl();
-  const statusChangeModal = dialogControl.modals["editStatus"];
-  const interviewDateChangeModal =
-    dialogControl.modals["editInterviewDate"];
-
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
 
   function navigateToApplication(applicationId: string) {
     navigate("/d/applications/" + applicationId);
   }
-  const jobApplicationsToShow = applications
-    .filter((ja) => {
-      if (ja.isArchived) {
-        return true;
-      }
-
-      return false;
-    })
-    // sort by created time
-    .sort((a, b) => {
-      return (
-        DateTime.fromISO(b.createdAt.toString()).toMillis() -
-        DateTime.fromISO(a.createdAt.toString()).toMillis()
-      );
-    });
+  // sorty by createdAt desc
+  applications.sort((a, b) => {
+    return (
+      DateTime.fromISO(b.createdAt.toString()).toMillis() -
+      DateTime.fromISO(a.createdAt.toString()).toMillis()
+    );
+  });
 
   function handleInterviewDate(ja: JobApplication) {
     dialogControl.openModal("editInterviewDate", { value: ja });
@@ -94,7 +80,7 @@ export default function ArchivedTable({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {jobApplicationsToShow.map((ja, idx) => {
+                {applications.map((ja, idx) => {
                   const nextInterviewDateFormatted =
                     ja.nextInterviewDate
                       ? formatDate(
@@ -120,13 +106,13 @@ export default function ArchivedTable({
                           {idx + 1}
                           {/* No need to have a selection, i dont want to mass unarchive no point in it */}
                           {/* <Checkbox
-                            className="mx-auto h-5 w-5"
-                            onClick={() => {
-                              handleSelectRow(ja.id);
-                            }}
-                            name={"row-" + ja.id}
-                            id={"row-checked-" + ja.id}
-                          /> */}
+                              className="mx-auto h-5 w-5"
+                              onClick={() => {
+                                handleSelectRow(ja.id);
+                              }}
+                              name={"row-" + ja.id}
+                              id={"row-checked-" + ja.id}
+                            /> */}
                         </div>
                       </TableCell>
                       <TableCell
@@ -174,9 +160,9 @@ export default function ArchivedTable({
             </Table>
           </div>
         </div>
-        {jobApplicationsToShow.length === 0 && (
+        {applications.length === 0 && (
           <div className="flex justify-center w-full py-2">
-            No job applications found that are achived
+            No job applications found that are wishlisted
           </div>
         )}
       </div>

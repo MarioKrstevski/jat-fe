@@ -1,9 +1,9 @@
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableViewOptions } from "@/components/data-tables/JobApplicationsTable/components/data-table-view-options";
+import { DataTableViewOptions } from "@/pages/dashboard-links/applications/components/tables/JobApplicationsTable/components/data-table-view-options";
 import AlertModal from "@/components/modals/AlertModal";
-import EditButton from "@/components/EditButton";
+import EditButton from "@/pages/dashboard-links/applications/EditButton";
 import { useState } from "react";
 import { JobApplication } from "@/types";
 import { api } from "@/api/backend";

@@ -1,15 +1,16 @@
 import ArchivedTable from "@/pages/dashboard-links/applications/components/tables/ArchivedTable";
+import WishlistTable from "@/pages/dashboard-links/applications/components/tables/WishlistTable";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ArchivedApplications() {
+export default function WishlistApplications() {
   const { userId, isLoaded } = useAuth();
-  const navigate = useNavigate();
   const applications = useJobApplicationsStore(
     (state) => state.jobApplications
   );
+  const navigate = useNavigate();
 
   //effect description
   useEffect(() => {
@@ -20,15 +21,18 @@ export default function ArchivedApplications() {
     }
   }, [userId, isLoaded]);
 
-  const archivedApplications = applications.filter((ja) => {
-    if (ja.isArchived) {
+  const wishlistApplications = applications.filter((ja) => {
+    if (ja.status === "Wishlist" && !ja.isArchived) {
       return true;
     }
+
     return false;
   });
+  // sort by created time
+
   return (
     <div>
-      <ArchivedTable applications={archivedApplications} />
+      <WishlistTable applications={wishlistApplications} />
     </div>
   );
 }

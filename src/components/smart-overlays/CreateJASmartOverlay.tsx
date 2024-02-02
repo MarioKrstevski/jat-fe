@@ -1,4 +1,4 @@
-import CreateJAForm from "../forms/applications/CreateJAForm";
+import CreateJAForm from "../../pages/dashboard-links/applications/components/forms/CreateJAForm";
 import SmartOverlay from "../ui/custom/smart-overlay";
 import { useDialogControl } from "@/hooks/useDialogControl";
 

@@ -1,14 +1,10 @@
-import React, { memo } from "react";
-import LogoFull from "../logos/LogoFull";
+import { memo } from "react";
 
 type Props = {};
 
 const SplashScreen = ({}: Props) => {
   return (
     <div
-      //   initial={{ opacity: 0 }}
-      //   animate={{ opacity: 1 }}
-      //   exit={{ opacity: 0 }}
       key="splash"
       className="w-screen h-screen flex items-center justify-center bg-bg-sub fixed top-0 left-0 z-10"
     >

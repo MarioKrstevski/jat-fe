@@ -29,8 +29,8 @@ import {
   JobApplicationStatus,
   TimelineEntry,
 } from "@/types";
-import { Checkbox } from "../../ui/checkbox";
-import { DateTimePicker } from "../../DateTimePicker";
+import { Checkbox } from "../../../../../components/ui/checkbox";
+import { DateTimePicker } from "../../../../../components/DateTimePicker";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";

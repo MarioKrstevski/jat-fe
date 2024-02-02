@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DataTableToolbar } from "./data-table-toolbar";
-import AddNewButton from "@/components/AddNewButton";
+import AddNewButton from "@/pages/dashboard-links/applications/AddNewButton";
 type ExtendedColumnDef<TData> = ColumnDef<TData> & {
   cellClassName?: string;
 };

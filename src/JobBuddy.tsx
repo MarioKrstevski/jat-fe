@@ -15,6 +15,7 @@ import SingleApplicationView from "./pages/dashboard-links/applications/SingleAp
 import ApplicationsLayout from "./route-setup/layouts/ApplicationsLayout";
 import DashboardLayout from "./route-setup/layouts/DashboardLayout";
 import RootLayout from "./route-setup/layouts/RootLayout";
+import WishlistApplications from "./pages/dashboard-links/applications/WishlistApplications";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -64,6 +65,10 @@ export default function JobBuddy() {
                 {
                   element: <ArchivedApplications />,
                   path: "archived",
+                },
+                {
+                  element: <WishlistApplications />,
+                  path: "wishlist",
                 },
               ],
             },

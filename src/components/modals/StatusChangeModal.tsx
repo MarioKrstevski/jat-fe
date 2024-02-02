@@ -1,5 +1,5 @@
 import { useDialogControl } from "@/hooks/useDialogControl";
-import EditJAStatusForm from "../forms/applications/EditJAStatusForm";
+import EditJAStatusForm from "../../pages/dashboard-links/applications/components/forms/EditJAStatusForm";
 import { Modal } from "../ui/custom/modal";
 
 export default function StatusChangeModal() {
