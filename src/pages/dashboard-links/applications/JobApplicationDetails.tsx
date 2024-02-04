@@ -187,6 +187,7 @@ export default function JobApplicationDetails({
                   <div> Offers Visa Sponsorship </div>
                 )}
                 <div>Perks: {ja.perks}</div>
+                <div>Is Favorite: {ja.isFavorite ? "YES" : "NO"}</div>
               </div>
               <div className="text-sm text-slate-600 my-1">
                 {ja.salaryDetails

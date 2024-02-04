@@ -62,6 +62,7 @@ const formSchema = z.object({
   workMode: z.string().optional(),
   wasReferred: z.boolean().optional(),
   offersRelocation: z.boolean().optional(),
+  isFavorite: z.boolean().optional(),
   offersVisaSponsorship: z.boolean().optional(),
   referredBy: z.string().optional(),
   postedDate: z.date().optional(),
@@ -111,6 +112,7 @@ export default function CreateJAForm({}) {
       todos: "",
       companyId: null,
       interestLevel: 0,
+      isFavorite: false,
       offersRelocation: false,
       offersVisaSponsorship: false,
       wasReferred: false,
@@ -501,6 +503,40 @@ export default function CreateJAForm({}) {
                         </FormLabel>
                         <FormControl>
                           <Textarea {...field} />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              {/* Is Favorite */}
+              <div>
+                <FormField
+                  control={form.control}
+                  name="isFavorite"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <div className="flex items-center mb-3">
+                            <Checkbox
+                              id="isFavorite"
+                              checked={field.value}
+                              onCheckedChange={(value) => {
+                                form.setValue(
+                                  "isFavorite",
+                                  value as boolean
+                                );
+                              }}
+                            />
+                            <FormLabel
+                              htmlFor="isFavorite"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
+                            >
+                              Is Favorite (will shop up first in
+                              table)
+                            </FormLabel>
+                          </div>
                         </FormControl>
                       </FormItem>
                     );

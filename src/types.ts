@@ -37,9 +37,10 @@ export interface JobApplication {
   employmentType: EmploymentType;
   offersVisaSponsorship: boolean;
   offersRelocation: boolean;
-  perks: string; // comma separated values
   isArchived: boolean;
   wasReferred: boolean;
+  isFavorite: boolean;
+  perks: string; // comma separated values
   referredBy: string;
   companyId: string | null;
   companyName: string;

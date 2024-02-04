@@ -67,6 +67,7 @@ const formSchema = z.object({
   employmentType: z.string().optional(),
   referredBy: z.string().optional(),
   wasReferred: z.boolean().optional(),
+  isFavorite: z.boolean().optional(),
   offersRelocation: z.boolean().optional(),
   offersVisaSponsorship: z.boolean().optional(),
   postedDate: z.date().optional(),
@@ -112,6 +113,7 @@ export default function EditJAForm() {
       motivationalLetter: jae?.motivationalLetter,
       notes: jae?.notes,
       salaryDetails: jae?.salaryDetails,
+      isFavorite: jae?.isFavorite,
       offersRelocation: jae?.offersRelocation,
       offersVisaSponsorship: jae?.offersVisaSponsorship,
       appliedFrom: jae?.appliedFrom,
@@ -158,6 +160,7 @@ export default function EditJAForm() {
         salaryDetails: jae.salaryDetails,
         appliedFrom: jae.appliedFrom,
         heardAboutFrom: jae.heardAboutFrom,
+        isFavorite: jae.isFavorite,
         offersRelocation: jae.offersRelocation,
         offersVisaSponsorship: jae.offersVisaSponsorship,
         perks: jae.perks,
@@ -546,6 +549,40 @@ export default function EditJAForm() {
                         </FormLabel>
                         <FormControl>
                           <Textarea {...field} value={field.value} />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              {/* Is Favorite */}
+              <div>
+                <FormField
+                  control={form.control}
+                  name="isFavorite"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <div className="flex items-center mb-3">
+                            <Checkbox
+                              id="isFavorite"
+                              checked={field.value}
+                              onCheckedChange={(value) => {
+                                form.setValue(
+                                  "isFavorite",
+                                  value as boolean
+                                );
+                              }}
+                            />
+                            <FormLabel
+                              htmlFor="isFavorite"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
+                            >
+                              Is Favorite (will shop up first in
+                              table)
+                            </FormLabel>
+                          </div>
                         </FormControl>
                       </FormItem>
                     );
