@@ -1,46 +1,31 @@
-import { z } from "zod";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { useAuth } from "@clerk/clerk-react";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import { api } from "@/api/backend";
-import { toast } from "sonner";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../../../../../components/ui/form";
-import { Input } from "../../../../../components/ui/input";
-import {
-  SelectValue,
-  SelectTrigger,
-  SelectLabel,
-  SelectItem,
-  SelectGroup,
-  SelectContent,
-  Select,
-} from "../../../../../components/ui/select";
-import { Separator } from "../../../../../components/ui/separator";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "../../../../../components/ui/collapsible";
-import { Button } from "../../../../../components/ui/button";
-import { ChevronsUpDownIcon } from "lucide-react";
 import {
   defaultEmploymentType,
   defaultStatusOptions,
   defaultWorkModeOptions,
 } from "@/global/values";
-import { Checkbox } from "../../../../../components/ui/checkbox";
-import { Textarea } from "../../../../../components/ui/textarea";
-import { DateTimePicker } from "../../../../../components/DateTimePicker";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronsUpDownIcon } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Form } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
+import CheckboxField from "@/components/form-fields/CheckboxField";
+import DateTimeField from "@/components/form-fields/DateTimeField";
+import NumberField from "@/components/form-fields/NumberField";
+import SelectField from "@/components/form-fields/SelectField";
+import TextField from "@/components/form-fields/TextField";
+import TextareaField from "@/components/form-fields/TextareaField";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -210,119 +195,37 @@ export default function CreateJAForm({}) {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Company Name */}
           <div>
-            <FormField
-              control={form.control}
-              name="companyName"
-              render={({ field }) => {
-                return (
-                  <FormItem className="pb-2">
-                    <FormLabel>Company Name *</FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Google" />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+            <TextField
+              form={form}
+              fieldName="companyName"
+              label="Company Name *"
+              placeholder="Google"
             />
           </div>
           {/* Job Position */}
           <div>
-            <FormField
-              control={form.control}
-              name="jobTitle"
-              render={({ field }) => {
-                return (
-                  <FormItem className="pb-2">
-                    <FormLabel>Job Title *</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Software Engineer"
-                      />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+            <TextField
+              form={form}
+              fieldName="jobTitle"
+              label="Job Title *"
+              placeholder="Software Engineer"
             />
           </div>
           {/* Status + Waiting For */}
           <div className="flex gap-4 mb-3">
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex-1">
-                    <FormLabel>Status *</FormLabel>
-                    <FormControl>
-                      <Select
-                        value={field.value}
-                        onValueChange={(selection) => {
-                          form.setValue("status", selection);
-                        }}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select columns" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {/* <SelectLabel>Columns</SelectLabel> */}
-                            {defaultStatusOptions.map((option) => {
-                              return (
-                                <SelectItem
-                                  value={option}
-                                  key={option}
-                                >
-                                  {option}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+            <SelectField
+              fieldName="status"
+              label="Status *"
+              placeholder="Select columns"
+              options={defaultStatusOptions}
+              form={form}
             />
-
-            <FormField
-              control={form.control}
-              name="nextStep"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex-1">
-                    <FormLabel className="">Next Step</FormLabel>
-                    <FormControl className="">
-                      <Select
-                        value={field.value}
-                        onValueChange={(selection) => {
-                          form.setValue("nextStep", selection);
-                        }}
-                      >
-                        <SelectTrigger className=" w-full">
-                          <SelectValue placeholder="Select columns" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {/* <SelectLabel>Columns</SelectLabel> */}
-                            {defaultStatusOptions.map((option) => {
-                              return (
-                                <SelectItem
-                                  value={option}
-                                  key={option}
-                                >
-                                  {option}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
+            <SelectField
+              fieldName="nextStep"
+              label="Next Step"
+              placeholder="Select columns"
+              options={defaultStatusOptions}
+              form={form}
             />
           </div>
           <Separator />
@@ -356,631 +259,208 @@ export default function CreateJAForm({}) {
             <CollapsibleContent className="space-y-2">
               {/* Link */}
               <div>
-                <FormField
-                  control={form.control}
-                  name="link"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>Job Posting Link</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="www.linkedin.com/jobs/..."
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="link"
+                  label="Job Posting Link"
+                  placeholder="www.linkedin.com/jobs/..."
                 />
               </div>
               {/* Job Location */}
               <div>
-                <FormField
-                  control={form.control}
-                  name="jobLocation"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>Job Location</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="City, Country, Address"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="jobLocation"
+                  label="Job Location"
+                  placeholder="City, Country, Address"
                 />
               </div>
               <div>
                 {/* Work Mode */}
-                <FormField
-                  control={form.control}
-                  name="workMode"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>Work Mode</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center space-x-2">
-                            <Select
-                              value={field.value}
-                              onValueChange={(selection) => {
-                                form.setValue("workMode", selection);
-                              }}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select columns" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectGroup>
-                                  {/* <SelectLabel>Columns</SelectLabel> */}
-                                  {defaultWorkModeOptions.map(
-                                    (option) => {
-                                      return (
-                                        <SelectItem
-                                          value={option}
-                                          key={option}
-                                        >
-                                          {option}
-                                        </SelectItem>
-                                      );
-                                    }
-                                  )}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <SelectField
+                  form={form}
+                  fieldName="workMode"
+                  label="Work Mode"
+                  placeholder="Select value"
+                  options={defaultWorkModeOptions}
                 />
               </div>
               <div>
                 {/* Employment Type */}
-                <FormField
-                  control={form.control}
-                  name="employmentType"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>Employment Type</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center space-x-2">
-                            <Select
-                              value={field.value}
-                              onValueChange={(selection) => {
-                                form.setValue(
-                                  "employmentType",
-                                  selection
-                                );
-                              }}
-                            >
-                              <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select columns" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectGroup>
-                                  {/* <SelectLabel>Columns</SelectLabel> */}
-                                  {defaultEmploymentType.map(
-                                    (option) => {
-                                      return (
-                                        <SelectItem
-                                          value={option}
-                                          key={option}
-                                        >
-                                          {option}
-                                        </SelectItem>
-                                      );
-                                    }
-                                  )}
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <SelectField
+                  form={form}
+                  fieldName="employmentType"
+                  label="Employment Type"
+                  placeholder="Select value"
+                  options={defaultEmploymentType}
                 />
               </div>
               {/* Job Description */}
               <div>
-                <FormField
-                  control={form.control}
-                  name="jobDescription"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>
-                          Job Description{" "}
-                          <span className="text-slate-500 font-normal text-sm">
-                            (copy paste it)
-                          </span>
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea {...field} />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextareaField
+                  form={form}
+                  fieldName="jobDescription"
+                  label="Job Description (copy paste it)"
                 />
               </div>
               {/* Is Favorite */}
               <div>
-                <FormField
-                  control={form.control}
-                  name="isFavorite"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <div className="flex items-center mb-3">
-                            <Checkbox
-                              id="isFavorite"
-                              checked={field.value}
-                              onCheckedChange={(value) => {
-                                form.setValue(
-                                  "isFavorite",
-                                  value as boolean
-                                );
-                              }}
-                            />
-                            <FormLabel
-                              htmlFor="isFavorite"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
-                            >
-                              Is Favorite (will shop up first in
-                              table)
-                            </FormLabel>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <CheckboxField
+                  form={form}
+                  fieldName="isFavorite"
+                  label="Is Favorite (will shop up first in table)"
                 />
               </div>
               {/* Salary Details */}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="salaryDetails"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Salary details</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="ex: $400,000/year; $200/hour; 30K-60K"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="salaryDetails"
+                  placeholder="ex: $400,000/year; $200/hour; 30K-60K"
+                  label="Salary details"
                 />
               </div>
               {/* Applicatoin Deadline */}
               <div className="flex gap-4 mb-3">
-                <FormField
-                  control={form.control}
-                  name="applicationDeadline"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>Application Deadline</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <DateTimePicker
-                              date={field.value}
-                              enableClear
-                              setDate={(date) => {
-                                form.setValue(
-                                  "applicationDeadline",
-                                  date
-                                );
-                              }}
-                            />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <DateTimeField
+                  form={form}
+                  fieldName="applicationDeadline"
+                  label="Application Deadline"
                 />
               </div>
               {/* Posted At */}
               <div className="flex gap-4 mb-3">
-                <FormField
-                  control={form.control}
-                  name="postedDate"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>Posted At Date</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <DateTimePicker
-                              date={field.value}
-                              enableClear
-                              setDate={(date) => {
-                                form.setValue("postedDate", date);
-                              }}
-                            />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <DateTimeField
+                  form={form}
+                  fieldName="postedDate"
+                  label="Posted At Date"
                 />
               </div>
 
               {/* Next Interview Date */}
               <div className="flex gap-4 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="nextInterviewDate"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>Next Interview Date</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <DateTimePicker
-                              date={field.value}
-                              enableClear
-                              setDate={(date) => {
-                                form.setValue(
-                                  "nextInterviewDate",
-                                  date
-                                );
-                              }}
-                            />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <DateTimeField
+                  form={form}
+                  fieldName="nextInterviewDate"
+                  label="Next Interview Date"
                 />
               </div>
 
               {/* Applied Date */}
               <div className="flex gap-4 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="appliedDate"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>Applied Date</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center">
-                            <DateTimePicker
-                              date={field.value}
-                              enableClear
-                              setDate={(date) => {
-                                form.setValue("appliedDate", date);
-                              }}
-                            />
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <DateTimeField
+                  form={form}
+                  fieldName="appliedDate"
+                  label="Applied Date"
                 />
               </div>
               {/* Was Referred and Referred by */}
               <div className="flex gap-1 mb-3 items-end">
-                <FormField
-                  control={form.control}
-                  name="wasReferred"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <div className="flex items-center mb-3">
-                            <Checkbox
-                              id="was-referred"
-                              checked={field.value}
-                              onCheckedChange={(value) => {
-                                form.setValue(
-                                  "wasReferred",
-                                  value as boolean
-                                );
-                              }}
-                            />
-                            <FormLabel
-                              htmlFor="was-referred"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
-                            >
-                              Was Reffered
-                            </FormLabel>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <CheckboxField
+                  form={form}
+                  fieldName="wasReferred"
+                  label="Was Referred"
                 />
-                <FormField
-                  control={form.control}
-                  name="referredBy"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-[2]">
-                        <FormLabel>Referrered by</FormLabel>
-                        <FormControl>
-                          <Input
-                            className="w-full"
-                            {...field}
-                            placeholder="Referrered by"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="referredBy"
+                  label="Referrered by"
+                  placeholder="Referrered by"
                 />
               </div>
 
               {/* Interest Level */}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="interestLevel"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Interest Level</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            onChange={(e) => {
-                              form.setValue(
-                                "interestLevel",
-                                Number(e.target.value)
-                              );
-                            }}
-                            type="number"
-                            min={0}
-                            max={5}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <NumberField
+                  form={form}
+                  fieldName="interestLevel"
+                  label="Interest Level"
+                  min={0}
+                  max={5}
                 />
               </div>
               {/* Resume Used + Motivational Used */}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="resumeUsed"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Used Resume Link</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Resume Link"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="resumeUsed"
+                  label="Used Resume"
+                  placeholder="Resume Link"
                 />
-                <FormField
-                  control={form.control}
-                  name="motivationalLetter"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Motivational Letter</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="ML Link" />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="motivationalLetter"
+                  label="motivational Letter"
+                  placeholder="ML Link"
                 />
               </div>
               {/* Notes */}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="notes"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Add notes</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextareaField
+                  form={form}
+                  fieldName="notes"
+                  label="Add notes"
                 />
               </div>
               {/* Applied Link + Applied from*/}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="applylink"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Link for applying</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="www.linkedin.com/jobs/..."
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="applylink"
+                  label="Apply Link"
+                  placeholder="www.linkedin.com/jobs/..."
                 />
-                <FormField
-                  control={form.control}
-                  name="appliedFrom"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>How did you apply</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="ex: With link, email, in person"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="appliedFrom"
+                  label="Applied From"
+                  placeholder="ex: With link, email, in person"
                 />
               </div>
               {/* Todos */}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="todos"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>Add todos</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextareaField
+                  form={form}
+                  fieldName="todos"
+                  label="Add todos"
                 />
               </div>
               {/* Perks*/}
               <div>
-                <FormField
-                  control={form.control}
-                  name="perks"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="pb-2">
-                        <FormLabel>Perks</FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Lumch,Gym,Perk 3,"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="perks"
+                  label="Perks"
+                  placeholder="ex: Lunch,Gym,Courses"
                 />
               </div>
               <div className="flex gap-1 my-3">
-                <FormField
-                  control={form.control}
-                  name="offersRelocation"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <div className="flex items-center mb-3">
-                            <Checkbox
-                              id="offersRelocation"
-                              checked={field.value}
-                              onCheckedChange={(value) => {
-                                form.setValue(
-                                  "offersRelocation",
-                                  value as boolean
-                                );
-                              }}
-                            />
-                            <FormLabel
-                              htmlFor="offersRelocation"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
-                            >
-                              Offers Relocation
-                            </FormLabel>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <CheckboxField
+                  form={form}
+                  fieldName="offersRelocation"
+                  label="Offers Relocation"
                 />
-                <FormField
-                  control={form.control}
-                  name="offersVisaSponsorship"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormControl>
-                          <div className="flex items-center mb-3">
-                            <Checkbox
-                              id="offersVisaSponsorship"
-                              checked={field.value}
-                              onCheckedChange={(value) => {
-                                form.setValue(
-                                  "offersVisaSponsorship",
-                                  value as boolean
-                                );
-                              }}
-                            />
-                            <FormLabel
-                              htmlFor="offersVisaSponsorship"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
-                            >
-                              Offers Visa Sponsorship
-                            </FormLabel>
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <CheckboxField
+                  form={form}
+                  fieldName="offersVisaSponsorship"
+                  label="Offers Visa Sponsorship"
                 />
               </div>
 
               {/* Heard about from + Map location*/}
               <div className="flex gap-1 mb-3 ">
-                <FormField
-                  control={form.control}
-                  name="heardAboutFrom"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel className="mb-3.5 inline-block">
-                          Job Source
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="ex: Friend, LinkedIn, Indeed"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+                <TextField
+                  form={form}
+                  fieldName="heardAboutFrom"
+                  label="Job Source"
+                  placeholder="ex: Friend, LinkedIn, Indeed"
                 />
-                <FormField
-                  control={form.control}
-                  name="mapLocation"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="flex-1">
-                        <FormLabel>
-                          Map Locatoin <br />
-                          <div className="text-[10px] text-slate-500">
-                            latitude,longitude
-                          </div>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="ex: 40.7128,74.0060"
-                          />
-                        </FormControl>
-                      </FormItem>
-                    );
-                  }}
+
+                <TextField
+                  form={form}
+                  fieldName="mapLocation"
+                  label="Map Location"
+                  placeholder="ex: 40.7128,74.0060"
                 />
               </div>
             </CollapsibleContent>
