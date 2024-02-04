@@ -22,11 +22,23 @@ export type JobApplicationStatus =
   | "Accepted"
   | "Archived";
 
+export type WorkModeType = "In Office" | "Remote" | "Hybrid";
+export type EmploymentType =
+  | "Full Time"
+  | "Part Time"
+  | "Internship"
+  | "Contract"
+  | "Freelance";
+
 export interface JobApplication {
   userId: string;
   id: string;
+  workMode: WorkModeType;
+  employmentType: EmploymentType;
+  offersVisaSponsorship: boolean;
+  offersRelocation: boolean;
+  perks: string; // comma separated values
   isArchived: boolean;
-  isRemote: boolean;
   wasReferred: boolean;
   referredBy: string;
   companyId: string | null;

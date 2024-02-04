@@ -177,10 +177,16 @@ export default function JobApplicationDetails({
                 {ja.companyName}
               </div>
               <div>
-                {ja.jobTitle}
-                <span>
-                  {ja.isRemote ? " - Remote" : " - On-Site"}
-                </span>{" "}
+                <div>{ja.jobTitle}</div>
+                <div>{ja.workMode}</div>
+                <div>{ja.employmentType}</div>
+                {ja.offersRelocation && (
+                  <div> Offers Relocation </div>
+                )}
+                {ja.offersVisaSponsorship && (
+                  <div> Offers Visa Sponsorship </div>
+                )}
+                <div>Perks: {ja.perks}</div>
               </div>
               <div className="text-sm text-slate-600 my-1">
                 {ja.salaryDetails

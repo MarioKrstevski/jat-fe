@@ -31,7 +31,11 @@ import {
 } from "../../../../../components/ui/collapsible";
 import { Button } from "../../../../../components/ui/button";
 import { ChevronsUpDownIcon } from "lucide-react";
-import { defaultStatusOptions } from "@/global/values";
+import {
+  defaultEmploymentType,
+  defaultStatusOptions,
+  defaultWorkModeOptions,
+} from "@/global/values";
 import { Checkbox } from "../../../../../components/ui/checkbox";
 import { Textarea } from "../../../../../components/ui/textarea";
 import { DateTimePicker } from "../../../../../components/DateTimePicker";
@@ -54,11 +58,15 @@ const formSchema = z.object({
   motivationalLetter: z.string().optional(),
   notes: z.string().optional(),
   interestLevel: z.number().min(0).max(5).optional(),
-  isRemote: z.boolean().optional(),
-  referredBy: z.string().optional(),
+  employmentType: z.string().optional(),
+  workMode: z.string().optional(),
   wasReferred: z.boolean().optional(),
+  offersRelocation: z.boolean().optional(),
+  offersVisaSponsorship: z.boolean().optional(),
+  referredBy: z.string().optional(),
   postedDate: z.date().optional(),
   applicationDeadline: z.date().optional(),
+  perks: z.string().optional(),
   salaryDetails: z.string().optional(),
   nextInterviewDate: z.date().optional(),
   appliedDate: z.date().optional(),
@@ -92,7 +100,10 @@ export default function CreateJAForm({}) {
       statusOptions: defaultStatusOptions.join(","),
       resumeUsed: "",
       motivationalLetter: "",
+      workMode: "In-Office",
+      employmentType: "Full-time",
       notes: "",
+      perks: "",
       salaryDetails: "",
       appliedFrom: "",
       heardAboutFrom: "",
@@ -100,7 +111,8 @@ export default function CreateJAForm({}) {
       todos: "",
       companyId: null,
       interestLevel: 0,
-      isRemote: false,
+      offersRelocation: false,
+      offersVisaSponsorship: false,
       wasReferred: false,
       referredBy: "",
       postedDate: undefined,
@@ -379,33 +391,93 @@ export default function CreateJAForm({}) {
                     );
                   }}
                 />
-                {/* Is Remote */}
+              </div>
+              <div>
+                {/* Work Mode */}
                 <FormField
                   control={form.control}
-                  name="isRemote"
+                  name="workMode"
                   render={({ field }) => {
                     return (
                       <FormItem className="pb-2">
-                        {/* <FormLabel>Remote option</FormLabel> */}
+                        <FormLabel>Work Mode</FormLabel>
                         <FormControl>
                           <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="is-remote"
-                              checked={field.value}
-                              onCheckedChange={(value) => {
-                                console.log("value", value);
+                            <Select
+                              value={field.value}
+                              onValueChange={(selection) => {
+                                form.setValue("workMode", selection);
+                              }}
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select columns" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {/* <SelectLabel>Columns</SelectLabel> */}
+                                  {defaultWorkModeOptions.map(
+                                    (option) => {
+                                      return (
+                                        <SelectItem
+                                          value={option}
+                                          key={option}
+                                        >
+                                          {option}
+                                        </SelectItem>
+                                      );
+                                    }
+                                  )}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              <div>
+                {/* Employment Type */}
+                <FormField
+                  control={form.control}
+                  name="employmentType"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="pb-2">
+                        <FormLabel>Employment Type</FormLabel>
+                        <FormControl>
+                          <div className="flex items-center space-x-2">
+                            <Select
+                              value={field.value}
+                              onValueChange={(selection) => {
                                 form.setValue(
-                                  "isRemote",
-                                  value as boolean
+                                  "employmentType",
+                                  selection
                                 );
                               }}
-                            />
-                            <label
-                              htmlFor="is-remote"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
-                              Is Remote
-                            </label>
+                              <SelectTrigger className="w-full">
+                                <SelectValue placeholder="Select columns" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {/* <SelectLabel>Columns</SelectLabel> */}
+                                  {defaultEmploymentType.map(
+                                    (option) => {
+                                      return (
+                                        <SelectItem
+                                          value={option}
+                                          key={option}
+                                        >
+                                          {option}
+                                        </SelectItem>
+                                      );
+                                    }
+                                  )}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
                           </div>
                         </FormControl>
                       </FormItem>
@@ -571,7 +643,6 @@ export default function CreateJAForm({}) {
                   render={({ field }) => {
                     return (
                       <FormItem className="flex-1">
-                        {/* <FormLabel>Next Interview Date</FormLabel> */}
                         <FormControl>
                           <div className="flex items-center mb-3">
                             <Checkbox
@@ -584,12 +655,12 @@ export default function CreateJAForm({}) {
                                 );
                               }}
                             />
-                            <label
+                            <FormLabel
                               htmlFor="was-referred"
                               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
                             >
-                              I was referred
-                            </label>
+                              Was Reffered
+                            </FormLabel>
                           </div>
                         </FormControl>
                       </FormItem>
@@ -743,6 +814,88 @@ export default function CreateJAForm({}) {
                         <FormLabel>Add todos</FormLabel>
                         <FormControl>
                           <Textarea {...field} />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              {/* Perks*/}
+              <div>
+                <FormField
+                  control={form.control}
+                  name="perks"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="pb-2">
+                        <FormLabel>Perks</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="Lumch,Gym,Perk 3,"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+              </div>
+              <div className="flex gap-1 my-3">
+                <FormField
+                  control={form.control}
+                  name="offersRelocation"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <div className="flex items-center mb-3">
+                            <Checkbox
+                              id="offersRelocation"
+                              checked={field.value}
+                              onCheckedChange={(value) => {
+                                form.setValue(
+                                  "offersRelocation",
+                                  value as boolean
+                                );
+                              }}
+                            />
+                            <FormLabel
+                              htmlFor="offersRelocation"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
+                            >
+                              Offers Relocation
+                            </FormLabel>
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    );
+                  }}
+                />
+                <FormField
+                  control={form.control}
+                  name="offersVisaSponsorship"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <div className="flex items-center mb-3">
+                            <Checkbox
+                              id="offersVisaSponsorship"
+                              checked={field.value}
+                              onCheckedChange={(value) => {
+                                form.setValue(
+                                  "offersVisaSponsorship",
+                                  value as boolean
+                                );
+                              }}
+                            />
+                            <FormLabel
+                              htmlFor="offersVisaSponsorship"
+                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ml-2"
+                            >
+                              Offers Visa Sponsorship
+                            </FormLabel>
+                          </div>
                         </FormControl>
                       </FormItem>
                     );

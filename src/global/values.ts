@@ -19,6 +19,17 @@ export const defaultStatusOptions = [
   "Archived",
 ];
 
+export const defaultWorkModeOptions = [
+  "In-Office",
+  "Remote",
+  "Hybrid",
+];
+export const defaultEmploymentType = [
+  "Full-time",
+  "Part-time",
+  "Internship",
+  "Contract",
+];
 //{ key: which of these should they able to select
 export const selectableColumns = [
   // never selectable
