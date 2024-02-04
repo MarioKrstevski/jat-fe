@@ -26,6 +26,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DataTableToolbar } from "./data-table-toolbar";
 import AddNewButton from "@/pages/dashboard-links/applications/components/AddNewButton";
+import { JobApplication } from "@/types";
+import { cn } from "@/lib/utils";
 type ExtendedColumnDef<TData> = ColumnDef<TData> & {
   cellClassName?: string;
 };
@@ -49,6 +51,7 @@ export function DataTable<TData, TValue>({
     useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([
+    { id: "isFavorite", desc: true },
     { id: "createdAt", desc: true },
   ]);
   const table = useReactTable({
@@ -61,6 +64,8 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
     enableRowSelection: true,
+    enableSorting: true,
+    enableMultiSort: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -72,6 +77,7 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
   return (
     <div className="space-y-4">
       <DataTableToolbar
@@ -107,28 +113,37 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const extendedColumnDef = cell.column
-                      .columnDef as ExtendedColumnDef<TData>;
-                    return (
-                      <TableCell
-                        key={cell.id}
-                        className={extendedColumnDef.cellClassName}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map((row) => {
+                const isFavorite = (row.original as JobApplication)
+                  .isFavorite;
+
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className={cn(
+                      "",
+                      isFavorite && "bg-yellow-50 hover:bg-yellow-100"
+                    )}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      const extendedColumnDef = cell.column
+                        .columnDef as ExtendedColumnDef<TData>;
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={extendedColumnDef.cellClassName}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })
             ) : (
               <TableRow>
                 <TableCell

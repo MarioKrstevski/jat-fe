@@ -110,4 +110,12 @@ export const columns: ExtendedColumnDef<JobApplicationColumn>[] = [
     enableSorting: true,
     enableHiding: false,
   },
+  {
+    accessorKey: "isFavorite",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Favorite" />
+    ),
+    enableSorting: true,
+    enableHiding: false,
+  },
 ];

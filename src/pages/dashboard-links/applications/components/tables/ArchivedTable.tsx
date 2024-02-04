@@ -11,7 +11,7 @@ import { JobApplication } from "@/types";
 import { useState } from "react";
 
 import { DateTime } from "luxon";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../../../../../components/ui/checkbox";
 import { useDialogControl } from "@/hooks/useDialogControl";
@@ -30,10 +30,18 @@ export default function ArchivedTable({
   }
   // sorty by createdAt desc
   applications.sort((a, b) => {
-    return (
-      DateTime.fromISO(b.createdAt.toString()).toMillis() -
-      DateTime.fromISO(a.createdAt.toString()).toMillis()
-    );
+    // Check if either application is marked as favorite, ensuring these come first
+    if (a.isFavorite && !b.isFavorite) {
+      return -1; // a comes before b
+    } else if (!a.isFavorite && b.isFavorite) {
+      return 1; // b comes before a
+    } else {
+      // If both have the same isFavorite status, then sort by createdAt
+      return (
+        DateTime.fromISO(b.createdAt.toString()).toMillis() -
+        DateTime.fromISO(a.createdAt.toString()).toMillis()
+      );
+    }
   });
 
   function handleInterviewDate(ja: JobApplication) {
@@ -97,7 +105,11 @@ export default function ArchivedTable({
                   const key = ja.id + ja.updatedAt.toString();
                   return (
                     <TableRow
-                      className=""
+                      className={cn(
+                        "",
+                        ja.isFavorite &&
+                          "bg-yellow-50 hover:bg-yellow-100"
+                      )}
                       key={key}
                       data-state={isRowSelected ? "selected" : ""}
                     >
