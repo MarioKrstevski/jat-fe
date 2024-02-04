@@ -26,7 +26,7 @@ function SideMenuLink({
   return (
     <Link
       className={cn(
-        "flex items-center gap-3 w-full py-2 min-h-4 rounded-lg px-1 text-sm font-medium transition-all duration-300 text-slate-700 hover:text-slate-950   hover:bg-gray-200 ",
+        "flex items-center gap-3 w-full py-2 rounded-lg px-1 text-sm font-medium transition-all duration-300 text-slate-700 hover:text-slate-950   hover:bg-gray-200 ",
         smState === "minimized" && "w-8 justify-center"
       )}
       to={to}
@@ -93,7 +93,7 @@ export default function SideMenu() {
       </div>
       <nav
         className={cn(
-          "grid gap-1 px-2 overflow-y-auto",
+          "flex flex-col gap-1 px-2 overflow-y-auto",
           smState === "minimized" && "px-1"
         )}
       >
@@ -117,6 +117,7 @@ export default function SideMenu() {
           label="Settings"
         />
         <SideMenuLink
+          to="/d/support"
           icon={<HelpCircleIcon className="h-4 w-4 ml-2" />}
           label="Support"
         />
