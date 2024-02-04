@@ -29,6 +29,7 @@ import Companies from "./pages/dashboard-links/companies/Companies";
 import Linkedin from "./pages/dashboard-links/linkedin/Linkedin";
 import Tools from "./pages/dashboard-links/tools/Tools";
 import Support from "./pages/dashboard-links/support/Support";
+import Onboarding from "./pages/Onboarding";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -150,6 +151,7 @@ export default function JobBuddy() {
             },
           ],
         },
+        { path: "onboarding", element: <Onboarding /> },
         { path: "signin", element: <SignInPage /> },
         { path: "signup", element: <SignUpPage /> },
       ],
