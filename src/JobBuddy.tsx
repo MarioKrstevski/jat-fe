@@ -28,6 +28,7 @@ import Reminders from "./pages/dashboard-links/reminders/Reminders";
 import Companies from "./pages/dashboard-links/companies/Companies";
 import Linkedin from "./pages/dashboard-links/linkedin/Linkedin";
 import Tools from "./pages/dashboard-links/tools/Tools";
+import Support from "./pages/dashboard-links/support/Support";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -142,6 +143,10 @@ export default function JobBuddy() {
             {
               element: <JobBoard />,
               path: "job-board",
+            },
+            {
+              element: <Support />,
+              path: "support",
             },
           ],
         },

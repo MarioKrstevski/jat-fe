@@ -1,3 +1,5 @@
+export const contactSupportEmail = "mariokrstevski@hotmail.com";
+
 export const defaultStatusOptions = [
   "Wishlist",
   "OA - Online Assessment",
