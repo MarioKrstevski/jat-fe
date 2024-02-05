@@ -18,6 +18,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useNavigate } from "react-router-dom";
+import Upcomming from "@/components/Upcomming";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -341,6 +342,10 @@ export default function JobApplicationDetails({
           </div>
         </section>
       </main>
+      <div>
+        <Upcomming imgSrc="https://img001.prntscr.com/file/img001/_kCRVnAQQW-uF2bci1AOKQ.png" />
+        <Upcomming imgSrc="https://img001.prntscr.com/file/img001/LdmQvCkxRRulZfx_oK_P1Q.pngPc" />
+      </div>
     </div>
   );
 }
