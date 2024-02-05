@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useNavigate } from "react-router-dom";
 import Upcomming from "@/components/Upcomming";
+import { Badge } from "@/components/ui/badge";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -188,6 +189,12 @@ export default function JobApplicationDetails({
                   <div> Offers Visa Sponsorship </div>
                 )}
                 <div>Perks: {ja.perks}</div>
+                <div>
+                  Tags:
+                  {ja.tags.split(",").map((tag) => (
+                    <Badge className="mx-0.5">{tag}</Badge>
+                  ))}
+                </div>
                 <div>Is Favorite: {ja.isFavorite ? "YES" : "NO"}</div>
               </div>
               <div className="text-sm text-slate-600 my-1">

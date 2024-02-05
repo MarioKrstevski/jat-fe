@@ -41,6 +41,7 @@ export interface JobApplication {
   wasReferred: boolean;
   isFavorite: boolean;
   perks: string; // comma separated values
+  tags: string; // comma separated values
   referredBy: string;
   companyId: string | null;
   companyName: string;
@@ -69,6 +70,13 @@ export interface JobApplication {
   heardAboutFrom: string;
   mapLocation: string;
   todos: string;
+}
+
+export interface JobApplicationTag {
+  id: string;
+  name: string;
+  userId: string;
+  color: string;
 }
 export interface TimelineEntry {
   status: string;

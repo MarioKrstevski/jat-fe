@@ -58,6 +58,7 @@ const formSchema = z.object({
   postedDate: z.date().optional(),
   applicationDeadline: z.date().optional(),
   perks: z.string().optional(),
+  tags: z.string().optional(),
   salaryDetails: z.string().optional(),
   nextInterviewDate: z.date().optional(),
   appliedDate: z.date().optional(),
@@ -103,6 +104,7 @@ export default function EditJAForm() {
       offersVisaSponsorship: jae?.offersVisaSponsorship,
       appliedFrom: jae?.appliedFrom,
       perks: jae?.perks,
+      tags: jae?.tags,
       heardAboutFrom: jae?.heardAboutFrom,
       mapLocation: jae?.mapLocation,
       todos: jae?.todos,
@@ -149,6 +151,7 @@ export default function EditJAForm() {
         offersRelocation: jae.offersRelocation,
         offersVisaSponsorship: jae.offersVisaSponsorship,
         perks: jae.perks,
+        tags: jae.tags,
         mapLocation: jae.mapLocation,
         todos: jae.todos,
         companyId: jae.companyId,
@@ -420,6 +423,14 @@ export default function EditJAForm() {
                   label="Interest Level"
                   min={0}
                   max={5}
+                />
+              </div>
+              <div className="flex gap-1 mb-3 ">
+                <TextField
+                  form={form}
+                  fieldName="tags"
+                  label="Tags (comma separated)"
+                  placeholder="ex: React, Node, Remote"
                 />
               </div>
               {/* Resume Used + Motivational Used */}

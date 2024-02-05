@@ -54,6 +54,10 @@ export default function ApplicationsLayout() {
       to: "/d/applications/kanban",
       label: "Kanban Board",
     },
+    {
+      to: "/d/applications/settings",
+      label: "Settings",
+    },
   ];
   return (
     <div>

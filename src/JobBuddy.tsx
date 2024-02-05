@@ -31,6 +31,7 @@ import Tools from "./pages/dashboard-links/tools/Tools";
 import Support from "./pages/dashboard-links/support/Support";
 import Onboarding from "./pages/Onboarding";
 import AboutUs from "./pages/AboutUs";
+import JobApplicationSettings from "./pages/dashboard-links/applications/JobApplicationSettings";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -92,6 +93,10 @@ export default function JobBuddy() {
                 {
                   element: <KanbanView />,
                   path: "kanban",
+                },
+                {
+                  element: <JobApplicationSettings />,
+                  path: "settings",
                 },
               ],
             },

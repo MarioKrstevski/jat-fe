@@ -50,6 +50,7 @@ async function deleteJobApplication(ids: string[]) {
     },
   });
 }
+
 export const applications = {
   archiveJobApplications,
   deleteJobApplication,

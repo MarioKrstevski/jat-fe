@@ -53,6 +53,7 @@ const formSchema = z.object({
   postedDate: z.date().optional(),
   applicationDeadline: z.date().optional(),
   perks: z.string().optional(),
+  tags: z.string().optional(),
   salaryDetails: z.string().optional(),
   nextInterviewDate: z.date().optional(),
   appliedDate: z.date().optional(),
@@ -90,6 +91,7 @@ export default function CreateJAForm({}) {
       employmentType: "Full-time",
       notes: "",
       perks: "",
+      tags: "",
       salaryDetails: "",
       appliedFrom: "",
       heardAboutFrom: "",
@@ -369,7 +371,7 @@ export default function CreateJAForm({}) {
                 />
               </div>
 
-              {/* Interest Level */}
+              {/* Tags */}
               <div className="flex gap-1 mb-3 ">
                 <NumberField
                   form={form}
@@ -377,6 +379,14 @@ export default function CreateJAForm({}) {
                   label="Interest Level"
                   min={0}
                   max={5}
+                />
+              </div>
+              <div>
+                <TextField
+                  form={form}
+                  fieldName="tags"
+                  label="Tags (comma separated)"
+                  placeholder="tech,fe,be,remote"
                 />
               </div>
               {/* Resume Used + Motivational Used */}
