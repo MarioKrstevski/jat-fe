@@ -6,6 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { cn, getContrastColor } from "@/lib/utils";
 import { JobApplicationTag } from "@/types";
 import { useAuth } from "@clerk/clerk-react";
@@ -41,20 +42,21 @@ function TagDisplay({
   setIsLoading,
 }: TagDisplayProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const orignalValue = useRef<String>(tag.name);
-  const orignalColor = useRef<String>(tag.color);
+  const originalName = useRef<string>(tag.name);
+  const orignalColor = useRef<string>(tag.color);
   const inputRef = useRef<HTMLInputElement>(null);
   const [tagName, setTagName] = useState(tag.name);
   const [tagColor, setTagColor] = useState(tag.color);
 
   function handleDelete() {
     setIsLoading(true);
+    // if you pass the tag name it will delete the tag from every job application that uses it
     api.tags
-      .deleteTag(tag.id)
+      .deleteTag(tag.id, tagName)
       .then((res) => {
         console.log("Delete tag res", res);
         const updatedTags = tags.filter((t: JobApplicationTag) => {
-          return t.name !== orignalValue.current;
+          return t.name !== originalName.current;
         });
         setTags(updatedTags);
       })
@@ -72,7 +74,7 @@ function TagDisplay({
     setIsEditing(false);
 
     const updatedTags = tags.map((t: JobApplicationTag) => {
-      if (t.name === orignalValue.current) {
+      if (t.name === originalName.current) {
         return { ...t, name: tagName, color: tagColor };
       } else {
         return t;
@@ -81,11 +83,11 @@ function TagDisplay({
 
     setIsLoading(true);
     api.tags
-      .editTag(tag.id, tagColor, tagName)
+      .editTag(tag.id, tagColor, tagName, originalName.current)
       .then((res) => {
         console.log("Edit tag res", res);
         setTags(updatedTags);
-        orignalValue.current = tagName;
+        originalName.current = tagName;
         orignalColor.current = tagColor;
       })
       .catch((err) => {
@@ -103,7 +105,9 @@ function TagDisplay({
         type="text"
         className="border w-28 px-1 py-0.5 rounded"
         value={tagName}
-        onChange={(e) => setTagName(e.target.value)}
+        onChange={(e) =>
+          setTagName(e.target.value.toLocaleLowerCase())
+        }
       />
       {!isEditing && (
         <div
@@ -155,7 +159,7 @@ function TagDisplay({
           onClick={handleSave}
           disabled={
             !(
-              tagName !== orignalValue.current ||
+              tagName !== originalName.current ||
               tagName === "" ||
               tagColor !== orignalColor.current
             )
@@ -176,11 +180,11 @@ function TagDisplay({
       )}
       <Button
         size={"sm"}
-        variant={"destructive"}
-        className="p-2 h-8 bg-red-400"
+        variant={"outline"}
+        className="p-2 h-8 border-red-200"
         onClick={handleDelete}
       >
-        <Trash size={14} />
+        <Trash size={14} className="bg-text-400 " color="red " />
       </Button>
       {"-->"}
       {tagName && (
@@ -212,8 +216,15 @@ function TagForm({
   const [tagName, setTagName] = useState("");
   const [tagColor, setTagColor] = useState("#FFFFFF");
   const [isEditing, setIsEditing] = useState(false);
+
+  const alreadyExists = tags.find(
+    (t) => t.name.toLocaleLowerCase() === tagName
+  );
   function handleCreateTag(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (tagName === "") {
+      return;
+    }
     setIsLoading(true);
     api.tags
       .createTag(tagColor, tagName)
@@ -252,12 +263,21 @@ function TagForm({
           onSubmit={handleCreateTag}
           className="flex gap-1 items-center "
         >
-          <input
-            className="border border-slate-700 rounded-md w-36 px-2 py-1"
-            type="text"
-            value={tagName}
-            onChange={(e) => setTagName(e.target.value)}
-          />
+          <div className="relative">
+            <input
+              className="border border-slate-700 rounded-md w-36 px-2 py-1"
+              type="text"
+              value={tagName}
+              onChange={(e) =>
+                setTagName(e.target.value.toLocaleLowerCase())
+              }
+            />
+            {alreadyExists && (
+              <small className="absolute left-0 top-8 text-red-500">
+                Tag already exists
+              </small>
+            )}
+          </div>
           <Popover>
             <PopoverTrigger asChild>
               <div
@@ -288,7 +308,11 @@ function TagForm({
               </div>
             </PopoverContent>
           </Popover>
-          <Button type="submit" size={"sm"}>
+          <Button
+            type="submit"
+            size={"sm"}
+            disabled={!!alreadyExists || tagName === ""}
+          >
             Create
           </Button>
           {"-->"}
@@ -309,27 +333,11 @@ function TagForm({
   );
 }
 export default function TagManager() {
-  const { isLoaded } = useAuth();
-  const [tags, setTags] = useState<JobApplicationTag[]>([]);
+  const jobApplicationStore = useJobApplicationsStore();
   const [isLoading, setIsLoading] = useState(false);
-
-  async function handleFetchingTags() {
-    api.tags
-      .getTags()
-      .then((res) => {
-        setTags(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
+  const tags = jobApplicationStore.tags;
+  const setTags = jobApplicationStore.setTags;
   // load tags
-  useEffect(() => {
-    if (!isLoaded) {
-      return;
-    }
-    handleFetchingTags();
-  }, [isLoaded]);
   return (
     <div className="relative p-2">
       {isLoading && (

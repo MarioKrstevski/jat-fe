@@ -26,6 +26,7 @@ import NumberField from "@/components/form-fields/NumberField";
 import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import TextareaField from "@/components/form-fields/TextareaField";
+import { JobApplicationTag } from "@/types";
 
 const formSchema = z.object({
   companyName: z.string(),

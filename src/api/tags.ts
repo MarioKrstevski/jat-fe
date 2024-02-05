@@ -20,20 +20,23 @@ async function getTags(): Promise<
 
 async function editTag(
   tagId: string,
-  color: string,
-  name: string
+  newColor: string,
+  newName: string,
+  originalName: string
 ): Promise<AxiosResponse<JobApplicationTag[]>> {
   return jatbe.patch("tags", {
     tagId,
-    color,
-    name,
+    newColor,
+    newName,
+    originalName,
   });
 }
 
 async function deleteTag(
-  tagId: string
+  tagId: string,
+  name?: string
 ): Promise<AxiosResponse<JobApplicationTag[]>> {
-  return jatbe.delete("tags", { params: { tagId } });
+  return jatbe.delete("tags", { params: { tagId, name } });
 }
 
 export const tags = {

@@ -1,6 +1,6 @@
 import { JobApplication, TimelineEntry } from "@/types";
 import { Textarea } from "../../../components/ui/textarea";
-import { dateDistance } from "@/lib/utils";
+import { dateDistance, getContrastColor } from "@/lib/utils";
 import { Button } from "../../../components/ui/button";
 import {
   DeleteIcon,
@@ -190,9 +190,31 @@ export default function JobApplicationDetails({
                 <div>Perks: {ja.perks}</div>
                 <div>
                   Tags:
-                  {ja.tags.split(",").map((tag) => (
-                    <Badge className="mx-0.5">{tag}</Badge>
-                  ))}
+                  {ja.tags.split(",").map((tag) => {
+                    // because of split it will return one item which makes empty badge
+                    if (!tag) {
+                      return null;
+                    }
+                    const tagColor =
+                      jobApplicationStore.tags.find(
+                        (t) => t.name === tag
+                      )?.color || "#000000";
+
+                    console.log(tag, ja);
+                    return (
+                      <Badge
+                        key={tag}
+                        className="mx-0.5"
+                        style={{
+                          backgroundColor: tagColor,
+                          color: getContrastColor(tagColor),
+                          borderColor: getContrastColor(tagColor),
+                        }}
+                      >
+                        {tag}
+                      </Badge>
+                    );
+                  })}
                 </div>
                 <div>Is Favorite: {ja.isFavorite ? "YES" : "NO"}</div>
               </div>
@@ -351,6 +373,7 @@ export default function JobApplicationDetails({
       <div>
         <Upcomming imgSrc="https://img001.prntscr.com/file/img001/_kCRVnAQQW-uF2bci1AOKQ.png" />
         <Upcomming imgSrc="https://img001.prntscr.com/file/img001/LdmQvCkxRRulZfx_oK_P1Q.pngPc" />
+        <Upcomming imgSrc="https://img001.prntscr.com/file/img001/Qaap1Fy1TjGNHSufBV_7Fg.png" />
       </div>
     </div>
   );
