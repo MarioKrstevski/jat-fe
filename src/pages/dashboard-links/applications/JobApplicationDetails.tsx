@@ -305,7 +305,6 @@ export default function JobApplicationDetails({
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
             Todos
           </h2>
-          <div>{ja.todos}</div>
           <JobApplicationTodoManager
             todos={ja.todos}
             applicationId={ja.id}
