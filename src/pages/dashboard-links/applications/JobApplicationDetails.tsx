@@ -1,26 +1,20 @@
-import { JobApplication, Note, TimelineEntry } from "@/types";
-import { Textarea } from "../../../components/ui/textarea";
-import { dateDistance, getContrastColor } from "@/lib/utils";
-import { Button } from "../../../components/ui/button";
-import {
-  DeleteIcon,
-  EditIcon,
-  TrashIcon,
-  Undo2Icon,
-  UndoIcon,
-} from "lucide-react";
-import { format, set } from "date-fns";
-import EditButton from "./components/EditButton";
-import { useRef, useState } from "react";
-import AlertModal from "../../../components/modals/AlertModal";
 import { api } from "@/api/backend";
-import { useAuth } from "@clerk/clerk-react";
-import { toast } from "sonner";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { useNavigate } from "react-router-dom";
 import Upcomming from "@/components/Upcomming";
 import { Badge } from "@/components/ui/badge";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { dateDistance, getContrastColor } from "@/lib/utils";
+import { JobApplication, Note, TimelineEntry } from "@/types";
+import { format } from "date-fns";
+import { TrashIcon, Undo2Icon } from "lucide-react";
+import { useRef, useState } from "react";
+import ReactQuill from "react-quill";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import AlertModal from "../../../components/modals/AlertModal";
+import { Button } from "../../../components/ui/button";
+import { Textarea } from "../../../components/ui/textarea";
 import JobApplicationTodoManager from "./JobApplicationTodoManager";
+import EditButton from "./components/EditButton";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -33,6 +27,8 @@ export default function JobApplicationDetails({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
+
+  const [noteContent, setNoteContent] = useState(ja.note.content);
 
   function onDelete() {
     setIsLoading(true);
@@ -65,7 +61,7 @@ export default function JobApplicationDetails({
   }
   function handleSaveNote(note: Note) {
     api.notes
-      .editNote(note.id, noteRef.current?.value || "")
+      .editNote(note.id, noteContent)
       .then((res) => {
         console.log("res", res.data);
         const updatedJobApplications =
@@ -340,27 +336,32 @@ export default function JobApplicationDetails({
         </section>
         <section className="mb-6 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
-            Notes
+            Your notes
           </h2>
+
           {ja.note ? (
             <>
-              <Textarea
-                ref={noteRef}
-                className="w-full h-24 p-2 rounded border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
-                id="note"
-                defaultValue={ja.note.content}
-                placeholder="Add your notes here"
-              />
-              <Button
-                className="px-3 py-1.5 my-1"
-                size={"sm"}
-                onClick={() => handleSaveNote(ja.note)}
-              >
-                Save Note
-              </Button>
+              {ja.note.content && (
+                <div>
+                  <ReactQuill
+                    theme="snow"
+                    value={noteContent}
+                    onChange={(stringifiedHTML) => {
+                      setNoteContent(stringifiedHTML);
+                    }}
+                  />
+                  <Button
+                    className="px-3 py-1.5 my-1"
+                    size={"sm"}
+                    onClick={() => handleSaveNote(ja.note)}
+                  >
+                    Save Note
+                  </Button>
+                </div>
+              )}
             </>
           ) : (
-            "You don't have notes for this application"
+            "You have no notes for this application."
           )}
         </section>
         <section className="mb-6 bg-white rounded-lg shadow p-4 dark:bg-gray-900">

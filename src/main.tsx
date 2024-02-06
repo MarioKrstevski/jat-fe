@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./assets/global.css";
+import "react-quill/dist/quill.snow.css";
 
 import { ClerkProvider } from "@clerk/clerk-react";
 import Clerk from "@clerk/clerk-js";

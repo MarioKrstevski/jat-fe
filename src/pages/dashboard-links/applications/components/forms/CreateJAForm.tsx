@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import ExistingTagsControl from "./ExistingTagsControl";
+import ReactQuill from "react-quill";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -429,11 +430,22 @@ export default function CreateJAForm({}) {
               </div>
               {/* Note */}
               <div className="flex gap-1 mb-3 ">
-                <TextareaField
+                {/* <TextareaField
                   form={form}
                   fieldName="note"
                   label="Add note"
-                />
+                /> */}
+                <div className="w-full h-60">
+                  <p>Add note</p>
+                  <ReactQuill
+                    theme="snow"
+                    className="h-44"
+                    value={form.getValues("note")}
+                    onChange={(stringifiedHTML) => {
+                      form.setValue("note", stringifiedHTML);
+                    }}
+                  />
+                </div>
               </div>
               {/* Applied Link + Applied from*/}
               <div className="flex gap-1 mb-3 ">
