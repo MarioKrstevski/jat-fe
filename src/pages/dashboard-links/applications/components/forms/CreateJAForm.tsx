@@ -1,4 +1,18 @@
 import { api } from "@/api/backend";
+import CheckboxField from "@/components/form-fields/CheckboxField";
+import DateTimeField from "@/components/form-fields/DateTimeField";
+import NumberField from "@/components/form-fields/NumberField";
+import SelectField from "@/components/form-fields/SelectField";
+import TextField from "@/components/form-fields/TextField";
+import TextareaField from "@/components/form-fields/TextareaField";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Form } from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 import {
   defaultEmploymentType,
   defaultStatusOptions,
@@ -12,24 +26,6 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Form } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
-import CheckboxField from "@/components/form-fields/CheckboxField";
-import DateTimeField from "@/components/form-fields/DateTimeField";
-import NumberField from "@/components/form-fields/NumberField";
-import SelectField from "@/components/form-fields/SelectField";
-import TextField from "@/components/form-fields/TextField";
-import TextareaField from "@/components/form-fields/TextareaField";
-import { JobApplicationTag } from "@/types";
-import AutoCompleteField from "@/components/form-fields/AutoCompleteField";
-import { getContrastColor } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import ExistingTagsControl from "./ExistingTagsControl";
 
 const formSchema = z.object({
@@ -459,8 +455,11 @@ export default function CreateJAForm({}) {
                 <TextareaField
                   form={form}
                   fieldName="todos"
-                  label="Add todos"
+                  label="Add todos (enter separated)"
                 />
+              </div>
+              <div className="my-2 text-sm">
+                <p>Created Todos:</p>
               </div>
               {/* Perks*/}
               <div>

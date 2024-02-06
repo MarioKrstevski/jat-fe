@@ -39,3 +39,35 @@ export function getContrastColor(hex: string) {
   // Return black for bright colors, white for dark colors
   return luminance > 0.5 ? "#000000" : "#FFFFFF";
 }
+
+export function generateShortId(length = 6) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let shortId = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    shortId += characters[randomIndex];
+  }
+  return shortId;
+}
+
+export function groupByKey(array: any[], key: string) {
+  if (typeof key !== "string") {
+    throw new Error("Key must be a string.");
+  }
+
+  return array.reduce((groupedItems, item) => {
+    const value = item[key];
+    if (!groupedItems[value]) {
+      groupedItems[value] = [];
+    }
+    groupedItems[value].push(item);
+    return groupedItems;
+  }, {});
+}
+
+export function toTitleCase(str: string) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}

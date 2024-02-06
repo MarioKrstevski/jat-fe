@@ -20,6 +20,7 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useNavigate } from "react-router-dom";
 import Upcomming from "@/components/Upcomming";
 import { Badge } from "@/components/ui/badge";
+import JobApplicationTodoManager from "./JobApplicationTodoManager";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -305,6 +306,10 @@ export default function JobApplicationDetails({
             Todos
           </h2>
           <div>{ja.todos}</div>
+          <JobApplicationTodoManager
+            todos={ja.todos}
+            applicationId={ja.id}
+          />
         </section>
         <section className="mb-6 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">

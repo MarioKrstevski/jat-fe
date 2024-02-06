@@ -72,6 +72,12 @@ export interface JobApplication {
   todos: string;
 }
 
+export interface JobApplicationTodo {
+  id: string;
+  text: string;
+  isCompleted: boolean;
+  relatedTo: string;
+}
 export interface JobApplicationTag {
   id: string;
   name: string;
@@ -85,6 +91,7 @@ export interface TimelineEntry {
 export type EditTypes =
   | "statusChange"
   | "nextInterviewDateChange"
+  | "todosChange"
   | "allChange";
 
 export interface Column {
