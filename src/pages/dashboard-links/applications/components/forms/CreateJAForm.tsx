@@ -42,7 +42,7 @@ const formSchema = z.object({
   statusOptions: z.string().optional(),
   resumeUsed: z.string().optional(),
   motivationalLetter: z.string().optional(),
-  notes: z.string().optional(),
+  note: z.string().optional(),
   interestLevel: z.number().min(0).max(5).optional(),
   employmentType: z.string().optional(),
   workMode: z.string().optional(),
@@ -91,7 +91,7 @@ export default function CreateJAForm({}) {
       motivationalLetter: "",
       workMode: "In-Office",
       employmentType: "Full-time",
-      notes: "",
+      note: "",
       perks: "",
       tags: "",
       salaryDetails: "",
@@ -168,7 +168,7 @@ export default function CreateJAForm({}) {
 
         const newJobApplicationsArray = [
           ...jobApplicationStore.jobApplications,
-          res.data,
+          res.data.jobApplication,
         ];
         jobApplicationStore.setData(newJobApplicationsArray);
 
@@ -427,12 +427,12 @@ export default function CreateJAForm({}) {
                   placeholder="ML Link"
                 />
               </div>
-              {/* Notes */}
+              {/* Note */}
               <div className="flex gap-1 mb-3 ">
                 <TextareaField
                   form={form}
-                  fieldName="notes"
-                  label="Add notes"
+                  fieldName="note"
+                  label="Add note"
                 />
               </div>
               {/* Applied Link + Applied from*/}

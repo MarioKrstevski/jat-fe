@@ -47,7 +47,7 @@ const formSchema = z.object({
   statusOptions: z.string().optional(),
   resumeUsed: z.string().optional(),
   motivationalLetter: z.string().optional(),
-  notes: z.string().optional(),
+  // note: z.string().optional(),
   interestLevel: z.number().min(0).max(5).optional(),
   workMode: z.string().optional(),
   employmentType: z.string().optional(),
@@ -99,7 +99,7 @@ export default function EditJAForm() {
       statusOptions: jae?.statusOptions,
       resumeUsed: jae?.resumeUsed,
       motivationalLetter: jae?.motivationalLetter,
-      notes: jae?.notes,
+      // note: jae?.note,
       salaryDetails: jae?.salaryDetails,
       isFavorite: jae?.isFavorite,
       offersRelocation: jae?.offersRelocation,
@@ -145,7 +145,7 @@ export default function EditJAForm() {
         statusOptions: jae.statusOptions,
         resumeUsed: jae.resumeUsed,
         motivationalLetter: jae.motivationalLetter,
-        notes: jae.notes,
+        // note: jae.note,
         salaryDetails: jae.salaryDetails,
         appliedFrom: jae.appliedFrom,
         heardAboutFrom: jae.heardAboutFrom,
@@ -473,13 +473,14 @@ export default function EditJAForm() {
                 />
               </div>
               {/* Notes */}
-              <div className="flex gap-1 mb-3 ">
+              {/* Note will be updated differently */}
+              {/* <div className="flex gap-1 mb-3 ">
                 <TextareaField
                   form={form}
-                  fieldName="notes"
-                  label="Add notes"
+                  fieldName="note"
+                  label="Edit notes"
                 />
-              </div>
+              </div> */}
               {/* Applied Link + Applied from*/}
               <div className="flex gap-1 mb-3 ">
                 <TextField
@@ -496,13 +497,14 @@ export default function EditJAForm() {
                 />
               </div>
               {/* Todos */}
-              <div className="flex gap-1 mb-3 ">
+              {/* Edit todos not allowed they have separate form  */}
+              {/* <div className="flex gap-1 mb-3 ">
                 <TextareaField
                   form={form}
                   fieldName="todos"
-                  label="Add todos"
+                  label="Edit todos"
                 />
-              </div>
+              </div> */}
               {/* Perks*/}
               <div>
                 <TextField

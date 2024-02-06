@@ -57,7 +57,7 @@ export interface JobApplication {
   statusOptions: string;
   resumeUsed: string;
   motivationalLetter: string;
-  notes: string;
+  note: Note;
   interestLevel: number;
   createdAt: Date;
   updatedAt: Date;
@@ -70,6 +70,15 @@ export interface JobApplication {
   heardAboutFrom: string;
   mapLocation: string;
   todos: string;
+}
+export interface Note {
+  id: string;
+  userId: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  jobApplicationId?: string;
+  jobApplication?: JobApplication;
 }
 
 export interface JobApplicationTodo {

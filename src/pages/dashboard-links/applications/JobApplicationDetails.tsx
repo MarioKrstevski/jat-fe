@@ -1,4 +1,4 @@
-import { JobApplication, TimelineEntry } from "@/types";
+import { JobApplication, Note, TimelineEntry } from "@/types";
 import { Textarea } from "../../../components/ui/textarea";
 import { dateDistance, getContrastColor } from "@/lib/utils";
 import { Button } from "../../../components/ui/button";
@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { format, set } from "date-fns";
 import EditButton from "./components/EditButton";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import AlertModal from "../../../components/modals/AlertModal";
 import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
@@ -28,6 +28,7 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
+  const noteRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,7 +63,34 @@ export default function JobApplicationDetails({
         setIsLoading(false);
       });
   }
+  function handleSaveNote(note: Note) {
+    api.notes
+      .editNote(note.id, noteRef.current?.value || "")
+      .then((res) => {
+        console.log("res", res.data);
+        const updatedJobApplications =
+          jobApplicationStore.jobApplications.map((ja) => {
+            if (jobApplication.id === ja.id) {
+              return {
+                ...ja,
+                note: {
+                  ...ja.note,
+                  content: noteRef.current?.value || "",
+                },
+              };
+            } else {
+              return ja;
+            }
+          });
 
+        jobApplicationStore.setData(updatedJobApplications);
+        toast.success("Note Saved");
+      })
+      .catch((err) => {
+        console.log("err", err);
+      })
+      .finally(() => {});
+  }
   function handleUnarchiving() {
     setIsLoading(true);
     api.applications
@@ -314,13 +342,26 @@ export default function JobApplicationDetails({
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
             Notes
           </h2>
-          <Textarea
-            className="w-full h-24 p-2 rounded border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
-            id="notes"
-            readOnly
-            value={ja.notes}
-            placeholder="Add your notes here"
-          />
+          {ja.note ? (
+            <>
+              <Textarea
+                ref={noteRef}
+                className="w-full h-24 p-2 rounded border dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300"
+                id="note"
+                defaultValue={ja.note.content}
+                placeholder="Add your notes here"
+              />
+              <Button
+                className="px-3 py-1.5 my-1"
+                size={"sm"}
+                onClick={() => handleSaveNote(ja.note)}
+              >
+                Save Note
+              </Button>
+            </>
+          ) : (
+            "You don't have notes for this application"
+          )}
         </section>
         <section className="mb-6 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
