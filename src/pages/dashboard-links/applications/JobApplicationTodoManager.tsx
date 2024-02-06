@@ -111,12 +111,21 @@ export default function JobApplicationTodoManager({
   applicationId: string;
 }) {
   const jobApplicationStore = useJobApplicationsStore();
-  const parsedTodos = JSON.parse(passedTodos);
+  console.log(
+    "passedTodos",
+    passedTodos,
+    typeof passedTodos,
+    passedTodos.length
+  );
+
+  let parsedTodos: JobApplicationTodo[] = [];
+  if (passedTodos.length > 0) {
+    parsedTodos = JSON.parse(passedTodos);
+  }
   console.log("parsedTodos", parsedTodos);
   const [todos, setTodos] =
     useState<JobApplicationTodo[]>(parsedTodos);
   console.log("todos", todos);
-  todos[0].relatedTo = "applying";
   const addTodo = (todo: JobApplicationTodo) => {
     setTodos([...todos, todo]);
   };
@@ -166,7 +175,6 @@ export default function JobApplicationTodoManager({
 
   return (
     <div>
-      <p>Todo Manager</p>
       <div>
         <Tabs defaultValue={keys[0]} className="">
           <TabsList className="flex gap-2 justify-start">
@@ -210,11 +218,7 @@ export default function JobApplicationTodoManager({
         </Tabs>
         <TodoForm addTodo={addTodo} />
 
-        <Button
-          className="mt-2"
-          disabled={todos.length === parsedTodos.length}
-          onClick={handleSaveTodos}
-        >
+        <Button className="mt-2" onClick={handleSaveTodos}>
           Save Todos
         </Button>
       </div>
