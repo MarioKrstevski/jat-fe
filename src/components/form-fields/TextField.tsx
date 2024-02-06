@@ -10,12 +10,14 @@ interface TextFieldProps {
   fieldName: string;
   label: string;
   placeholder?: string;
+  sanitize?: (value: string) => string;
 }
 export default function TextField({
   form,
   fieldName,
   label,
   placeholder,
+  sanitize,
 }: TextFieldProps) {
   return (
     <FormField
@@ -26,7 +28,20 @@ export default function TextField({
           <FormItem className="pb-2">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder={placeholder} />
+              {sanitize ? (
+                <Input
+                  {...field}
+                  placeholder={placeholder}
+                  onChange={(e) => {
+                    form.setValue(
+                      fieldName,
+                      sanitize(e.target.value)
+                    );
+                  }}
+                />
+              ) : (
+                <Input {...field} placeholder={placeholder} />
+              )}
             </FormControl>
           </FormItem>
         );

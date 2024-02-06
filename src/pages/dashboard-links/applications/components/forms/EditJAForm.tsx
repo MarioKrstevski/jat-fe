@@ -29,6 +29,7 @@ import NumberField from "@/components/form-fields/NumberField";
 import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import TextareaField from "@/components/form-fields/TextareaField";
+import ExistingTagsControl from "./ExistingTagsControl";
 
 const formSchema = z.object({
   companyName: z
@@ -77,6 +78,7 @@ export default function EditJAForm() {
   const jobApplicationEditted = editModal.data
     .value as JobApplication;
   const jae = jobApplicationEditted;
+  const [tagsChanged, setTagsChanged] = useState<string>(jae?.tags);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -169,6 +171,8 @@ export default function EditJAForm() {
           jae.nextInterviewDate
         ),
       });
+
+      setTagsChanged(jae.tags);
     }
   }, [editModal.data.ja]);
 
@@ -425,12 +429,32 @@ export default function EditJAForm() {
                   max={5}
                 />
               </div>
-              <div className="flex gap-1 mb-3 ">
+              {/* Tags */}
+              <div>
+                {/* // inside it expects for the field to be called tags */}
+                <ExistingTagsControl form={form} tags={tagsChanged} />
                 <TextField
                   form={form}
                   fieldName="tags"
                   label="Tags (comma separated)"
-                  placeholder="ex: React, Node, Remote"
+                  placeholder="tech,fe,be,remote"
+                  sanitize={(value: string) => {
+                    // dont allow two commas in a row
+                    if (
+                      value.at(-1) === "," &&
+                      value.at(-2) === ","
+                    ) {
+                      const newValue = value.slice(0, -1);
+                      setTagsChanged(newValue);
+                      return newValue;
+                    }
+                    const newValue = value
+                      .split(",")
+                      .map((tag) => tag.trim())
+                      .join(",");
+                    setTagsChanged(newValue);
+                    return newValue;
+                  }}
                 />
               </div>
               {/* Resume Used + Motivational Used */}

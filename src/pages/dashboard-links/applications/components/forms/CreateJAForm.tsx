@@ -27,6 +27,10 @@ import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import TextareaField from "@/components/form-fields/TextareaField";
 import { JobApplicationTag } from "@/types";
+import AutoCompleteField from "@/components/form-fields/AutoCompleteField";
+import { getContrastColor } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import ExistingTagsControl from "./ExistingTagsControl";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -69,6 +73,7 @@ export default function CreateJAForm({}) {
   const dialogControl = useDialogControl();
   const jobApplicationStore = useJobApplicationsStore();
   const formContainerRef = useRef<HTMLDivElement>(null);
+  const [tagsChanged, setTagsChanged] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -192,6 +197,7 @@ export default function CreateJAForm({}) {
     const jobApplication = { ...values };
     handleCreateJobApplication(jobApplication);
   }
+
   return (
     <div className="space-y-4 py-2 pb-4" ref={formContainerRef}>
       <Form {...form}>
@@ -372,7 +378,7 @@ export default function CreateJAForm({}) {
                 />
               </div>
 
-              {/* Tags */}
+              {/* Interest Level */}
               <div className="flex gap-1 mb-3 ">
                 <NumberField
                   form={form}
@@ -382,12 +388,32 @@ export default function CreateJAForm({}) {
                   max={5}
                 />
               </div>
+              {/* Tags */}
               <div>
+                {/* // inside it expects for the field to be called tags */}
+                <ExistingTagsControl form={form} tags={tagsChanged} />
                 <TextField
                   form={form}
                   fieldName="tags"
                   label="Tags (comma separated)"
                   placeholder="tech,fe,be,remote"
+                  sanitize={(value: string) => {
+                    // dont allow two commas in a row
+                    if (
+                      value.at(-1) === "," &&
+                      value.at(-2) === ","
+                    ) {
+                      const newValue = value.slice(0, -1);
+                      setTagsChanged(newValue);
+                      return newValue;
+                    }
+                    const newValue = value
+                      .split(",")
+                      .map((tag) => tag.trim())
+                      .join(",");
+                    setTagsChanged(newValue);
+                    return newValue;
+                  }}
                 />
               </div>
               {/* Resume Used + Motivational Used */}

@@ -106,7 +106,7 @@ function TagDisplay({
         className="border w-28 px-1 py-0.5 rounded"
         value={tagName}
         onChange={(e) =>
-          setTagName(e.target.value.toLocaleLowerCase())
+          setTagName(e.target.value.toLocaleLowerCase().trim())
         }
       />
       {!isEditing && (
@@ -269,7 +269,7 @@ function TagForm({
               type="text"
               value={tagName}
               onChange={(e) =>
-                setTagName(e.target.value.toLocaleLowerCase())
+                setTagName(e.target.value.toLocaleLowerCase().trim())
               }
             />
             {alreadyExists && (
