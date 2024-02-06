@@ -1,8 +1,12 @@
-let mode = "development";
-// let mode = "production";
+// let mode = "development";
+let mode = "production";
 
 let backendURL = "";
 let frontendURL = "";
+
+if (window.location.hostname === "localhost") {
+  mode === "development";
+}
 
 if (mode === "development") {
   backendURL = "http://localhost:5050";
