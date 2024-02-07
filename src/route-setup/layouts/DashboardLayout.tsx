@@ -13,12 +13,14 @@ import SideMenu from "../SideMenu";
 import { useQuery } from "@tanstack/react-query";
 import useClerkQuery from "@/hooks/useClerkQuery";
 import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
+import { useContactsStore } from "@/hooks/useContactsStore";
 
 export default function DashboardLayout() {
   usePutTokenInInterceptor();
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
+  const contactsStore = useContactsStore();
 
   // const { isLoading, data, error } = useClerkQuery(
   //   "http://localhost:5050/applications"
@@ -65,9 +67,22 @@ export default function DashboardLayout() {
         console.log("err", err);
       });
   }
+  function handleFetchingContacts() {
+    api.contacts
+      .getContacts()
+      .then((res) => {
+        // addCustomKeyValue
+        contactsStore.setContacts(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }
+
   useEffect(() => {
     handleFetchingJobApplications();
     handleFetchingTags();
+    handleFetchingContacts();
   }, []);
 
   if (!isLoaded || !userId) {

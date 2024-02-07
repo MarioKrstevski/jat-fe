@@ -70,6 +70,22 @@ export interface JobApplication {
   mapLocation: string;
   todos: string;
 }
+export interface Contact {
+  id: string;
+  userId: string;
+  name: string;
+  companyName?: string;
+  positionOrDepartment?: string;
+  company?: Company;
+  companyId?: string;
+  email?: string;
+  phone?: string;
+  linkedin?: string;
+  noteId: string;
+  note: Note;
+  createdAt: Date;
+  updatedAt: Date;
+}
 export interface Note {
   id: string;
   userId: string;

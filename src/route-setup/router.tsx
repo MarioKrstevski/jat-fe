@@ -30,6 +30,7 @@ import SignUpPage from "@/pages/SignUpPage";
 import CompanyInfoPage from "@/pages/dashboard-links/companies/CompanyInfoPage";
 import CompaniesLayout from "./layouts/CompaniesLayout";
 import SavedCompanies from "@/pages/dashboard-links/companies/SavedCompanies";
+import ContactDetails from "@/pages/dashboard-links/contacts/ContactDetails";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -158,6 +159,10 @@ export const router = createBrowserRouter([
           {
             element: <Contacts />,
             path: "contacts",
+          },
+          {
+            element: <ContactDetails />,
+            path: "contact/:contactId",
           },
           {
             element: <JobBoard />,
