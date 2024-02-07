@@ -13,20 +13,29 @@ async function getCompanies() {
 async function getSavedCompanies() {
   return jatbe.get("companies/saved");
 }
-async function saveCompany() {
-  return jatbe.post("companies/save");
+async function saveExistingCompany(companyId: string) {
+  return jatbe.post("companies/save/existing", {
+    companyId,
+  });
 }
-async function requestCompany(name: string, linkedinUrl: string) {
+async function saveCustomCompany(name: string, linkedin: string) {
+  return jatbe.post("companies/save/custom", {
+    name,
+    linkedin,
+  });
+}
+async function requestCompany(name: string, linkedin: string) {
   return jatbe.post("companies/request", {
     name,
-    linkedinUrl,
+    linkedin,
   });
 }
 
 export const companies = {
   getCompanies,
   getCompany,
-  saveCompany,
+  saveCustomCompany,
+  saveExistingCompany,
   getSavedCompanies,
   requestCompany,
 };

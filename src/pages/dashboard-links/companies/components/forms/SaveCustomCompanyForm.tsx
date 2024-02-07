@@ -15,7 +15,7 @@ const formSchema = z.object({
     .regex(/^(https?:\/\/)?([\w-]+\.)*linkedin\.com(\/.*)?$/),
 });
 
-export default function RequestCompanyForm() {
+export default function SaveCustomCompanyForm() {
   const dialogControl = useDialogControl();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -25,16 +25,20 @@ export default function RequestCompanyForm() {
     },
   });
 
-  function handleCompanyRequest(
+  function handleSaveCustomCompany(
     companyInfo: z.infer<typeof formSchema>
   ) {
     console.log(companyInfo);
     api.companies
-      .requestCompany(companyInfo.companyName, companyInfo.linkedin)
+      .saveCustomCompany(
+        companyInfo.companyName,
+        companyInfo.linkedin
+      )
       .then((response) => {
         console.log(response);
-        toast.success("Company requested");
-        dialogControl.closeModal("requestCompany");
+        toast.success("Company saved");
+
+        dialogControl.closeModal("saveCustomCompany");
       })
       .catch((error) => {
         console.error("Error requesting company:", error);
@@ -47,8 +51,9 @@ export default function RequestCompanyForm() {
       })
       .finally(() => {});
   }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    handleCompanyRequest(values);
+    handleSaveCustomCompany(values);
   }
   return (
     <div>

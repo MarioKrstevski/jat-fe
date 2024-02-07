@@ -15,6 +15,7 @@ import { Button } from "../../../components/ui/button";
 import { Textarea } from "../../../components/ui/textarea";
 import JobApplicationTodoManager from "./JobApplicationTodoManager";
 import EditButton from "./components/EditButton";
+import NoteForm from "@/components/NoteForm";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -22,14 +23,10 @@ export default function JobApplicationDetails({
   jobApplication,
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
-  const noteRef = useRef<HTMLTextAreaElement>(null);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
-
-  const initialNoteContent = ja.note?.content || "";
-  const [noteContent, setNoteContent] = useState(initialNoteContent);
 
   function onDelete() {
     setIsLoading(true);
@@ -60,34 +57,7 @@ export default function JobApplicationDetails({
         setIsLoading(false);
       });
   }
-  function handleSaveNote(note: Note) {
-    api.notes
-      .editNote(note.id, noteContent)
-      .then((res) => {
-        console.log("res", res.data);
-        const updatedJobApplications =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (jobApplication.id === ja.id) {
-              return {
-                ...ja,
-                note: {
-                  ...ja.note,
-                  content: noteRef.current?.value || "",
-                },
-              };
-            } else {
-              return ja;
-            }
-          });
 
-        jobApplicationStore.setData(updatedJobApplications);
-        toast.success("Note Saved");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {});
-  }
   function handleUnarchiving() {
     setIsLoading(true);
     api.applications
@@ -339,27 +309,9 @@ export default function JobApplicationDetails({
           <h2 className="text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
             Your notes
           </h2>
-
           {ja.note ? (
             <>
-              {ja.note.content && (
-                <div>
-                  <ReactQuill
-                    theme="snow"
-                    value={noteContent}
-                    onChange={(stringifiedHTML) => {
-                      setNoteContent(stringifiedHTML);
-                    }}
-                  />
-                  <Button
-                    className="px-3 py-1.5 my-1"
-                    size={"sm"}
-                    onClick={() => handleSaveNote(ja.note)}
-                  >
-                    Save Note
-                  </Button>
-                </div>
-              )}
+              <NoteForm note={ja.note} />
             </>
           ) : (
             "You have no notes for this application."

@@ -18,6 +18,7 @@ import { defaultStatusOptions } from "@/global/values";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { toast } from "sonner";
 
 function TodoForm({
   addTodo,
@@ -165,9 +166,11 @@ export default function JobApplicationTodoManager({
             }
           });
         jobApplicationStore.setData(newJobApplicationsArray);
+        toast.success("Todos saved");
       })
       .catch((err) => {
         console.log("err", err);
+        toast.error("Failed to save todos" + err.response.data.error);
       })
       .finally(() => {});
   }

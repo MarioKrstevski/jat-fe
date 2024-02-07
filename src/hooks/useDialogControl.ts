@@ -5,6 +5,7 @@ const validModalNames = new Set([
   "editStatus",
   "editInterviewDate",
   "editJobDescription",
+  "saveCustomCompany",
 
   "requestCompany",
 ]);
@@ -14,7 +15,8 @@ type ModalName =
   | "editStatus"
   | "editJobDescription"
   | "editInterviewDate"
-  | "requestCompany";
+  | "requestCompany"
+  | "saveCustomCompany";
 
 type ModalData = {
   value?: any;

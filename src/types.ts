@@ -45,7 +45,6 @@ export interface JobApplication {
   referredBy: string;
   companyId: string | null;
   companyName: string;
-  companyInfo: string;
   jobTitle: string;
   jobDescription: string;
   jobLocation: string;
