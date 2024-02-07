@@ -28,7 +28,8 @@ export default function JobApplicationDetails({
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
 
-  const [noteContent, setNoteContent] = useState(ja.note.content);
+  const initialNoteContent = ja.note?.content || "";
+  const [noteContent, setNoteContent] = useState(initialNoteContent);
 
   function onDelete() {
     setIsLoading(true);
