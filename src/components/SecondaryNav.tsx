@@ -10,7 +10,7 @@ export function SecondaryNavLink({ to, label }: SecondaryNavLink) {
     <Link
       to={to}
       className={cn(
-        "text-gray-500 px-2 py-1 border rounded-l",
+        "text-gray-500 px-2 py-1 border rounded-l bg-white rounded ",
         isActive && "text-blue-500 hover:text-blue-700 "
       )}
     >
@@ -24,7 +24,7 @@ interface SecondaryNavProps {
 }
 export default function SecondaryNav({ links }: SecondaryNavProps) {
   return (
-    <nav className="flex gap-2 px-3 py-1 mb-2">
+    <nav className="flex gap-2 px-3 py-2 mb-2 mt-1 bg-white-50 ">
       {links.map((link) => {
         return (
           <SecondaryNavLink

@@ -80,11 +80,11 @@ export default function DashboardLayout() {
       <ModalProvider />
       <DrawerProvider />
       <SmartOverlayProvider />
-      <main className="flex  overflx">
+      <main className="flex overflx  ">
         <SideMenu />
-        <section className="flex-1 overflow-x-auto overflow-y-auto">
+        <section className="flex-1  overflow-x-auto overflow-y-auto">
           <Header />
-          <div className="mx-3 ">
+          <div className="px-2 sm:px-3">
             <Outlet />
           </div>
           <Footer />

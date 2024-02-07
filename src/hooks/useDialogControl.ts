@@ -5,13 +5,16 @@ const validModalNames = new Set([
   "editStatus",
   "editInterviewDate",
   "editJobDescription",
+
+  "requestCompany",
 ]);
 type ModalName =
   | "createJA"
   | "editJA"
   | "editStatus"
   | "editJobDescription"
-  | "editInterviewDate";
+  | "editInterviewDate"
+  | "requestCompany";
 
 type ModalData = {
   value?: any;

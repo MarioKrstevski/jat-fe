@@ -3,6 +3,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 interface TextFieldProps {
@@ -43,6 +44,9 @@ export default function TextField({
                 <Input {...field} placeholder={placeholder} />
               )}
             </FormControl>
+            <FormMessage>
+              {form.formState.errors[fieldName]?.message}
+            </FormMessage>
           </FormItem>
         );
       }}

@@ -81,6 +81,19 @@ export interface Note {
   jobApplication?: JobApplication;
 }
 
+export interface Company {
+  id: string;
+  name: string;
+  description: string;
+  logo: string;
+  website: string;
+  companySize: string;
+  industry: string;
+  linkedin: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface JobApplicationTodo {
   id: string;
   text: string;

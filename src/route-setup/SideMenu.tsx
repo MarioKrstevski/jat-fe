@@ -61,7 +61,7 @@ export default function SideMenu() {
   return (
     <aside
       className={cn(
-        "sticky top-0 flex flex-col h-screen bg-gray-100 dark:bg-gray-800 transition-all duration-300",
+        "sticky top-0 flex flex-col h-screen shadow-md  bg-gray-50 dark:bg-gray-800 transition-all duration-300",
         smState === "open" && "w-42",
         smState === "minimized" && "w-10",
         smState === "hidden" && "hidden"
@@ -69,7 +69,7 @@ export default function SideMenu() {
     >
       <div
         className={cn(
-          "flex items-center justify-between h-20 border-b dark:border-gray-700 ",
+          "flex items-center justify-between h-16 border-b dark:border-gray-700 ",
           smState === "minimized" && "justify-center"
         )}
       >

@@ -3,7 +3,7 @@ import Navigation from "./Navigation";
 
 export default function Header() {
   return (
-    <header className="flex justify-start items-center gap-3 py-4 px-6">
+    <header className="flex border-b shadow-sm justify-start h-16 bg-white items-center gap-3 py-4 px-6">
       <h2 className="text-2xl">Job Buddy</h2>
       {/* <Navigation /> */}
       <div className="ml-auto">

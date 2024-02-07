@@ -5,7 +5,7 @@ let backendURL = "";
 let frontendURL = "";
 
 if (window.location.hostname === "localhost") {
-  mode === "development";
+  mode = "development";
 }
 
 if (mode === "development") {
