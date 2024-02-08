@@ -33,7 +33,7 @@ export default function SelectField({
       name={fieldName}
       render={({ field }) => {
         return (
-          <FormItem className="flex-1">
+          <FormItem className="flex-1 mb-1">
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <Select

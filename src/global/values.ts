@@ -21,6 +21,21 @@ export const defaultStatusOptions = [
   "Archived",
 ];
 
+export const defaultInterviewTypesOptions = [
+  "Technical",
+  "HR",
+  "Initial Screen",
+  "Work Culture",
+  "Other",
+];
+
+export const defaultInterviewFormatOptions = [
+  "Video",
+  "Phone",
+  "Onsite",
+  "Other",
+];
+
 export const defaultWorkModeOptions = [
   "In-Office",
   "Remote",

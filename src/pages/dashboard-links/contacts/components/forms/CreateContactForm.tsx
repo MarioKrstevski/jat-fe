@@ -53,7 +53,7 @@ export default function CreateContactForm({}: CreateContactFormProps) {
 
   // Add a new function here
   function handleCancel() {
-    dialogControl.closeModal("editJA");
+    dialogControl.closeModal("createContact");
   }
 
   return (

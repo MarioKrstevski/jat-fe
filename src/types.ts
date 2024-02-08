@@ -70,6 +70,21 @@ export interface JobApplication {
   mapLocation: string;
   todos: string;
 }
+
+export interface Interview {
+  id: string;
+  userId: string;
+  date: Date;
+  jobApplication?: JobApplication;
+  jobApplicationId?: string;
+  type: string;
+  format: string;
+  noteId: string;
+  note: Note;
+  createdAt: Date;
+  updatedAt: Date;
+  contacts: Contact[];
+}
 export interface Contact {
   id: string;
   userId: string;

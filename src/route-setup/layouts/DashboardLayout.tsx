@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import useClerkQuery from "@/hooks/useClerkQuery";
 import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
 import { useContactsStore } from "@/hooks/useContactsStore";
+import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 
 export default function DashboardLayout() {
   usePutTokenInInterceptor();
@@ -21,6 +22,7 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
   const contactsStore = useContactsStore();
+  const interviewsStore = useInterviewsStore();
 
   // const { isLoading, data, error } = useClerkQuery(
   //   "http://localhost:5050/applications"
@@ -67,11 +69,21 @@ export default function DashboardLayout() {
         console.log("err", err);
       });
   }
+  function handleFetchingInterviews() {
+    api.interviews
+      .getInterviews()
+      .then((res) => {
+        // console.log("interviews", res.data);
+        interviewsStore.setInterviews(res.data);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  }
   function handleFetchingContacts() {
     api.contacts
       .getContacts()
       .then((res) => {
-        // addCustomKeyValue
         contactsStore.setContacts(res.data);
       })
       .catch((err) => {
@@ -83,6 +95,7 @@ export default function DashboardLayout() {
     handleFetchingJobApplications();
     handleFetchingTags();
     handleFetchingContacts();
+    handleFetchingInterviews();
   }, []);
 
   if (!isLoaded || !userId) {
