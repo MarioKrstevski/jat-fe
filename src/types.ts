@@ -44,6 +44,7 @@ export interface JobApplication {
   tags: string; // comma separated values
   referredBy: string;
   companyId: string | null;
+  company?: Company;
   companyName: string;
   jobTitle: string;
   jobDescription: string;

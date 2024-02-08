@@ -10,7 +10,7 @@ interface NoteFormProps {
   note: Note;
 }
 export default function NoteForm({ note }: NoteFormProps) {
-  console.log("note", note);
+  // console.log("note", note);
   const initialNoteContent = note.content || "";
   const [noteContent, setNoteContent] = useState(initialNoteContent);
 
