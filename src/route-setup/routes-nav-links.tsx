@@ -24,6 +24,13 @@ export const sidenav = [
     to: "/d/applications",
     label: "Applications",
     icon: <HomeIcon className="h-4 w-4" />,
+    children: [
+      {
+        to: "/d/applications/archived",
+        label: "Archived",
+        icon: <ArchiveIcon className="h-4 w-4" />,
+      },
+    ],
   },
   {
     to: "/d/companies",

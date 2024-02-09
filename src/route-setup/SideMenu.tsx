@@ -6,31 +6,87 @@ import {
   ChevronRightIcon,
   ChevronLeftIcon,
 } from "lucide-react";
+
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSideMenuControl } from "@/hooks/useSideMenuControl";
 import { sidenav } from "./routes-nav-links";
-
+interface SideMenuLinkWithoutChildrenProps {
+  to?: string;
+  icon: React.ReactNode;
+  label: string;
+  indented?: boolean;
+  parent?: boolean;
+}
 interface SideMenuLinkProps {
   to?: string;
   icon: React.ReactNode;
   label: string;
+  indented?: boolean;
+  parent?: boolean;
+  children?: SideMenuLinkWithoutChildrenProps[];
 }
 function SideMenuLink({
   to = window.location.pathname,
   icon,
   label,
+  indented,
+  parent,
+  children,
 }: SideMenuLinkProps) {
   const sideMenuControl = useSideMenuControl();
   const smState = sideMenuControl.state;
+
+  if (children?.length) {
+    return (
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1" className="border-none">
+          <div className="flex items-center   hover:bg-red-500 rounded-lg transition-all duration-300 ">
+            <AccordionTrigger className="py-2 pl-1 flex w-6 flex-row-reverse justify-end gap-1"></AccordionTrigger>
+            <SideMenuLink
+              parent
+              key={label}
+              to={to}
+              label={label}
+              icon={icon}
+            />
+          </div>
+          <AccordionContent className="border-none pb-0.5 ">
+            {children.map((child) => {
+              return (
+                <SideMenuLink
+                  key={child.label}
+                  to={child.to}
+                  label={child.label}
+                  icon={child.icon}
+                  indented
+                />
+              );
+            })}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+    );
+  }
+
   return (
     <Link
       className={cn(
-        "flex items-center gap-3 w-full py-2 rounded-lg px-1 text-sm font-medium transition-all duration-300 text-slate-700 hover:text-slate-950   hover:bg-gray-200 ",
-        smState === "minimized" && "w-8 justify-center"
+        "flex items-center gap-3 w-full py-2 px-1 text-base cursor-default ",
+        smState === "minimized" && "w-8 justify-center",
+        !parent &&
+          " rounded-lg  transition-all duration-300   hover:text-white  hover:bg-red-500 "
       )}
       to={to}
     >
+      {indented && <span className="w-4"></span>}
       <span className="transition-none">{icon}</span>
       <span
         className={cn(
@@ -61,8 +117,8 @@ export default function SideMenu() {
   return (
     <aside
       className={cn(
-        "sticky top-0 flex flex-col h-screen shadow-md  bg-gray-50 dark:bg-gray-800 transition-all duration-300",
-        smState === "open" && "w-42",
+        "sticky top-0 flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
+        smState === "open" && "w-48",
         smState === "minimized" && "w-10",
         smState === "hidden" && "hidden"
       )}
@@ -93,7 +149,7 @@ export default function SideMenu() {
       </div>
       <nav
         className={cn(
-          "flex flex-col gap-1 px-2 overflow-y-auto",
+          "flex flex-col gap-1 px-2 overflow-y-auto ",
           smState === "minimized" && "px-1"
         )}
       >
@@ -103,6 +159,7 @@ export default function SideMenu() {
             to={item.to}
             label={item.label}
             icon={item.icon}
+            children={item.children}
           />
         ))}
       </nav>

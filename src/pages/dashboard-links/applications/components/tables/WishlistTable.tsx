@@ -65,7 +65,7 @@ export default function WishlistTable({
   return (
     <div className="w-full p-2  overflow-x-auto">
       <h1 className="text-2xl font-bold">
-        Archived Applications
+        Wishlisted Applications
         {/* <AddNewButton />{" "} */}
       </h1>
 
