@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 import {
   MountainIcon,
   SettingsIcon,
@@ -34,7 +34,7 @@ interface SideMenuLinkProps {
   children?: SideMenuLinkWithoutChildrenProps[];
 }
 function SideMenuLink({
-  to = window.location.pathname,
+  to,
   icon,
   label,
   indented,
@@ -43,12 +43,18 @@ function SideMenuLink({
 }: SideMenuLinkProps) {
   const sideMenuControl = useSideMenuControl();
   const smState = sideMenuControl.state;
+  const isActive = to && useMatch(to);
 
   if (children?.length) {
     return (
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1" className="border-none">
-          <div className="flex items-center   hover:bg-red-500 rounded-lg transition-all duration-300 ">
+          <div
+            className={cn(
+              "flex items-center    rounded-lg transition-all duration-300 ",
+              isActive && "bg-red-500"
+            )}
+          >
             <AccordionTrigger className="py-2 pl-1 flex w-6 flex-row-reverse justify-end gap-1"></AccordionTrigger>
             <SideMenuLink
               parent
@@ -81,7 +87,7 @@ function SideMenuLink({
       className={cn(
         "flex items-center gap-3 w-full py-2 px-1 text-base cursor-default transition-all duration-300 hover:text-white ",
         smState === "minimized" && "w-8 justify-center",
-        !parent && " rounded-lg hover:bg-red-500 "
+        !parent && isActive && " rounded-lg bg-red-500 "
       )}
       to={to}
     >
