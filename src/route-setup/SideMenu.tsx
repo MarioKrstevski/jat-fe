@@ -79,10 +79,9 @@ function SideMenuLink({
   return (
     <Link
       className={cn(
-        "flex items-center gap-3 w-full py-2 px-1 text-base cursor-default ",
+        "flex items-center gap-3 w-full py-2 px-1 text-base cursor-default transition-all duration-300 hover:text-white ",
         smState === "minimized" && "w-8 justify-center",
-        !parent &&
-          " rounded-lg  transition-all duration-300   hover:text-white  hover:bg-red-500 "
+        !parent && " rounded-lg hover:bg-red-500 "
       )}
       to={to}
     >
@@ -149,7 +148,7 @@ export default function SideMenu() {
       </div>
       <nav
         className={cn(
-          "flex flex-col gap-1 px-2 overflow-y-auto ",
+          "flex flex-col gap-1 px-2  py-1 overflow-y-auto ",
           smState === "minimized" && "px-1"
         )}
       >
