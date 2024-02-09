@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSideMenuControl } from "@/hooks/useSideMenuControl";
 import { sidenav } from "./routes-nav-links";
+import { Separator } from "@/components/ui/separator";
 interface SideMenuLinkWithoutChildrenProps {
   to?: string;
   icon: React.ReactNode;
@@ -26,7 +27,7 @@ interface SideMenuLinkWithoutChildrenProps {
   parent?: boolean;
 }
 interface SideMenuLinkProps {
-  to?: string;
+  to?: string | undefined;
   icon: React.ReactNode;
   label: string;
   indented?: boolean;
@@ -89,7 +90,7 @@ function SideMenuLink({
         smState === "minimized" && "w-8 justify-center",
         !parent && isActive && " rounded-lg bg-red-500 "
       )}
-      to={to}
+      to={to || window.location.pathname}
     >
       {indented && <span className="w-4"></span>}
       <span className="transition-none">{icon}</span>
@@ -130,7 +131,7 @@ export default function SideMenu() {
     >
       <div
         className={cn(
-          "flex items-center justify-between h-16 border-b dark:border-gray-700 ",
+          "flex items-center justify-between h-16 border-b border-b-gray-400 dark:border-gray-700 ",
           smState === "minimized" && "justify-center"
         )}
       >
@@ -170,7 +171,7 @@ export default function SideMenu() {
       </nav>
       <div
         className={cn(
-          "flex flex-col items-start justify-center h-20 mt-auto border-t dark:border-gray-700"
+          "flex flex-col items-start justify-center  mt-auto py-1 border-t-2 border-t-gray-400 dark:border-gray-700"
         )}
       >
         <SideMenuLink
