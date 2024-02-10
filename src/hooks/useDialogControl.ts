@@ -8,6 +8,7 @@ const validModalNames = new Set([
   "editInterviewDate",
   "editJobDescription",
   "saveCustomCompany",
+  "editCustomCompany",
 
   "requestCompany",
 
@@ -22,6 +23,7 @@ type ModalName =
   | "editInterviewDate"
   | "requestCompany"
   | "saveCustomCompany"
+  | "editCustomCompany"
   | "createContact"
   | "createInterview"
   | "deleteAlert";

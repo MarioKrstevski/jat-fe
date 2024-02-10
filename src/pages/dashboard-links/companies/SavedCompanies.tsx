@@ -30,6 +30,7 @@ import {
   MoreVerticalIcon,
 } from "lucide-react";
 import { toast } from "sonner";
+import EditCustomCompanyModal from "./components/modals/EditCustomCompanyModal";
 
 interface SavedExistingCompanyCardProps {
   company: Company;
@@ -165,7 +166,15 @@ function CompanyActionsDropdown({
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {!savedCompany.company && (
-            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                dialogControl.openModal("editCustomCompany", {
+                  savedCompany: savedCompany,
+                });
+              }}
+            >
+              Edit
+            </DropdownMenuItem>
           )}
           <DropdownMenuItem
             onClick={() => {
@@ -198,15 +207,19 @@ function SavedCustomCompanyCard({
         <div className="flex flex-col justify-center gap-2">
           <p className="font-semibold">{name}</p>
           {link && (
-            <p className="w-64 text-slate-600">
+            <p className="w-64 text-slate-600 ">
               <a
                 href={link}
                 target="_blank"
-                className="text-blue-400 flex gap-1 items-end hover:underline hover:underline-offset-4"
+                className="text-blue-400 flex gap-1 items-end w-fit  hover:underline hover:underline-offset-4"
               >
                 {" "}
-                {isLinkedin ? <LinkedinIcon /> : <GlobeIcon />}
-                <span className="relative -bottom-1">
+                {isLinkedin ? (
+                  <LinkedinIcon size={16} />
+                ) : (
+                  <GlobeIcon size={16} />
+                )}
+                <span className="relative -bottom-1 text-sm">
                   Open {isLinkedin ? "linkedin" : "website"}
                 </span>
               </a>
@@ -269,6 +282,7 @@ export default function SavedCompanies() {
   return (
     <>
       <SaveCustomCompanyModal />
+      <EditCustomCompanyModal />
       <Button
         className="ml-2"
         onClick={() => {

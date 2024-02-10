@@ -29,6 +29,19 @@ async function saveCustomCompany(
     link,
   });
 }
+
+async function editCustomCompany(
+  name: string,
+  link: string | undefined,
+  savedCompanyId: string
+) {
+  return jatbe.patch("companies/edit/custom", {
+    name,
+    link,
+    savedCompanyId,
+  });
+}
+
 async function requestCompany(name: string, link: string) {
   return jatbe.post("companies/request", {
     name,
@@ -50,6 +63,7 @@ export const companies = {
   getCompanies,
   getCompany,
   saveCustomCompany,
+  editCustomCompany,
   saveExistingCompany,
   getSavedCompanies,
   requestCompany,

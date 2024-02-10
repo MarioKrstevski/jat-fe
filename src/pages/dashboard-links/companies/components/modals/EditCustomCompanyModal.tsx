@@ -1,21 +1,22 @@
 import { useDialogControl } from "@/hooks/useDialogControl";
 import { Modal } from "@/components/ui/custom/modal";
 import SaveCustomCompanyForm from "../forms/SaveCustomCompanyForm";
+import EditCustomCompanyForm from "../forms/EditCustomCompanyForm";
 
-export default function SaveCustomCompanyModal() {
+export default function EditCustomCompanyModal() {
   const dialogControl = useDialogControl();
-  const isOpen = dialogControl.modals["saveCustomCompany"]?.isOpen!;
+  const isOpen = dialogControl.modals["editCustomCompany"]?.isOpen!;
 
   return (
     <Modal
-      title="Save New Company"
-      description={`Will be added to your saved colletion with a note attached to it`}
+      title="Edit saved company data"
+      description={`Change something or attach it to an existing company.`}
       isOpen={isOpen}
       onClose={() => {
-        dialogControl.closeModal("saveCustomCompany");
+        dialogControl.closeModal("editCustomCompany");
       }}
     >
-      <SaveCustomCompanyForm />
+      <EditCustomCompanyForm />
     </Modal>
   );
 }
