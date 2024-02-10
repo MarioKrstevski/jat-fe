@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 interface TextFieldProps {
   form: any;
   fieldName: string;
-  label: string;
+  label: string | JSX.Element;
   placeholder?: string;
   sanitize?: (value: string) => string;
 }

@@ -115,7 +115,7 @@ export interface Note {
 export interface SavedCompany {
   id: string;
   name?: string;
-  linkedin?: string;
+  link?: string;
   company?: Company;
   note: Note;
   contacts?: Contact[];

@@ -18,16 +18,16 @@ async function saveExistingCompany(companyId: string) {
     companyId,
   });
 }
-async function saveCustomCompany(name: string, linkedin: string) {
+async function saveCustomCompany(name: string, link: string | null) {
   return jatbe.post("companies/save/custom", {
     name,
-    linkedin,
+    link,
   });
 }
-async function requestCompany(name: string, linkedin: string) {
+async function requestCompany(name: string, link: string) {
   return jatbe.post("companies/request", {
     name,
-    linkedin,
+    link,
   });
 }
 

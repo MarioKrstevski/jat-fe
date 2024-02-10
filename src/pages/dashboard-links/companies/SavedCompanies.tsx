@@ -14,7 +14,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { LinkedinIcon } from "lucide-react";
+import { GlobeIcon, LinkedinIcon } from "lucide-react";
 
 interface SavedExistingCompanyCardProps {
   company: Company;
@@ -96,7 +96,7 @@ function SavedExistingCompanyCard({
 }
 interface SavedCustomCompanyCardProps {
   name: string;
-  linkedin: string;
+  link: string;
   note: Note;
   contacts: Contact[];
 }
@@ -105,29 +105,31 @@ function SavedCustomCompanyCard({
   name,
   note,
   contacts,
-  linkedin,
+  link,
 }: SavedCustomCompanyCardProps) {
-  const navigate = useNavigate();
+  const isLinkedin = link?.includes("linkedin");
   return (
     <div className="p-4 m-2 border shadow-md bg-white rounded  relative">
       <div className="flex gap-4 p-4 items-center   ">
         <div className="flex flex-col justify-center gap-2">
           <p className="font-semibold">{name}</p>
-          <p className="w-64 text-slate-600">
-            <Button variant={"link"}>
-              <a
-                href={linkedin}
-                target="_blank"
-                className="text-blue-400 flex gap-1 items-end"
-              >
-                {" "}
-                <LinkedinIcon />{" "}
-                <span className="relative bottom-0">
-                  Open linkedin
-                </span>
-              </a>
-            </Button>
-          </p>
+          {link && (
+            <p className="w-64 text-slate-600">
+              <Button variant={"link"}>
+                <a
+                  href={link}
+                  target="_blank"
+                  className="text-blue-400 flex gap-1 items-end"
+                >
+                  {" "}
+                  {isLinkedin ? <LinkedinIcon /> : <GlobeIcon />}
+                  <span className="relative bottom-0">
+                    Open {isLinkedin ? "linkedin" : "website"}
+                  </span>
+                </a>
+              </Button>
+            </p>
+          )}
         </div>
       </div>
 
@@ -186,6 +188,7 @@ export default function SavedCompanies() {
     <>
       <SaveCustomCompanyModal />
       <Button
+        className="ml-2"
         onClick={() => {
           dialogControl.openModal("saveCustomCompany");
         }}
@@ -214,7 +217,7 @@ export default function SavedCompanies() {
           return (
             <SavedCustomCompanyCard
               name={savedCompany.name!}
-              linkedin={savedCompany.linkedin!}
+              link={savedCompany.link!}
               note={savedCompany.note}
               contacts={[...(savedCompany?.contacts ?? [])]}
             />

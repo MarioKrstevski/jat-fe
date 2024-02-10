@@ -10,9 +10,7 @@ import { useDialogControl } from "@/hooks/useDialogControl";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
-  linkedin: z
-    .string()
-    .regex(/^(https?:\/\/)?([\w-]+\.)*linkedin\.com(\/.*)?$/),
+  link: z.string().url(),
 });
 
 export default function RequestCompanyForm() {
@@ -21,7 +19,7 @@ export default function RequestCompanyForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
-      linkedin: "",
+      link: "",
     },
   });
 
@@ -30,7 +28,7 @@ export default function RequestCompanyForm() {
   ) {
     console.log(companyInfo);
     api.companies
-      .requestCompany(companyInfo.companyName, companyInfo.linkedin)
+      .requestCompany(companyInfo.companyName, companyInfo.link)
       .then((response) => {
         console.log(response);
         toast.success("Company requested");
@@ -61,8 +59,8 @@ export default function RequestCompanyForm() {
           />
           <TextField
             form={form}
-            fieldName="linkedin"
-            label="LinkedIn URL*"
+            fieldName="link"
+            label="link * (ideally a Linkedin link"
           />
 
           <div className="flex justify-end">

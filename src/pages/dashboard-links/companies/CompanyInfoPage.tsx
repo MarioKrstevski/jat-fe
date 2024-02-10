@@ -33,11 +33,18 @@ export default function CompanyInfoPage() {
   return (
     <div
       key={company.id}
-      className="p-4 m-2 border shadow-md bg-white rounded "
+      className="p-4 m-2 border shadow-md bg-white rounded relative "
       onClick={() => {
         navigate(`/d/companies/${company.id}`);
       }}
     >
+      <Button
+        className="ml-2 absolute top-2 right-2"
+        variant={"outline"}
+        onClick={handleSaveCompany}
+      >
+        Save Company
+      </Button>
       <div
         className="flex gap-4 p-4 items-center   "
         key={company.id}

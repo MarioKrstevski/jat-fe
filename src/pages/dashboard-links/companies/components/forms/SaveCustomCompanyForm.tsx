@@ -8,11 +8,11 @@ import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
 
+const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[^\s.]+\.[^\s]+$/;
+
 const formSchema = z.object({
   companyName: z.string().min(1),
-  linkedin: z
-    .string()
-    .regex(/^(https?:\/\/)?([\w-]+\.)*linkedin\.com(\/.*)?$/),
+  link: z.string().regex(urlRegex).optional(),
 });
 
 export default function SaveCustomCompanyForm() {
@@ -21,7 +21,7 @@ export default function SaveCustomCompanyForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       companyName: "",
-      linkedin: "",
+      link: undefined,
     },
   });
 
@@ -32,7 +32,7 @@ export default function SaveCustomCompanyForm() {
     api.companies
       .saveCustomCompany(
         companyInfo.companyName,
-        companyInfo.linkedin
+        companyInfo.link || null
       )
       .then((response) => {
         console.log(response);
@@ -66,8 +66,12 @@ export default function SaveCustomCompanyForm() {
           />
           <TextField
             form={form}
-            fieldName="linkedin"
-            label="LinkedIn URL*"
+            fieldName="link"
+            label={
+              <span>
+                Link <small>(ideally a Linkedin link )</small>
+              </span>
+            }
           />
 
           <div className="flex justify-end">
