@@ -166,7 +166,7 @@ export default function SideMenu() {
           if (item.section) {
             return (
               <>
-                <p className="pt-5">{item.label}</p>
+                <p className="pt-5 pl-2 text-sm">{item.label}</p>
               </>
             );
           }
