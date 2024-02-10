@@ -3,7 +3,7 @@ import NoteForm from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { useCompaniesStore } from "@/hooks/useCompaniesStore";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { Company, Contact, Note } from "@/types";
+import { Company, Contact, Note, SavedCompany } from "@/types";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SaveCustomCompanyModal from "./components/modals/SaveCustomCompanyModal";
@@ -32,12 +32,14 @@ import {
 
 interface SavedExistingCompanyCardProps {
   company: Company;
+  savedCompany: SavedCompany;
   note?: Note;
   contacts: Contact[];
 }
 function SavedExistingCompanyCard({
   company,
   note,
+  savedCompany,
   contacts,
 }: SavedExistingCompanyCardProps) {
   const navigate = useNavigate();
@@ -57,7 +59,7 @@ function SavedExistingCompanyCard({
         >
           Company Details
         </Button>
-        <CompanyActionsDropdown />
+        <CompanyActionsDropdown savedCompany={savedCompany} />
       </div>
       <div
         className="flex gap-4 p-4 items-center   "
@@ -113,12 +115,35 @@ function SavedExistingCompanyCard({
 }
 interface SavedCustomCompanyCardProps {
   name: string;
+  savedCompany: SavedCompany;
   link: string;
   note: Note;
   contacts: Contact[];
 }
 
-function CompanyActionsDropdown() {
+interface CompanyActionsDropdownProps {
+  savedCompany: SavedCompany;
+}
+function CompanyActionsDropdown({
+  savedCompany,
+}: CompanyActionsDropdownProps) {
+  const companiesStore = useCompaniesStore();
+  function handleDeleteSavedCompany() {
+    api.companies
+      .deleteCustomCompany(savedCompany.id)
+      .then((response) => {
+        console.log(response.data);
+        const newSavedCompanies =
+          companiesStore.savedCompanies.filter(
+            (c) => c.id !== savedCompany.id
+          );
+        companiesStore.setSavedCompanies(newSavedCompanies);
+      })
+      .catch((error) => {
+        console.error("Error fetching companies:", error);
+      })
+      .finally(() => {});
+  }
   return (
     <>
       <DropdownMenu>
@@ -135,13 +160,16 @@ function CompanyActionsDropdown() {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDeleteSavedCompany}>
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
   );
 }
 function SavedCustomCompanyCard({
+  savedCompany,
   name,
   note,
   contacts,
@@ -151,7 +179,7 @@ function SavedCustomCompanyCard({
   return (
     <div className="p-4 m-2 border shadow-md bg-white rounded  relative">
       <div className="absolute top-2 right-2 ">
-        <CompanyActionsDropdown />
+        <CompanyActionsDropdown savedCompany={savedCompany} />
       </div>
       <div className="flex gap-4 p-4 items-center   ">
         <div className="flex flex-col justify-center gap-2">
@@ -246,6 +274,7 @@ export default function SavedCompanies() {
 
           return (
             <SavedExistingCompanyCard
+              savedCompany={savedCompany}
               key={savedCompany.id}
               company={company}
               note={savedCompany.note}
@@ -258,6 +287,7 @@ export default function SavedCompanies() {
         } else {
           return (
             <SavedCustomCompanyCard
+              savedCompany={savedCompany}
               key={savedCompany.id}
               name={savedCompany.name!}
               link={savedCompany.link!}

@@ -1,4 +1,6 @@
+import { SavedCompany } from "@/types";
 import { jatbe } from "./instance";
+import { AxiosResponse } from "axios";
 
 async function getCompany(companyId: string) {
   return jatbe.get("companies", {
@@ -34,6 +36,16 @@ async function requestCompany(name: string, link: string) {
   });
 }
 
+async function deleteCustomCompany(
+  savedCompanyId: string
+): Promise<AxiosResponse<SavedCompany>> {
+  return jatbe.delete("companies/custom", {
+    data: {
+      savedCompanyId,
+    },
+  });
+}
+
 export const companies = {
   getCompanies,
   getCompany,
@@ -41,4 +53,5 @@ export const companies = {
   saveExistingCompany,
   getSavedCompanies,
   requestCompany,
+  deleteCustomCompany,
 };
