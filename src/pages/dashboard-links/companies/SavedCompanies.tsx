@@ -1,12 +1,21 @@
 import { api } from "@/api/backend";
+import NoteForm from "@/components/NoteForm";
 import { Button } from "@/components/ui/button";
 import { useCompaniesStore } from "@/hooks/useCompaniesStore";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useEffect } from "react";
-import SaveCustomCompanyModal from "./components/modals/SaveCustomCompanyModal";
-import NoteForm from "@/components/NoteForm";
 import { Company, Contact, Note } from "@/types";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SaveCustomCompanyModal from "./components/modals/SaveCustomCompanyModal";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Accordion,
@@ -14,7 +23,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { GlobeIcon, LinkedinIcon } from "lucide-react";
+import {
+  GlobeIcon,
+  LinkedinIcon,
+  LucideCircleEllipsis,
+  MoreVerticalIcon,
+} from "lucide-react";
 
 interface SavedExistingCompanyCardProps {
   company: Company;
@@ -32,16 +46,19 @@ function SavedExistingCompanyCard({
       key={company.id}
       className="p-4 m-2 border shadow-md bg-white rounded  relative"
     >
-      <Button
-        variant={"outline"}
-        size={"sm"}
-        className=" absolute top-2 right-2"
-        onClick={() => {
-          navigate(`/d/companies/${company.id}`);
-        }}
-      >
-        Company Details
-      </Button>
+      <div className=" absolute top-2 right-2 flex items-start gap-0.5">
+        <Button
+          variant={"outline"}
+          size={"sm"}
+          className="h-8"
+          onClick={() => {
+            navigate(`/d/companies/${company.id}`);
+          }}
+        >
+          Company Details
+        </Button>
+        <CompanyActionsDropdown />
+      </div>
       <div
         className="flex gap-4 p-4 items-center   "
         key={company.id}
@@ -101,6 +118,29 @@ interface SavedCustomCompanyCardProps {
   contacts: Contact[];
 }
 
+function CompanyActionsDropdown() {
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button
+            variant={"outline"}
+            size={"icon"}
+            className=" h-8 w-8"
+          >
+            <MoreVerticalIcon size={14} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="-right-4 top-2 absolute">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Edit</DropdownMenuItem>
+          <DropdownMenuItem>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+}
 function SavedCustomCompanyCard({
   name,
   note,
@@ -110,24 +150,25 @@ function SavedCustomCompanyCard({
   const isLinkedin = link?.includes("linkedin");
   return (
     <div className="p-4 m-2 border shadow-md bg-white rounded  relative">
+      <div className="absolute top-2 right-2 ">
+        <CompanyActionsDropdown />
+      </div>
       <div className="flex gap-4 p-4 items-center   ">
         <div className="flex flex-col justify-center gap-2">
           <p className="font-semibold">{name}</p>
           {link && (
             <p className="w-64 text-slate-600">
-              <Button variant={"link"}>
-                <a
-                  href={link}
-                  target="_blank"
-                  className="text-blue-400 flex gap-1 items-end"
-                >
-                  {" "}
-                  {isLinkedin ? <LinkedinIcon /> : <GlobeIcon />}
-                  <span className="relative bottom-0">
-                    Open {isLinkedin ? "linkedin" : "website"}
-                  </span>
-                </a>
-              </Button>
+              <a
+                href={link}
+                target="_blank"
+                className="text-blue-400 flex gap-1 items-end hover:underline hover:underline-offset-4"
+              >
+                {" "}
+                {isLinkedin ? <LinkedinIcon /> : <GlobeIcon />}
+                <span className="relative -bottom-1">
+                  Open {isLinkedin ? "linkedin" : "website"}
+                </span>
+              </a>
             </p>
           )}
         </div>
@@ -205,6 +246,7 @@ export default function SavedCompanies() {
 
           return (
             <SavedExistingCompanyCard
+              key={savedCompany.id}
               company={company}
               note={savedCompany.note}
               contacts={[
@@ -216,6 +258,7 @@ export default function SavedCompanies() {
         } else {
           return (
             <SavedCustomCompanyCard
+              key={savedCompany.id}
               name={savedCompany.name!}
               link={savedCompany.link!}
               note={savedCompany.note}

@@ -28,11 +28,15 @@ export default function SaveCustomCompanyForm() {
     companyInfo: z.infer<typeof formSchema>
   ) {
     console.log(companyInfo);
+
+    if (companyInfo.link) {
+      companyInfo.link = companyInfo.link.startsWith("http")
+        ? companyInfo.link
+        : "https://" + companyInfo.link;
+    }
+
     api.companies
-      .saveCustomCompany(
-        companyInfo.companyName,
-        companyInfo.link || null
-      )
+      .saveCustomCompany(companyInfo.companyName, companyInfo.link)
       .then((response) => {
         console.log(response);
         toast.success("Company saved");
