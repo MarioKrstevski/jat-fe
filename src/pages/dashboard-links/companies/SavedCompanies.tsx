@@ -14,11 +14,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { LinkedinIcon } from "lucide-react";
 
 interface SavedExistingCompanyCardProps {
   company: Company;
   note?: Note;
-  contacts?: Contact[];
+  contacts: Contact[];
 }
 function SavedExistingCompanyCard({
   company,
@@ -76,7 +77,7 @@ function SavedExistingCompanyCard({
             </AccordionContent>
           </AccordionItem>
         )}
-        {contacts && (
+        {contacts.length > 0 && (
           <AccordionItem
             value="contacts"
             className="bg-slate-100 px-3 rounded"
@@ -93,7 +94,76 @@ function SavedExistingCompanyCard({
     </div>
   );
 }
+interface SavedCustomCompanyCardProps {
+  name: string;
+  linkedin: string;
+  note: Note;
+  contacts: Contact[];
+}
 
+function SavedCustomCompanyCard({
+  name,
+  note,
+  contacts,
+  linkedin,
+}: SavedCustomCompanyCardProps) {
+  const navigate = useNavigate();
+  return (
+    <div className="p-4 m-2 border shadow-md bg-white rounded  relative">
+      <div className="flex gap-4 p-4 items-center   ">
+        <div className="flex flex-col justify-center gap-2">
+          <p className="font-semibold">{name}</p>
+          <p className="w-64 text-slate-600">
+            <Button variant={"link"}>
+              <a
+                href={linkedin}
+                target="_blank"
+                className="text-blue-400 flex gap-1 items-end"
+              >
+                {" "}
+                <LinkedinIcon />{" "}
+                <span className="relative bottom-0">
+                  Open linkedin
+                </span>
+              </a>
+            </Button>
+          </p>
+        </div>
+      </div>
+
+      <Accordion type="single" collapsible>
+        {note && (
+          <AccordionItem
+            value="note"
+            className="bg-slate-100 px-3 rounded"
+          >
+            <AccordionTrigger className="py-2 pl-1 w-full ">
+              <div>View your note</div>
+            </AccordionTrigger>
+            <AccordionContent className="border-none pb-0.5 ">
+              <div>
+                <NoteForm note={note} />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+        {contacts.length > 0 && (
+          <AccordionItem
+            value="contacts"
+            className="bg-slate-100 px-3 rounded"
+          >
+            <AccordionTrigger className="py-2 pl-1 w-full ">
+              <div>View your contacts here</div>
+            </AccordionTrigger>
+            <AccordionContent className="border-none pb-0.5 ">
+              <div>{/* <NoteForm note={note} /> */}</div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+      </Accordion>
+    </div>
+  );
+}
 export default function SavedCompanies() {
   const companiesStore = useCompaniesStore();
   const dialogControl = useDialogControl();
@@ -136,19 +206,18 @@ export default function SavedCompanies() {
               note={savedCompany.note}
               contacts={[
                 ...(savedCompany?.contacts ?? []),
-                ...company.contacts,
+                ...(company?.contacts ?? []),
               ]}
             />
           );
         } else {
           return (
-            <div className="m-2 border p-4 shadow bg-slate-50">
-              <p>{savedCompany.name}</p>
-              <p>{savedCompany.linkedin}</p>
-              <div>
-                <NoteForm note={savedCompany.note} />
-              </div>
-            </div>
+            <SavedCustomCompanyCard
+              name={savedCompany.name!}
+              linkedin={savedCompany.linkedin!}
+              note={savedCompany.note}
+              contacts={[...(savedCompany?.contacts ?? [])]}
+            />
           );
         }
       })}
