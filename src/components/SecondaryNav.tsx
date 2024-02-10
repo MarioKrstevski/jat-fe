@@ -10,7 +10,7 @@ export function SecondaryNavLink({ to, label }: SecondaryNavLink) {
     <Link
       to={to}
       className={cn(
-        "text-gray-500 px-2 py-1 border rounded-l bg-white rounded ",
+        "text-gray-500 px-2 py-1 border rounded-l bg-white rounded whitespace-nowrap ",
         isActive && "text-blue-500 hover:text-blue-700 "
       )}
     >

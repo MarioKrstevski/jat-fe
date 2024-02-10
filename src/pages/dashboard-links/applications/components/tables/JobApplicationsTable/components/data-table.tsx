@@ -95,10 +95,7 @@ export function DataTable<TData, TValue>({
                   const extendedColumnDef = header.column
                     .columnDef as ExtendedColumnDef<TData>;
                   return (
-                    <TableHead
-                      key={header.id}
-                      className={extendedColumnDef.cellClassName}
-                    >
+                    <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
