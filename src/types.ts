@@ -124,6 +124,7 @@ export interface SavedCompany {
 }
 
 export interface Company {
+  // [x: string]: any;
   id: string;
   name: string;
   description: string;

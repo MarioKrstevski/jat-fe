@@ -52,7 +52,7 @@ function SavedExistingCompanyCard({
         <Button
           variant={"outline"}
           size={"sm"}
-          className="h-8"
+          className="h-8 bg-transparent"
           onClick={() => {
             navigate(`/d/companies/${company.id}`);
           }}

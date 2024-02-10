@@ -1,7 +1,15 @@
 import { api } from "@/api/backend";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useCompaniesStore } from "@/hooks/useCompaniesStore";
+import { LinkedInLogoIcon } from "@radix-ui/react-icons";
+import {
+  GlobeIcon,
+  LinkedinIcon,
+  TwitchIcon,
+  TwitterIcon,
+} from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -38,28 +46,67 @@ export default function CompanyInfoPage() {
         navigate(`/d/companies/${company.id}`);
       }}
     >
-      <Button
-        className="ml-2 absolute top-2 right-2"
-        variant={"outline"}
-        onClick={handleSaveCompany}
-      >
-        Save Company
-      </Button>
+      <div className="ml-2 absolute top-2 right-2">
+        <Button
+          variant={"outline"}
+          onClick={handleSaveCompany}
+          className="bg-transparent"
+        >
+          Save Company
+        </Button>
+      </div>
       <div
         className="flex gap-4 p-4 items-center   "
         key={company.id}
       >
-        <div className="h-24 w-24">
+        <div className="min-h-24 min-w-24 ">
           <img
             src={company.logo}
             alt={company.name + " logo"}
-            className="w-full"
+            className="w-full "
           />
         </div>
         <div className="flex flex-col justify-center gap-2">
           <p className="font-semibold">{company.name}</p>
-          <p className="w-64 text-slate-600">
+          <p className="text-slate-600 sm:pr-16  ">
             {company.shortDescription}
+          </p>
+          <p className="flex gap-1">
+            {company.website && (
+              <a href={company.website} target="_blank">
+                <Button
+                  variant={"outline"}
+                  size={"icon"}
+                  className="rounded-full border-slate-400 text-slate-500  hover:text-blue-700 "
+                >
+                  <GlobeIcon size={16} />
+                </Button>
+              </a>
+            )}
+            {company.linkedin && (
+              <a href={company.linkedin} target="_blank">
+                <Button
+                  variant={"outline"}
+                  size={"icon"}
+                  className="rounded-full border-slate-400 text-slate-500 hover:text-blue-700"
+                >
+                  <LinkedInLogoIcon />
+                </Button>
+              </a>
+            )}
+            {/* @ts-ignore */}
+            {company.twitter && (
+              // @ts-ignore
+              <a href={company.twitter} target="_blank">
+                <Button
+                  variant={"outline"}
+                  size={"icon"}
+                  className="rounded-full border-slate-400 text-slate-500 hover:text-blue-700"
+                >
+                  <TwitterIcon size={16} />
+                </Button>
+              </a>
+            )}
           </p>
         </div>
       </div>
@@ -70,16 +117,27 @@ export default function CompanyInfoPage() {
             Company Overview
           </h3>
           <p className="p-2 max-w-screen-sm">{company.description}</p>
+
+          <p className="flex gap-1 py-1">
+            {company.industry
+              .split(",")
+              .map((i) => i.trim())
+              .map((i) => {
+                return <Badge>{i}</Badge>;
+              })}
+          </p>
+          <p className="flex gap-1 py-1">
+            {company.companySize && (
+              <span>
+                Company size:{" "}
+                <Badge className="bg-gray-400 text-base py-0">
+                  {company.companySize.toLowerCase()}
+                </Badge>{" "}
+              </span>
+            )}
+          </p>
         </div>
       )}
-      <Separator />
-      <Separator />
-      <p>{company.name}</p>
-      <p>{company.description}</p>
-      <p>{company.industry}</p>
-      <p>{company.companySize}</p>
-      <p>{company.website}</p>
-      <p>{company.linkedin} </p>
     </div>
   );
 }
