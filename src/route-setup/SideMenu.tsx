@@ -55,11 +55,11 @@ function SideMenuLink({
         <AccordionItem value="item-1" className="border-none">
           <div
             className={cn(
-              "flex items-center    rounded-lg transition-all duration-300 ",
+              "flex items-center rounded-lg transition-all duration-300 ",
               isActive && "bg-red-500"
             )}
           >
-            <AccordionTrigger className="py-2 pl-1 flex w-6 flex-row-reverse justify-end gap-1"></AccordionTrigger>
+            <AccordionTrigger className="py-2 pl-1 flex w-6 flex-row-reverse justify-end gap-0.5"></AccordionTrigger>
             <SideMenuLink
               parent
               key={label}
@@ -89,7 +89,7 @@ function SideMenuLink({
   return (
     <Link
       className={cn(
-        "flex items-center gap-3 w-full py-2 px-1 text-base cursor-default transition-all duration-300 hover:text-white ",
+        "flex items-center gap-2.5 w-full py-1.5 px-1 text-sm cursor-default transition-all duration-300 hover:text-white ",
         smState === "minimized" && "w-8 justify-center",
         !parent && isActive && " rounded-lg bg-red-500 "
       )}
