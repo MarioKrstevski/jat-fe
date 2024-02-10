@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { Modal } from "../ui/custom/modal";
 import { Button } from "../ui/button";
+import { useDialogControl } from "@/hooks/useDialogControl";
 
-interface AlertModalProps {
-  isOpen: boolean;
-  isLoading: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-}
-export default function AlertModal({
-  isOpen,
-  isLoading,
-  onClose,
-  onConfirm,
-}: AlertModalProps) {
+export default function DeleteAlertModal() {
+  const dialogControl = useDialogControl();
+  const deleteAlertModal = dialogControl.modals["deleteAlert"];
+
+  const [isLoading, setIsLoading] = useState(false);
+  const onConfirm = deleteAlertModal?.data.onConfirm;
+  console.log(deleteAlertModal);
+  // const activeJobApplication = interviewDateChangeModal?.data.value;
+  function onClose() {
+    dialogControl.closeModal("deleteAlert");
+  }
+  const isOpen = dialogControl.modals["deleteAlert"]?.isOpen!;
+
+  if (!deleteAlertModal) {
+    return null;
+  }
   return (
     <Modal
       title="Are you sure?"

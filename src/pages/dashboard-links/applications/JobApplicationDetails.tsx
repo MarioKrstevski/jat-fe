@@ -10,12 +10,12 @@ import { useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import AlertModal from "../../../components/modals/AlertModal";
 import { Button } from "../../../components/ui/button";
 import { Textarea } from "../../../components/ui/textarea";
 import JobApplicationTodoManager from "./JobApplicationTodoManager";
 import EditButton from "./components/EditButton";
 import NoteForm from "@/components/NoteForm";
+import { useDialogControl } from "@/hooks/useDialogControl";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -24,9 +24,9 @@ export default function JobApplicationDetails({
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
+  const dialogControl = useDialogControl();
 
   function onDelete() {
     setIsLoading(true);
@@ -47,7 +47,8 @@ export default function JobApplicationDetails({
 
         jobApplicationStore.setData(updatedJobApplications);
         toast.success("Job Application Deleted");
-        setIsOpen(false);
+
+        dialogControl.closeModal("deleteAlert");
         navigate("/d/applications");
       })
       .catch((err) => {
@@ -88,7 +89,7 @@ export default function JobApplicationDetails({
         jobApplicationStore.setData(updatedJobApplications);
         toast.success("Job Application Archived");
         navigate("/d/applications/archived");
-        setIsOpen(false);
+        dialogControl.closeModal("deleteAlert");
       })
       .catch((err) => {
         console.log("err", err);
@@ -121,16 +122,6 @@ export default function JobApplicationDetails({
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
-      <AlertModal
-        isOpen={isOpen}
-        isLoading={isLoading}
-        onConfirm={onDelete}
-        onClose={() => {
-          if (!isLoading) {
-            setIsOpen(false);
-          }
-        }}
-      />
       <div className="flex items-center my-2">
         <div className=" flex items-center gap-2 px-6  text-lg align-bottom">
           {ja.isArchived && (
@@ -148,7 +139,9 @@ export default function JobApplicationDetails({
         </div>
         <Button
           onClick={() => {
-            setIsOpen(true);
+            dialogControl.openModal("deleteAlert", {
+              onConfirm: onDelete,
+            });
           }}
           variant={"destructive"}
           size={"sm"}

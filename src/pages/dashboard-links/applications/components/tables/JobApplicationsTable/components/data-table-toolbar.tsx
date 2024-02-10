@@ -2,7 +2,6 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableViewOptions } from "@/pages/dashboard-links/applications/components/tables/JobApplicationsTable/components/data-table-view-options";
-import AlertModal from "@/components/modals/AlertModal";
 import EditButton from "@/pages/dashboard-links/applications/components/EditButton";
 import { useState } from "react";
 import { JobApplication } from "@/types";
@@ -26,7 +25,6 @@ export function DataTableToolbar<TData>({
   searchKey,
   placeholder,
 }: DataTableToolbarProps<TData>) {
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
@@ -53,6 +51,7 @@ export function DataTableToolbar<TData>({
       });
 
     setIsLoading(true);
+
     api.applications
       .archiveJobApplications(selectedApplicationsIds, true)
       .then((res) => {
@@ -81,7 +80,7 @@ export function DataTableToolbar<TData>({
         jobApplicationStore.setData(updatedJobApplications);
         table.toggleAllPageRowsSelected(false);
         toast.success("Job Application Archived");
-        setIsOpen(false);
+        dialogControl.closeModal("deleteAlert");
       })
       .catch((err) => {
         console.log("err", err);
@@ -119,7 +118,7 @@ export function DataTableToolbar<TData>({
         jobApplicationStore.setData(updatedJobApplications);
         table.toggleAllPageRowsSelected(false);
         toast.success("Job Application Deleted");
-        setIsOpen(false);
+        dialogControl.closeModal("deleteAlert");
       })
       .catch((err) => {
         console.log("err", err);
@@ -149,16 +148,6 @@ export function DataTableToolbar<TData>({
       </div>
       {selectedCount > 0 && (
         <div className="flex gap-1 ml-2">
-          <AlertModal
-            isOpen={isOpen}
-            isLoading={isLoading}
-            onConfirm={onDelete}
-            onClose={() => {
-              if (!isLoading) {
-                setIsOpen(false);
-              }
-            }}
-          />
           {selectedCount === 1 && (
             <Button
               disabled={isLoading}
@@ -183,7 +172,9 @@ export function DataTableToolbar<TData>({
             disabled={isLoading}
             variant={"destructive"}
             onClick={() => {
-              setIsOpen(true);
+              dialogControl.openModal("deleteAlert", {
+                onConfirm: onDelete,
+              });
             }}
           >
             Delete

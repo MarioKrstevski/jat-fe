@@ -1,5 +1,7 @@
 import { create } from "zustand";
 const validModalNames = new Set([
+  "deleteAlert",
+
   "createJA",
   "editJA",
   "editStatus",
@@ -21,7 +23,8 @@ type ModalName =
   | "requestCompany"
   | "saveCustomCompany"
   | "createContact"
-  | "createInterview";
+  | "createInterview"
+  | "deleteAlert";
 
 type ModalData = {
   value?: any;
