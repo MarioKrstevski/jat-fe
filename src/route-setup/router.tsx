@@ -13,7 +13,6 @@ import JobApplicationSettings from "@/pages/dashboard-links/applications/JobAppl
 import ResumeLayout from "./layouts/ResumeLayout";
 import ResumeList from "@/pages/dashboard-links/resume/ResumeList";
 import ResumeEditor from "@/pages/dashboard-links/resume/ResumeEditor";
-import Notes from "@/pages/dashboard-links/notes/Notes";
 import Interviews from "@/pages/dashboard-links/interviews/Interviews";
 import Reminders from "@/pages/dashboard-links/reminders/Reminders";
 import Companies from "@/pages/dashboard-links/companies/Companies";
@@ -112,10 +111,7 @@ export const router = createBrowserRouter([
               },
             ],
           },
-          {
-            element: <Notes />,
-            path: "notes",
-          },
+
           {
             element: <Interviews />,
             path: "interviews",

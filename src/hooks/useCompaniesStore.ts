@@ -1,11 +1,11 @@
-import { Company } from "@/types";
+import { Company, SavedCompany } from "@/types";
 import { create } from "zustand";
 
 interface useCompaniesStore {
   companies: Company[];
   setCompanies: (companies: Company[]) => void;
-  savedCompanies: any[];
-  setSavedCompanies: (savedCompanies: any[]) => void;
+  savedCompanies: SavedCompany[];
+  setSavedCompanies: (savedCompanies: SavedCompany[]) => void;
 }
 
 export const useCompaniesStore = create<useCompaniesStore>((set) => ({

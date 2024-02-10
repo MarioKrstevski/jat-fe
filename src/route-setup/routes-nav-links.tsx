@@ -10,6 +10,7 @@ import {
   PackageIcon,
   HomeIcon,
   LayoutDashboardIcon,
+  SaveAllIcon,
 } from "lucide-react";
 import { PersonIcon } from "@radix-ui/react-icons";
 
@@ -36,6 +37,13 @@ export const sidenav = [
     to: "/d/companies",
     label: "Companies",
     icon: <PackageIcon className="h-4 w-4" />,
+    children: [
+      {
+        to: "/d/companies/saved",
+        label: "Saved",
+        icon: <SaveAllIcon className="h-4 w-4" />,
+      },
+    ],
   },
   {
     to: "/d/contacts",
@@ -47,11 +55,7 @@ export const sidenav = [
     label: "Interviews",
     icon: <SendIcon className="h-4 w-4" />,
   },
-  {
-    to: "/d/notes",
-    label: "Notes",
-    icon: <Trash2Icon className="h-4 w-4" />,
-  },
+
   {
     to: "/d/resume",
     label: "Resume",

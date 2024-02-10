@@ -112,14 +112,29 @@ export interface Note {
   jobApplication?: JobApplication;
 }
 
+export interface SavedCompany {
+  id: string;
+  name?: string;
+  linkedin?: string;
+  company?: Company;
+  note: Note;
+  contacts?: Contact[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface Company {
   id: string;
   name: string;
   description: string;
+  shortDescription: string;
   logo: string;
   website: string;
   companySize: string;
   industry: string;
+  contacts: Contact[];
+  savedCompanies: SavedCompany[];
+  jobApplications: JobApplication[];
   linkedin: string;
   createdAt: Date;
   updatedAt: Date;

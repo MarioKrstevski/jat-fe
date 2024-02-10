@@ -2,19 +2,18 @@ import { api } from "@/api/backend";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/sonner";
+import { useContactsStore } from "@/hooks/useContactsStore";
+import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { useNotesStore } from "@/hooks/useNotesStore";
+import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
 import DrawerProvider from "@/providers/DrawerProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import SmartOverlayProvider from "@/providers/SmartOverlayProvider";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SideMenu from "../SideMenu";
-import { useQuery } from "@tanstack/react-query";
-import useClerkQuery from "@/hooks/useClerkQuery";
-import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
-import { useContactsStore } from "@/hooks/useContactsStore";
-import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 
 export default function DashboardLayout() {
   usePutTokenInInterceptor();
