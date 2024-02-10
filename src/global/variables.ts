@@ -16,3 +16,5 @@ if (mode === "development") {
   frontendURL = "https://euphonious-faloodeh-b38ec6.netlify.app";
 }
 export { backendURL, frontendURL };
+
+export const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[^\s.]+\.[^\s]+$/;

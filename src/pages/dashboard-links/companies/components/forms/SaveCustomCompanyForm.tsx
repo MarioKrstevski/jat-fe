@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
-
-const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[^\s.]+\.[^\s]+$/;
+import { urlRegex } from "@/global/variables";
 
 const formSchema = z.object({
   companyName: z.string().min(1),

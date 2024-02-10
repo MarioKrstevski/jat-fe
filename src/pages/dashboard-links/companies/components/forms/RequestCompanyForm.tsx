@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { urlRegex } from "@/global/variables";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
-  link: z.string().url(),
+  link: z.string().regex(urlRegex),
 });
 
 export default function RequestCompanyForm() {
