@@ -29,6 +29,7 @@ import {
   LucideCircleEllipsis,
   MoreVerticalIcon,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface SavedExistingCompanyCardProps {
   company: Company;
@@ -128,6 +129,7 @@ function CompanyActionsDropdown({
   savedCompany,
 }: CompanyActionsDropdownProps) {
   const companiesStore = useCompaniesStore();
+  const dialogControl = useDialogControl();
   function handleDeleteSavedCompany() {
     api.companies
       .deleteCustomCompany(savedCompany.id)
@@ -138,9 +140,12 @@ function CompanyActionsDropdown({
             (c) => c.id !== savedCompany.id
           );
         companiesStore.setSavedCompanies(newSavedCompanies);
+        toast.success("Company deleted");
+        dialogControl.closeModal("deleteAlert");
       })
       .catch((error) => {
         console.error("Error fetching companies:", error);
+        toast.error("Failed to delete company");
       })
       .finally(() => {});
   }
@@ -159,8 +164,16 @@ function CompanyActionsDropdown({
         <DropdownMenuContent className="-right-4 top-2 absolute">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDeleteSavedCompany}>
+          {!savedCompany.company && (
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+          )}
+          <DropdownMenuItem
+            onClick={() => {
+              dialogControl.openModal("deleteAlert", {
+                onConfirm: handleDeleteSavedCompany,
+              });
+            }}
+          >
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -22,7 +22,7 @@ async function saveExistingCompany(companyId: string) {
 }
 async function saveCustomCompany(
   name: string,
-  link: string | null = null
+  link: string | undefined
 ) {
   return jatbe.post("companies/save/custom", {
     name,

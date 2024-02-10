@@ -9,8 +9,6 @@ export default function DeleteAlertModal() {
 
   const [isLoading, setIsLoading] = useState(false);
   const onConfirm = deleteAlertModal?.data.onConfirm;
-  console.log(deleteAlertModal);
-  // const activeJobApplication = interviewDateChangeModal?.data.value;
   function onClose() {
     dialogControl.closeModal("deleteAlert");
   }

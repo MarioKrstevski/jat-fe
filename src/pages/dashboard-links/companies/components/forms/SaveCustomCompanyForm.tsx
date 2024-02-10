@@ -44,11 +44,11 @@ export default function SaveCustomCompanyForm() {
         dialogControl.closeModal("saveCustomCompany");
       })
       .catch((error) => {
-        console.error("Error requesting company:", error);
+        console.error("Error saving company:", error);
         if (error.response) {
           console.error(error.response.data);
           toast.error(
-            "Error requesting company: " + error.response.data.error
+            "Error saving company: " + error.response.data.error
           );
         }
       })
