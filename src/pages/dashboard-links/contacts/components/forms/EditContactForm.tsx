@@ -20,36 +20,39 @@ const formSchema = z.object({
   phone: z.string().optional(),
 });
 
-interface CreateContactFormProps {}
-export default function CreateContactForm({}: CreateContactFormProps) {
+interface EditContactFormProps {}
+export default function EditContactForm({}: EditContactFormProps) {
   const dialogControl = useDialogControl();
+
+  const contactEdited =
+    dialogControl.modals.editContact?.data.contact;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      positionOrDepartment: "",
-      relationship: "Other",
-      companyName: "",
-      //   companyId: "",
-      email: "",
-      linkedin: "",
-      phone: "",
+      name: contactEdited.name || "",
+      positionOrDepartment: contactEdited.positionOrDepartment || "",
+      relationship: contactEdited.relationship || "Other",
+      companyName: contactEdited.companyName || "",
+      email: contactEdited.email || "",
+      linkedin: contactEdited.linkedin || "",
+      phone: contactEdited.phone || "",
     },
   });
 
   const onSubmit = (contactData: z.infer<typeof formSchema>) => {
     console.log(contactData);
     api.contacts
-      .createContact(contactData)
+      .updateContact(contactData, contactEdited.id)
       .then((response) => {
         console.log(response);
-        dialogControl.closeModal("createContact");
-        toast.success("Contact created");
+        dialogControl.closeModal("editContact");
+        toast.success("Contact updated");
       })
       .catch((error) => {
-        console.error("Error creating contact:", error);
+        console.error("Error updating contact:", error);
         toast.error(
-          "Error creating contact: " + error.response.data.error
+          "Error updating contact: " + error.response.data.error
         );
       })
       .finally(() => {});
@@ -57,7 +60,7 @@ export default function CreateContactForm({}: CreateContactFormProps) {
 
   // Add a new function here
   function handleCancel() {
-    dialogControl.closeModal("createContact");
+    dialogControl.closeModal("editContact");
   }
 
   return (

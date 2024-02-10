@@ -1,6 +1,6 @@
 import Upcomming from "@/components/Upcomming";
 import { useContactsStore } from "@/hooks/useContactsStore";
-import ContactList from "./ContactList";
+import ContactList from "./components/ContactList";
 
 export default function Contacts() {
   const contactsStore = useContactsStore();

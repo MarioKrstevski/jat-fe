@@ -12,7 +12,20 @@ async function createContact(
   return jatbe.post("contacts", { contactData });
 }
 
+async function updateContact(
+  contactData: any,
+  contactId: string
+): Promise<AxiosResponse<Contact>> {
+  return jatbe.patch("contacts", { contactData, contactId });
+}
+async function deleteContact(
+  contactId: string
+): Promise<AxiosResponse<Contact>> {
+  return jatbe.delete("contacts", { data: { contactId } });
+}
 export const contacts = {
   getContacts,
   createContact,
+  updateContact,
+  deleteContact,
 };

@@ -1,5 +1,14 @@
 export const contactSupportEmail = "mariokrstevski@hotmail.com";
-
+export const defaultContactRelationshipOptions = [
+  "Recruiter",
+  "Referral",
+  "Friend",
+  "Hiring Manager",
+  "Co-worker",
+  "Mentor",
+  "Alumni",
+  "Other",
+];
 export const defaultStatusOptions = [
   "Wishlist",
   "OA - Online Assessment",

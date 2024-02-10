@@ -14,6 +14,7 @@ const validModalNames = new Set([
 
   "createInterview",
   "createContact",
+  "editContact",
 ]);
 type ModalName =
   | "createJA"
@@ -25,6 +26,7 @@ type ModalName =
   | "saveCustomCompany"
   | "editCustomCompany"
   | "createContact"
+  | "editContact"
   | "createInterview"
   | "deleteAlert";
 
@@ -74,6 +76,7 @@ export const useDialogControl = create<useDialogControlStore>(
             ...state.modals[modalName],
             isOpen: false,
           },
+          data: {},
         },
       }));
     },
