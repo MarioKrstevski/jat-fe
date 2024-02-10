@@ -24,6 +24,7 @@ interface SideMenuLinkWithoutChildrenProps {
   icon: React.ReactNode;
   label: string;
   indented?: boolean;
+  section?: boolean;
   parent?: boolean;
 }
 interface SideMenuLinkProps {
@@ -32,6 +33,7 @@ interface SideMenuLinkProps {
   label: string;
   indented?: boolean;
   parent?: boolean;
+  section?: boolean;
   children?: SideMenuLinkWithoutChildrenProps[];
 }
 function SideMenuLink({
@@ -40,6 +42,7 @@ function SideMenuLink({
   label,
   indented,
   parent,
+  section,
   children,
 }: SideMenuLinkProps) {
   const sideMenuControl = useSideMenuControl();
@@ -159,15 +162,25 @@ export default function SideMenu() {
           smState === "minimized" && "px-1"
         )}
       >
-        {sidenav.map((item) => (
-          <SideMenuLink
-            key={item.label}
-            to={item.to}
-            label={item.label}
-            icon={item.icon}
-            children={item.children}
-          />
-        ))}
+        {sidenav.map((item) => {
+          if (item.section) {
+            return (
+              <>
+                <p className="pt-5">{item.label}</p>
+              </>
+            );
+          }
+
+          return (
+            <SideMenuLink
+              key={item.label}
+              to={item.to}
+              label={item.label}
+              icon={item.icon}
+              children={item.children}
+            />
+          );
+        })}
       </nav>
       <div
         className={cn(

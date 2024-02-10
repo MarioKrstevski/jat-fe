@@ -22,6 +22,10 @@ export const sidenav = [
     icon: <LayoutDashboardIcon className="h-5 w-5" />,
   },
   {
+    section: "Other",
+    label: "Main Features",
+  },
+  {
     to: "/d/applications",
     label: "Applications",
     icon: <HomeIcon className="h-4 w-4" />,
@@ -54,6 +58,10 @@ export const sidenav = [
     to: "/d/interviews",
     label: "Interviews",
     icon: <SendIcon className="h-4 w-4" />,
+  },
+  {
+    section: "Other",
+    label: "Comming Soon",
   },
 
   {
