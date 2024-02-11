@@ -4,7 +4,6 @@ import Upcomming from "@/components/Upcomming";
 import { Badge } from "@/components/ui/badge";
 import { queryClient } from "@/global/variables";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { dateDistance, getContrastColor } from "@/lib/utils";
 import { JobApplication, TimelineEntry } from "@/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -23,7 +22,6 @@ export default function JobApplicationDetails({
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
   const navigate = useNavigate();
-  const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
 
   const { data: tags } = useQuery({

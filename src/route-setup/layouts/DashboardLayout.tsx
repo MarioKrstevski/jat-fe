@@ -2,7 +2,6 @@ import { api } from "@/api/backend";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/sonner";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import DrawerProvider from "@/providers/DrawerProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import SmartOverlayProvider from "@/providers/SmartOverlayProvider";
@@ -14,7 +13,6 @@ import SideMenu from "../SideMenu";
 export default function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  const jobApplicationStore = useJobApplicationsStore();
 
   useEffect(() => {
     if (isLoaded && !userId) {

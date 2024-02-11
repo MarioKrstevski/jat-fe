@@ -1,27 +1,34 @@
+import { api } from "@/api/backend";
 import { Badge } from "@/components/ui/badge";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { cn, getContrastColor } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 export default function ExistingTagsControl({
   form,
-  tags,
+  usedTags,
 }: {
   form: any;
-  tags: string;
+  usedTags: string;
 }) {
-  const jobApplicationStore = useJobApplicationsStore();
-  const [currentUsedTags, setCurrentUsedTags] = useState(tags);
+  const [currentUsedTags, setCurrentUsedTags] = useState(usedTags);
 
   //updateCurrentUsedTags
   useEffect(() => {
-    setCurrentUsedTags(tags);
-  }, [tags]);
+    setCurrentUsedTags(usedTags);
+  }, [usedTags]);
+
+  const { data: tags } = useQuery({
+    initialData: [],
+    queryKey: ["tags"],
+    queryFn: api.tags.getTags,
+  });
+
   return (
     <div>
       <p>Existing tags</p>
       <div className="flex gap-1 my-2 flex-wrap">
-        {jobApplicationStore.tags.map((tag) => {
+        {tags.map((tag) => {
           return (
             <Badge
               key={tag.name}

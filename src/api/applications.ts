@@ -33,10 +33,12 @@ async function editJobApplication({
   applicationId: string;
   type: EditTypes;
 }): Promise<JobApplication> {
-  return jatbe.patch("applications/edit/" + applicationId, {
-    application,
-    type,
-  });
+  return jatbe
+    .patch("applications/edit/" + applicationId, {
+      application,
+      type,
+    })
+    .then((res) => res.data);
 }
 async function archiveJobApplications({
   ids,
@@ -45,19 +47,23 @@ async function archiveJobApplications({
   ids: string[];
   isArchived: boolean;
 }): Promise<{ count: number }> {
-  return jatbe.patch("applications/archive", {
-    ids,
-    isArchived,
-  });
+  return jatbe
+    .patch("applications/archive", {
+      ids,
+      isArchived,
+    })
+    .then((res) => res.data);
 }
 async function deleteJobApplications(
   ids: string[]
 ): Promise<{ count: number }> {
-  return jatbe.delete("applications", {
-    data: {
-      ids,
-    },
-  });
+  return jatbe
+    .delete("applications", {
+      data: {
+        ids,
+      },
+    })
+    .then((res) => res.data);
 }
 
 export const applications = {

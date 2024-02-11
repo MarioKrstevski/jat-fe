@@ -1,6 +1,5 @@
 import ArchivedTable from "@/pages/dashboard-links/applications/components/tables/ArchivedTable";
 import WishlistTable from "@/pages/dashboard-links/applications/components/tables/WishlistTable";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import SecondaryNav from "@/components/SecondaryNav";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api/backend";
@@ -18,6 +17,7 @@ export default function ApplicationsLayout() {
     archived: 0,
     total: 0,
   });
+
   //Calculate counts
   useEffect(() => {
     let activeCount = 0;

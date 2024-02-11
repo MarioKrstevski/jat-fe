@@ -19,7 +19,6 @@ import {
   defaultWorkModeOptions,
 } from "@/global/values";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useRef, useState } from "react";
@@ -70,9 +69,8 @@ const formSchema = z.object({
 
 export default function CreateJAForm({}) {
   const dialogControl = useDialogControl();
-  const jobApplicationStore = useJobApplicationsStore();
   const formContainerRef = useRef<HTMLDivElement>(null);
-  const [tagsChanged, setTagsChanged] = useState("");
+  const [usedTags, setUsedTags] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -390,7 +388,10 @@ export default function CreateJAForm({}) {
               {/* Tags */}
               <div>
                 {/* // inside it expects for the field to be called tags */}
-                <ExistingTagsControl form={form} tags={tagsChanged} />
+                <ExistingTagsControl
+                  form={form}
+                  usedTags={usedTags}
+                />
                 <TextField
                   form={form}
                   fieldName="tags"
@@ -403,14 +404,14 @@ export default function CreateJAForm({}) {
                       value.at(-2) === ","
                     ) {
                       const newValue = value.slice(0, -1);
-                      setTagsChanged(newValue);
+                      setUsedTags(newValue);
                       return newValue;
                     }
                     const newValue = value
                       .split(",")
                       .map((tag) => tag.trim())
                       .join(",");
-                    setTagsChanged(newValue);
+                    setUsedTags(newValue);
                     return newValue;
                   }}
                 />

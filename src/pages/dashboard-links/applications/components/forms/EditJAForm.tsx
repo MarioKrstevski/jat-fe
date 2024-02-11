@@ -11,7 +11,6 @@ import {
   defaultWorkModeOptions,
 } from "@/global/values";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { parseDateOrUndefined } from "@/lib/utils";
 import { JobApplication } from "@/types";
 import { ChevronsUpDownIcon } from "lucide-react";
@@ -32,6 +31,7 @@ import TextareaField from "@/components/form-fields/TextareaField";
 import ExistingTagsControl from "./ExistingTagsControl";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/global/variables";
+import { AxiosError, AxiosResponse } from "axios";
 
 const formSchema = z.object({
   companyName: z
@@ -78,37 +78,72 @@ export default function EditJAForm() {
   const jobApplicationEditted = editModal.data
     .value as JobApplication;
   const jae = jobApplicationEditted;
-  const [tagsChanged, setTagsChanged] = useState<string>(jae?.tags);
+  const [usedTags, setUsedTags] = useState<string>(jae?.tags);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutateAsync: editJobApplication } = useMutation({
+    // @ts-ignore
     mutationFn: api.applications.editJobApplication,
-    onSuccess: (newData: JobApplication) => {
-      queryClient.invalidateQueries({
+    onSuccess: (editedApplication: JobApplication) => {
+      console.log("editedApplication", editedApplication);
+      form.reset();
+      toast.success("Job application updated");
+      dialogControl.closeModal("editJA");
+    },
+    // onSuccess: (newData: JobApplication) => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["jobApplications"],
+    //   });
+    //   queryClient.setQueryData(
+    //     ["jobApplications"],
+    //     (oldData: JobApplication[]): JobApplication[] => {
+    //       return oldData.map((ja) => {
+    //         if (ja.id === newData.id) {
+    //           console.log(ja, newData);
+    //           return newData;
+    //         }
+    //         return ja;
+    //       });
+    //     }
+    //   );
+    //
+    // },
+    onMutate: async function (updatedJA: JobApplication) {
+      // const updatedJA = response.data;
+      console.log("updatedJA", updatedJA);
+
+      await queryClient.cancelQueries({
         queryKey: ["jobApplications"],
       });
+
+      const previousApplications = queryClient.getQueryData([
+        "jobApplications",
+      ]);
+
       queryClient.setQueryData(
         ["jobApplications"],
         (oldData: JobApplication[]): JobApplication[] => {
           return oldData.map((ja) => {
-            if (ja.id === newData.id) {
-              console.log(ja, newData);
-              return newData;
+            if (ja.id === updatedJA.id) {
+              return updatedJA;
             }
             return ja;
           });
         }
       );
-      form.reset();
-      toast.success("Job application updated");
-      dialogControl.closeModal("editJA");
+
+      return { previousApplications, updatedJA };
     },
-    onError: (err: any) => {
+    onError: (err: any, newTodo, context) => {
+      queryClient.setQueryData(
+        ["jobApplications"],
+        context?.previousApplications
+      );
+
       toast.error(
-        "Error editing application: ",
-        err.response.data.error
+        "Error editing application: " + err.response.data.error
       );
     },
   });
@@ -200,7 +235,7 @@ export default function EditJAForm() {
         ),
       });
 
-      setTagsChanged(jae.tags);
+      setUsedTags(jae.tags);
     }
   }, [editModal.data.ja]);
 
@@ -439,7 +474,10 @@ export default function EditJAForm() {
               {/* Tags */}
               <div>
                 {/* // inside it expects for the field to be called tags */}
-                <ExistingTagsControl form={form} tags={tagsChanged} />
+                <ExistingTagsControl
+                  form={form}
+                  usedTags={usedTags}
+                />
                 <TextField
                   form={form}
                   fieldName="tags"
@@ -452,14 +490,14 @@ export default function EditJAForm() {
                       value.at(-2) === ","
                     ) {
                       const newValue = value.slice(0, -1);
-                      setTagsChanged(newValue);
+                      setUsedTags(newValue);
                       return newValue;
                     }
                     const newValue = value
                       .split(",")
                       .map((tag) => tag.trim())
                       .join(",");
-                    setTagsChanged(newValue);
+                    setUsedTags(newValue);
                     return newValue;
                   }}
                 />

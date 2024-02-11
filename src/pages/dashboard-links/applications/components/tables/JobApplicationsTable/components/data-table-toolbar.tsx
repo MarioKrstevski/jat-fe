@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { queryClient } from "@/global/variables";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import EditButton from "@/pages/dashboard-links/applications/components/EditButton";
 import { DataTableViewOptions } from "@/pages/dashboard-links/applications/components/tables/JobApplicationsTable/components/data-table-view-options";
 import { JobApplication } from "@/types";
@@ -27,7 +26,6 @@ export function DataTableToolbar<TData>({
   placeholder,
 }: DataTableToolbarProps<TData>) {
   const [isLoading, setIsLoading] = useState(false);
-  const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
 
   //   const isFiltered = table.getState().columnFilters.length > 0;
@@ -92,12 +90,10 @@ export function DataTableToolbar<TData>({
           return (row.original as JobApplication).id;
         });
 
-      const updatedJobApplications =
-        jobApplicationStore.jobApplications.filter(
-          (ja) => !selectedApplicationsIds.includes(ja.id)
-        );
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
 
-      jobApplicationStore.setJobApplications(updatedJobApplications);
       table.toggleAllPageRowsSelected(false);
       toast.success("Job Application Deleted");
       dialogControl.closeModal("deleteAlert");

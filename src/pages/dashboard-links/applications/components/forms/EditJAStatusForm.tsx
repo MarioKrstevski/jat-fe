@@ -32,9 +32,10 @@ import {
 import { Checkbox } from "../../../../../components/ui/checkbox";
 import { DateTimePicker } from "../../../../../components/DateTimePicker";
 import { api } from "@/api/backend";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   status: z.string(),
@@ -43,8 +44,6 @@ const formSchema = z.object({
 });
 
 export default function EditJAStatusForm() {
-  const jobApplicationStore = useJobApplicationsStore();
-
   const [isLoading, setIsLoading] = useState(false);
   const [addToTimeline, setAddToTimeline] = useState(false);
 
@@ -67,6 +66,36 @@ export default function EditJAStatusForm() {
     },
   });
 
+  const { mutateAsync: editJobApplication } = useMutation({
+    mutationFn: api.applications.editJobApplication,
+    onSuccess: (newData: JobApplication) => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]): JobApplication[] => {
+          return oldData.map((ja) => {
+            if (ja.id === newData.id) {
+              console.log(ja, newData);
+              return newData;
+            }
+            return ja;
+          });
+        }
+      );
+      form.reset();
+      toast.success("Job application updated");
+      dialogControl.closeModal("editStatus");
+    },
+    onError: (err: any) => {
+      toast.error(
+        "Error editing application: ",
+        err.response.data.error
+      );
+    },
+  });
+
   useEffect(() => {
     form.reset({
       status: activeJobApplication.status,
@@ -80,34 +109,11 @@ export default function EditJAStatusForm() {
     application: any,
     applicationId: string
   ) {
-    setIsLoading(true);
-    api.applications
-      .editJobApplication(application, applicationId, "statusChange")
-      .then((res) => {
-        console.log("res.data", res.data);
-
-        const newJobApplicationsArray =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === applicationId) {
-              return res.data;
-            } else {
-              return ja;
-            }
-          });
-
-        jobApplicationStore.setJobApplications(
-          newJobApplicationsArray
-        );
-        form.reset();
-        toast.success("Job application updated");
-        dialogControl.closeModal("editStatus");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    editJobApplication({
+      application,
+      applicationId,
+      type: "statusChange",
+    });
   }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // TODO: create store

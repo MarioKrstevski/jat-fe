@@ -18,8 +18,9 @@ import { api } from "@/api/backend";
 import { useAuth } from "@clerk/clerk-react";
 import { JobApplication } from "@/types";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { parseDateOrUndefined } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   nextInterviewDate: z.date().nullish(),
@@ -27,7 +28,6 @@ const formSchema = z.object({
 export default function EditJANextInterviewDateForm() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
 
   const interviewDateChangeModal =
@@ -45,43 +45,45 @@ export default function EditJANextInterviewDateForm() {
     },
   });
 
+  const { mutateAsync: editJobApplication } = useMutation({
+    mutationFn: api.applications.editJobApplication,
+    onSuccess: (newData: JobApplication) => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]): JobApplication[] => {
+          return oldData.map((ja) => {
+            if (ja.id === newData.id) {
+              console.log(ja, newData);
+              return newData;
+            }
+            return ja;
+          });
+        }
+      );
+      form.reset();
+      toast.success("Job application interview date updated");
+      dialogControl.closeModal("editInterviewDate");
+    },
+    onError: (err: any) => {
+      toast.error(
+        "Error editing application: ",
+        err.response.data.error
+      );
+    },
+  });
+
   function handleEditJobApplication(
     application: any,
     applicationId: string
   ) {
-    setIsLoading(true);
-    api.applications
-      .editJobApplication(
-        application,
-        applicationId,
-        "nextInterviewDateChange"
-      )
-      .then((res) => {
-        console.log("res.data", res.data);
-
-        const newJobApplicationsArray =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === applicationId) {
-              return res.data;
-            } else {
-              return ja;
-            }
-          });
-
-        jobApplicationStore.setJobApplications(
-          newJobApplicationsArray
-        );
-        form.reset();
-        toast.success("Job application interview date updated");
-
-        dialogControl.closeModal("editInterviewDate");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    editJobApplication({
+      application,
+      applicationId,
+      type: "nextInterviewDateChange",
+    });
   }
 
   useEffect(() => {
