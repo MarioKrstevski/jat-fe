@@ -121,7 +121,7 @@ export default function EditContactForm({}: EditContactFormProps) {
               label="Company ID"
             />
           </div> */}
-          <div className="pt-6 space-x-2 flex items-center justify-end">
+          <div className="pt-6 mb-4 md:mb-0 space-x-2 flex items-center justify-end">
             <Button
               type="button"
               variant={"outline"}

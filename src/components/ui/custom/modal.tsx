@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../button";
+import { cn } from "@/lib/utils";
 
 interface ModalProps {
   title: string;
@@ -16,6 +17,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm?: () => void;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -25,6 +27,7 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
+  className = "",
   children,
 }) => {
   const onChange = (open: boolean) => {
@@ -35,7 +38,12 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Dialog open={isOpen} modal onOpenChange={onChange}>
-      <DialogContent className="overflow-y-auto max-h-[95dvh] sm:rounded ">
+      <DialogContent
+        className={cn(
+          "overflow-y-auto max-h-[95dvh] transition-all duration-700",
+          className
+        )}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

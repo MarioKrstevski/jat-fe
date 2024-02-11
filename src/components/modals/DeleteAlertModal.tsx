@@ -23,8 +23,9 @@ export default function DeleteAlertModal() {
       description="This action cannot be undone"
       isOpen={isOpen}
       onClose={onClose}
+      className="w-11/12 rounded p-4"
     >
-      <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+      <div className="pt-6 space-x-2 flex items-center justify-end  ">
         <Button
           disabled={isLoading}
           variant={"outline"}

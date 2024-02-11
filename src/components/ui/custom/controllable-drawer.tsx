@@ -41,7 +41,7 @@ export default function ControllableDrawer({
         }}
       >
         {/* <DrawerTrigger>Open</DrawerTrigger> */}
-        <DrawerContent className="max-h-[90%] ">
+        <DrawerContent className="max-h-[90%] transition-all duration-300 ">
           <DrawerHeader>
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
