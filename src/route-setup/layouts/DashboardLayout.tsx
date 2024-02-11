@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { useContactsStore } from "@/hooks/useContactsStore";
 import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { useNotesStore } from "@/hooks/useNotesStore";
 import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
 import DrawerProvider from "@/providers/DrawerProvider";
 import ModalProvider from "@/providers/ModalProvider";
@@ -62,7 +61,7 @@ export default function DashboardLayout() {
       .getJobApplications()
       .then((res) => {
         // addCustomKeyValue
-        jobApplicationStore.setData(res.data);
+        jobApplicationStore.setJobApplications(res.data);
       })
       .catch((err) => {
         console.log("err", err);

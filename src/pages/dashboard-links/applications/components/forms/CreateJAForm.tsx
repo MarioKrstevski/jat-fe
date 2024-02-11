@@ -169,7 +169,9 @@ export default function CreateJAForm({}) {
           ...jobApplicationStore.jobApplications,
           res.data.jobApplication,
         ];
-        jobApplicationStore.setData(newJobApplicationsArray);
+        jobApplicationStore.setJobApplications(
+          newJobApplicationsArray
+        );
 
         form.reset();
         dialogControl.closeModal("createJA");

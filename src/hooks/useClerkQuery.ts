@@ -28,7 +28,7 @@ export default function useClerkQuery(url: any) {
         .getJobApplications()
         .then((res) => {
           // addCustomKeyValue
-          jobApplicationStore.setData(res.data);
+          jobApplicationStore.setJobApplications(res.data);
 
           return res.data;
         })

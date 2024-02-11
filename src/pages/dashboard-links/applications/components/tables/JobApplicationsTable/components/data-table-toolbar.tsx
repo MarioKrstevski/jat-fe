@@ -77,7 +77,9 @@ export function DataTableToolbar<TData>({
             }
           });
 
-        jobApplicationStore.setData(updatedJobApplications);
+        jobApplicationStore.setJobApplications(
+          updatedJobApplications
+        );
         table.toggleAllPageRowsSelected(false);
         toast.success("Job Application Archived");
         dialogControl.closeModal("deleteAlert");
@@ -115,7 +117,9 @@ export function DataTableToolbar<TData>({
             (ja) => !selectedApplicationsIds.includes(ja.id)
           );
 
-        jobApplicationStore.setData(updatedJobApplications);
+        jobApplicationStore.setJobApplications(
+          updatedJobApplications
+        );
         table.toggleAllPageRowsSelected(false);
         toast.success("Job Application Deleted");
         dialogControl.closeModal("deleteAlert");

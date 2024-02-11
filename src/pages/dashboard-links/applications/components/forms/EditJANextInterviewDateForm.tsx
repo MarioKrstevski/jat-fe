@@ -68,7 +68,9 @@ export default function EditJANextInterviewDateForm() {
             }
           });
 
-        jobApplicationStore.setData(newJobApplicationsArray);
+        jobApplicationStore.setJobApplications(
+          newJobApplicationsArray
+        );
         form.reset();
         toast.success("Job application interview date updated");
 

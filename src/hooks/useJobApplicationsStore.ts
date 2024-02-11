@@ -4,7 +4,7 @@ import { create } from "zustand";
 interface useJobApplicationsStore {
   jobApplications: JobApplication[];
   tags: JobApplicationTag[];
-  setData: (data: JobApplication[]) => void;
+  setJobApplications: (jobApplications: JobApplication[]) => void;
   setTags: (tags: JobApplicationTag[]) => void;
 }
 
@@ -13,5 +13,5 @@ export const useJobApplicationsStore =
     jobApplications: [],
     tags: [],
     setTags: (tags) => set({ tags }),
-    setData: (data) => set({ jobApplications: data }),
+    setJobApplications: (jobApplications) => set({ jobApplications }),
   }));

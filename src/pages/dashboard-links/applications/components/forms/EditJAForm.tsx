@@ -192,7 +192,9 @@ export default function EditJAForm() {
             }
           });
 
-        jobApplicationStore.setData(newJobApplicationsArray);
+        jobApplicationStore.setJobApplications(
+          newJobApplicationsArray
+        );
         form.reset();
         toast.success("Job application updated");
         dialogControl.closeModal("editJA");

@@ -52,7 +52,7 @@ export default function TableHeaderAddon({
           (ja) => !selectedRows.includes(ja.id)
         );
 
-        jobApplicationStore.setData(updatedJobApplications);
+        jobApplicationStore.(updatedJobApplications);
         setSelectedRows([]);
         toast.success("Job Application Deleted");
         setIsOpen(false);

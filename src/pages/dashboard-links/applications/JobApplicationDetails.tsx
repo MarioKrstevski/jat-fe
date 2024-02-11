@@ -45,7 +45,9 @@ export default function JobApplicationDetails({
             (ja) => ja.id !== jobApplication.id
           );
 
-        jobApplicationStore.setData(updatedJobApplications);
+        jobApplicationStore.setJobApplications(
+          updatedJobApplications
+        );
         toast.success("Job Application Deleted");
 
         dialogControl.closeModal("deleteAlert");
@@ -86,7 +88,9 @@ export default function JobApplicationDetails({
             }
           });
 
-        jobApplicationStore.setData(updatedJobApplications);
+        jobApplicationStore.setJobApplications(
+          updatedJobApplications
+        );
         toast.success("Job Application Archived");
         navigate("/d/applications/archived");
         dialogControl.closeModal("deleteAlert");

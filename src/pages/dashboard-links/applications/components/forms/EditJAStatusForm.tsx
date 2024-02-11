@@ -95,7 +95,9 @@ export default function EditJAStatusForm() {
             }
           });
 
-        jobApplicationStore.setData(newJobApplicationsArray);
+        jobApplicationStore.setJobApplications(
+          newJobApplicationsArray
+        );
         form.reset();
         toast.success("Job application updated");
         dialogControl.closeModal("editStatus");

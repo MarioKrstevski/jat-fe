@@ -165,7 +165,9 @@ export default function JobApplicationTodoManager({
               return ja;
             }
           });
-        jobApplicationStore.setData(newJobApplicationsArray);
+        jobApplicationStore.setJobApplications(
+          newJobApplicationsArray
+        );
         toast.success("Todos saved");
       })
       .catch((err) => {
