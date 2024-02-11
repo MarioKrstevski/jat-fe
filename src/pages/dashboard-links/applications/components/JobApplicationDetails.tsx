@@ -1,21 +1,20 @@
 import { api } from "@/api/backend";
+import NoteForm from "@/components/NoteForm";
 import Upcomming from "@/components/Upcomming";
 import { Badge } from "@/components/ui/badge";
+import { queryClient } from "@/global/variables";
+import { useDialogControl } from "@/hooks/useDialogControl";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { dateDistance, getContrastColor } from "@/lib/utils";
-import { JobApplication, Note, TimelineEntry } from "@/types";
+import { JobApplication, TimelineEntry } from "@/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { TrashIcon, Undo2Icon } from "lucide-react";
-import { useRef, useState } from "react";
-import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "../../../../components/ui/button";
-import { Textarea } from "../../../../components/ui/textarea";
-import JobApplicationTodoManager from "./JobApplicationTodoManager";
 import EditButton from "./EditButton";
-import NoteForm from "@/components/NoteForm";
-import { useDialogControl } from "@/hooks/useDialogControl";
+import JobApplicationTodoManager from "./JobApplicationTodoManager";
 interface JobApplicationDetailsProps {
   jobApplication: JobApplication;
 }
@@ -24,60 +23,53 @@ export default function JobApplicationDetails({
 }: JobApplicationDetailsProps) {
   const ja = jobApplication;
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
 
-  function onDelete() {
-    setIsLoading(true);
-    api.applications
-      .deleteJobApplication([ja.id])
-      .then((res) => {
-        console.log("res", res.data);
-        if (res.data?.count === 0) {
-          toast.warning(
-            "Nothing has been deleted in the database, probably id didn't match"
-          );
-          return;
-        }
-        const updatedJobApplications =
-          jobApplicationStore.jobApplications.filter(
-            (ja) => ja.id !== jobApplication.id
-          );
+  const { data: tags } = useQuery({
+    initialData: [],
+    queryKey: ["tags"],
+    queryFn: api.tags.getTags,
+  });
 
-        jobApplicationStore.setJobApplications(
-          updatedJobApplications
+  const { mutateAsync: deleteJobApplications } = useMutation({
+    mutationFn: api.applications.deleteJobApplications,
+    onSuccess: (deletedCount: { count: number }) => {
+      if (deletedCount.count === 0) {
+        toast.warning(
+          "Nothing has been deleted in the database, probably id didn't match"
         );
-        toast.success("Job Application Deleted");
-
-        dialogControl.closeModal("deleteAlert");
-        navigate("/d/applications");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-
-  function handleUnarchiving() {
-    setIsLoading(true);
-    api.applications
-      .archiveJobApplications([jobApplication.id], false)
-      .then((res) => {
-        console.log("res", res.data);
-
-        if (res.data?.count === 0) {
-          toast.warning(
-            "Nothing has been archived in the database, probably id didn't match/ doesnt exist in db"
-          );
-          return;
+        return;
+      }
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]) => {
+          return oldData.filter((ja) => ja.id !== jobApplication.id);
         }
+      );
+      toast.success("Job Application Deleted");
+      navigate("/d/applications");
+      dialogControl.closeModal("deleteAlert");
+    },
+    onError: (error: any) => {
+      toast.error(error.data.response.message);
+    },
+  });
 
-        const updatedJobApplications =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (jobApplication.id === ja.id) {
+  const { mutateAsync: unarchiveJobApplication } = useMutation({
+    mutationFn: api.applications.archiveJobApplications,
+    onSuccess: (deletedCount: { count: number }) => {
+      if (deletedCount.count === 0) {
+        toast.warning(
+          "Nothing has been archived in the database, probably id didn't match/ doesnt exist in db"
+        );
+        return;
+      }
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]) => {
+          return oldData.map((ja) => {
+            if (ja.id === jobApplication.id) {
               return {
                 ...ja,
                 isArchived: false,
@@ -87,20 +79,22 @@ export default function JobApplicationDetails({
               return ja;
             }
           });
+        }
+      );
+      toast.success("Job Application Archived");
+      navigate("/d/applications/archived");
+    },
+    onError: (error: any) => {
+      toast.error(error.data.response.message);
+    },
+  });
 
-        jobApplicationStore.setJobApplications(
-          updatedJobApplications
-        );
-        toast.success("Job Application Archived");
-        navigate("/d/applications/archived");
-        dialogControl.closeModal("deleteAlert");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  function onDelete() {
+    deleteJobApplications([ja.id]);
+  }
+
+  function handleUnarchiving() {
+    unarchiveJobApplication({ ids: [ja.id], isArchived: false });
   }
 
   const applicationDeadline = ja.applicationDeadline
@@ -189,9 +183,8 @@ export default function JobApplicationDetails({
                       return null;
                     }
                     const tagColor =
-                      jobApplicationStore.tags.find(
-                        (t) => t.name === tag
-                      )?.color || "#000000";
+                      tags.find((t) => t.name === tag)?.color ||
+                      "#000000";
 
                     console.log(tag, ja);
                     return (

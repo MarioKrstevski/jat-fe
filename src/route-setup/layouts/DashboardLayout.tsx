@@ -25,33 +25,6 @@ export default function DashboardLayout() {
       // navigate("/d");
     }
   }, [userId, isLoaded]);
-  async function handleFetchingTags() {
-    api.tags
-      .getTags()
-      .then((res) => {
-        jobApplicationStore.setTags(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
-  function handleFetchingJobApplications() {
-    // you can paste a user id here to act as a different user 'user_2bJezVDasGIrggX7u8VJdByDo4y' ducho
-    api.applications
-      .getJobApplications()
-      .then((res) => {
-        // addCustomKeyValue
-        jobApplicationStore.setJobApplications(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
-
-  useEffect(() => {
-    handleFetchingJobApplications();
-    handleFetchingTags();
-  }, []);
 
   if (!isLoaded || !userId) {
     return null;

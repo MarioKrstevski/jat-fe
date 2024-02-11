@@ -1,19 +1,19 @@
-import JobApplicationDetails from "@/pages/dashboard-links/applications/components/JobApplicationDetails";
+import { api } from "@/api/backend";
 import { SecondaryNavLink } from "@/components/SecondaryNav";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { useAuth } from "@clerk/clerk-react";
-import { Link, useParams } from "react-router-dom";
+import JobApplicationDetails from "@/pages/dashboard-links/applications/components/JobApplicationDetails";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 export default function SingleApplicationView() {
   const { applicationId } = useParams();
   console.log("applicationId", applicationId);
 
-  const jobApplications = useJobApplicationsStore(
-    (state) => state.jobApplications
-  );
-  const jobApplication = jobApplications.find(
-    (ja) => ja.id === applicationId
-  );
+  const { data: jobApplication } = useQuery({
+    initialData: null,
+    queryKey: ["jobApplication", applicationId],
+    queryFn: () =>
+      api.applications.getJobApplication(applicationId as string),
+  });
 
   if (!jobApplication) {
     return (

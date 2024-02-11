@@ -8,40 +8,51 @@ async function getJobApplications(): Promise<JobApplication[]> {
 
 async function getJobApplication(
   applicationId: string
-): Promise<AxiosResponse<JobApplication[]>> {
-  return jatbe.get("applications/", {
-    params: {
-      applicationId,
-    },
-  });
+): Promise<JobApplication> {
+  return jatbe
+    .get("applications/" + applicationId)
+    .then((res) => res.data);
 }
 
-async function createJobApplication(application: any) {
-  return jatbe.post("applications/", {
-    application,
-  });
+async function createJobApplication(
+  application: any
+): Promise<JobApplication> {
+  return jatbe
+    .post("applications/", {
+      application,
+    })
+    .then((res) => res.data);
 }
 
-async function editJobApplication(
-  application: Partial<JobApplication>,
-  applicationId: string,
-  type: EditTypes
-) {
+async function editJobApplication({
+  application,
+  applicationId,
+  type,
+}: {
+  application: Partial<JobApplication>;
+  applicationId: string;
+  type: EditTypes;
+}): Promise<JobApplication> {
   return jatbe.patch("applications/edit/" + applicationId, {
     application,
     type,
   });
 }
-async function archiveJobApplications(
-  ids: string[],
-  isArchived: boolean
-) {
+async function archiveJobApplications({
+  ids,
+  isArchived,
+}: {
+  ids: string[];
+  isArchived: boolean;
+}): Promise<{ count: number }> {
   return jatbe.patch("applications/archive", {
     ids,
     isArchived,
   });
 }
-async function deleteJobApplication(ids: string[]) {
+async function deleteJobApplications(
+  ids: string[]
+): Promise<{ count: number }> {
   return jatbe.delete("applications", {
     data: {
       ids,
@@ -51,7 +62,7 @@ async function deleteJobApplication(ids: string[]) {
 
 export const applications = {
   archiveJobApplications,
-  deleteJobApplication,
+  deleteJobApplications,
   editJobApplication,
   getJobApplications,
   getJobApplication,

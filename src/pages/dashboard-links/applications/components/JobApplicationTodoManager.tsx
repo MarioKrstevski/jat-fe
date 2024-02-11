@@ -1,124 +1,21 @@
-import {
-  generateShortId,
-  groupByKey,
-  toTitleCase,
-} from "@/lib/utils";
-import { JobApplicationTodo } from "@/types";
+import { groupByKey, toTitleCase } from "@/lib/utils";
+import { JobApplication, JobApplicationTodo } from "@/types";
 import { useState } from "react";
 
+import { api } from "@/api/backend";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { defaultStatusOptions } from "@/global/values";
-import { Button } from "@/components/ui/button";
-import { api } from "@/api/backend";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import { queryClient } from "@/global/variables";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-
-function TodoForm({
-  addTodo,
-}: {
-  addTodo: (todo: JobApplicationTodo) => void;
-}) {
-  const [text, setText] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
-  const [relatedTo, setRelatedTo] = useState("application");
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (text.trim() === "") return;
-
-    addTodo({
-      id: generateShortId(),
-      text,
-      isCompleted: false,
-      relatedTo,
-    });
-
-    setText("");
-    setRelatedTo("application");
-
-    console.log("submitted");
-  }
-  return (
-    <>
-      <p className="my-2">Create new todo:</p>
-      <div>
-        <Button
-          variant={"outline"}
-          onClick={() => {
-            setIsEditing(!isEditing);
-          }}
-          size={"sm"}
-          className="my-1"
-        >
-          {isEditing ? "Hide form" : "Add new todo"}
-        </Button>
-      </div>
-
-      {isEditing && (
-        <form action="" onSubmit={handleSubmit} className="">
-          <div className=" mb-1 ">
-            <input
-              type="text"
-              className="border px-2 py-1 w-full"
-              placeholder="Todo text"
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-            />
-          </div>
-          <div className="mb-1">
-            <label htmlFor="relatedTo">Related to:</label>
-            <select
-              name="relatedTo"
-              className="border rounded"
-              value={relatedTo}
-              onChange={(e) => {
-                setRelatedTo(e.target.value);
-              }}
-              id="relatedTo"
-            >
-              {["application", ...defaultStatusOptions].map(
-                (option) => {
-                  if (option === "application")
-                    return (
-                      <option
-                        key={option}
-                        value={"application"}
-                        disabled
-                      >
-                        {option}
-                      </option>
-                    );
-                  return (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  );
-                }
-              )}
-            </select>
-          </div>
-          <Button
-            type="submit"
-            size={"sm"}
-            className="my-1"
-            disabled={!text}
-          >
-            Add
-          </Button>
-        </form>
-      )}
-    </>
-  );
-}
+import TodoForm from "./TodoForm";
 
 export default function JobApplicationTodoManager({
   todos: passedTodos,
@@ -127,7 +24,29 @@ export default function JobApplicationTodoManager({
   todos: string;
   applicationId: string;
 }) {
-  const jobApplicationStore = useJobApplicationsStore();
+  const { mutateAsync: editJobApplication } = useMutation({
+    mutationFn: api.applications.editJobApplication,
+    onSuccess: (editedApplication: JobApplication) => {
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]) => {
+          return oldData.map((ja) => {
+            if (ja.id === editedApplication.id) {
+              return editedApplication;
+            }
+            return ja;
+          });
+        }
+      );
+
+      toast.success("Todos saved");
+    },
+
+    onError: (error: any) => {
+      toast.error("Failed to save todos" + error.response.data.error);
+    },
+  });
+
   console.log(
     "passedTodos",
     passedTodos,
@@ -139,42 +58,20 @@ export default function JobApplicationTodoManager({
   if (passedTodos.length > 0) {
     parsedTodos = JSON.parse(passedTodos);
   }
-  console.log("parsedTodos", parsedTodos);
   const [todos, setTodos] =
     useState<JobApplicationTodo[]>(parsedTodos);
-  console.log("todos", todos);
+
   const addTodo = (todo: JobApplicationTodo) => {
     setTodos([...todos, todo]);
   };
   function handleSaveTodos() {
-    api.applications
-      .editJobApplication(
-        {
-          todos: JSON.stringify(todos),
-        },
-        applicationId,
-        "todosChange"
-      )
-      .then((res) => {
-        console.log("res", res);
-        const newJobApplicationsArray =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === applicationId) {
-              return res.data;
-            } else {
-              return ja;
-            }
-          });
-        jobApplicationStore.setJobApplications(
-          newJobApplicationsArray
-        );
-        toast.success("Todos saved");
-      })
-      .catch((err) => {
-        console.log("err", err);
-        toast.error("Failed to save todos" + err.response.data.error);
-      })
-      .finally(() => {});
+    editJobApplication({
+      application: {
+        todos: JSON.stringify(todos),
+      },
+      applicationId,
+      type: "todosChange",
+    });
   }
   function handleChange(todo: JobApplicationTodo, checked: boolean) {
     const updatedTodos = todos.map((t) => {
