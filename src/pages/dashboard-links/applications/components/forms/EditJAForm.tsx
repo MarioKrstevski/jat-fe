@@ -84,7 +84,7 @@ export default function EditJAForm() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutateAsync: editJobApplication } = useMutation({
-    // @ts-ignore
+    // @ts-ignorea
     mutationFn: api.applications.editJobApplication,
     onSuccess: (editedApplication: JobApplication) => {
       console.log("editedApplication", editedApplication);
@@ -92,24 +92,6 @@ export default function EditJAForm() {
       toast.success("Job application updated");
       dialogControl.closeModal("editJA");
     },
-    // onSuccess: (newData: JobApplication) => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ["jobApplications"],
-    //   });
-    //   queryClient.setQueryData(
-    //     ["jobApplications"],
-    //     (oldData: JobApplication[]): JobApplication[] => {
-    //       return oldData.map((ja) => {
-    //         if (ja.id === newData.id) {
-    //           console.log(ja, newData);
-    //           return newData;
-    //         }
-    //         return ja;
-    //       });
-    //     }
-    //   );
-    //
-    // },
     onMutate: async function (updatedJA: JobApplication) {
       // const updatedJA = response.data;
       console.log("updatedJA", updatedJA);
@@ -145,6 +127,11 @@ export default function EditJAForm() {
       toast.error(
         "Error editing application: " + err.response.data.error
       );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
     },
   });
 
