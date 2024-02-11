@@ -1,4 +1,4 @@
-import { EditTypes, JobApplication } from "@/types";
+import { EditTypes, JobApplication, Note } from "@/types";
 import { jatbe } from "./instance";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +16,7 @@ async function getJobApplication(
 
 async function createJobApplication(
   application: any
-): Promise<JobApplication> {
+): Promise<{ jobApplication: JobApplication; note: Note }> {
   return jatbe
     .post("applications/", {
       application,

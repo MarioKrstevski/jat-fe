@@ -28,6 +28,9 @@ import { toast } from "sonner";
 import { z } from "zod";
 import ExistingTagsControl from "./ExistingTagsControl";
 import ReactQuill from "react-quill";
+import { JobApplication, Note } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -73,6 +76,35 @@ export default function CreateJAForm({}) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { mutateAsync: createJobApplication } = useMutation({
+    mutationFn: api.applications.createJobApplication,
+    onSuccess: (newData: {
+      jobApplication: JobApplication;
+      note: Note;
+    }) => {
+      toast.success("Job application created successfully");
+
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]) => {
+          return [
+            ...oldData,
+            { ...newData.jobApplication, note: newData.note },
+          ];
+        }
+      );
+
+      form.reset();
+      dialogControl.closeModal("createJA");
+    },
+    onError: (err: any) => {
+      toast.error(
+        "Error creating application: ",
+        err.response.data.error
+      );
+    },
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -98,7 +130,7 @@ export default function CreateJAForm({}) {
       heardAboutFrom: "",
       mapLocation: "",
       todos: "",
-      companyId: null,
+      companyId: "0db97694-8cba-4c35-9813-03533e926703",
       interestLevel: 0,
       isFavorite: false,
       offersRelocation: false,
@@ -154,40 +186,10 @@ export default function CreateJAForm({}) {
   function handleFormReset() {
     form.reset();
   }
-
   function handleCreateJobApplication(
     jobApplication: z.infer<typeof formSchema>
   ) {
-    setIsLoading(true);
-    api.applications
-      .createJobApplication(jobApplication)
-      .then((res) => {
-        console.log("res", res);
-        toast.success("Job application created successfully");
-
-        const newJobApplicationsArray = [
-          ...jobApplicationStore.jobApplications,
-          res.data.jobApplication,
-        ];
-        jobApplicationStore.setJobApplications(
-          newJobApplicationsArray
-        );
-
-        form.reset();
-        dialogControl.closeModal("createJA");
-      })
-      .catch((err) => {
-        toast.error(
-          "Job application creation failed, check error in console"
-        );
-
-        toast.error(JSON.stringify(err));
-        console.log("err", JSON.stringify(err.response.data));
-        console.log("err", JSON.stringify(err));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    createJobApplication(jobApplication);
   }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("add new", values);

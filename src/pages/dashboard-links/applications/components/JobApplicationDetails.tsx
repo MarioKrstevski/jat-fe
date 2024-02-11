@@ -118,6 +118,8 @@ export default function JobApplicationDetails({
       ")"
     : "N/A";
 
+  console.log(ja, "ja");
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
       <div className="flex items-center my-2">
@@ -186,7 +188,6 @@ export default function JobApplicationDetails({
                       tags.find((t) => t.name === tag)?.color ||
                       "#000000";
 
-                    console.log(tag, ja);
                     return (
                       <Badge
                         key={tag}

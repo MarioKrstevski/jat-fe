@@ -30,6 +30,8 @@ import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import TextareaField from "@/components/form-fields/TextareaField";
 import ExistingTagsControl from "./ExistingTagsControl";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   companyName: z
@@ -72,7 +74,6 @@ const formSchema = z.object({
 export default function EditJAForm() {
   const dialogControl = useDialogControl();
   const editModal = dialogControl.modals["editJA"]!;
-  const jobApplicationStore = useJobApplicationsStore();
 
   const jobApplicationEditted = editModal.data
     .value as JobApplication;
@@ -81,6 +82,36 @@ export default function EditJAForm() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { mutateAsync: editJobApplication } = useMutation({
+    mutationFn: api.applications.editJobApplication,
+    onSuccess: (newData: JobApplication) => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]): JobApplication[] => {
+          return oldData.map((ja) => {
+            if (ja.id === newData.id) {
+              console.log(ja, newData);
+              return newData;
+            }
+            return ja;
+          });
+        }
+      );
+      form.reset();
+      toast.success("Job application updated");
+      dialogControl.closeModal("editJA");
+    },
+    onError: (err: any) => {
+      toast.error(
+        "Error editing application: ",
+        err.response.data.error
+      );
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -177,34 +208,11 @@ export default function EditJAForm() {
     application: any,
     applicationId: string
   ) {
-    setIsLoading(true);
-    api.applications
-      .editJobApplication(application, applicationId, "allChange")
-      .then((res) => {
-        console.log("res.data", res.data);
-
-        const newJobApplicationsArray =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (ja.id === applicationId) {
-              return res.data;
-            } else {
-              return ja;
-            }
-          });
-
-        jobApplicationStore.setJobApplications(
-          newJobApplicationsArray
-        );
-        form.reset();
-        toast.success("Job application updated");
-        dialogControl.closeModal("editJA");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    editJobApplication({
+      application,
+      applicationId,
+      type: "allChange",
+    });
   }
 
   function changeDateValuesFromUndefinedToNull(values: any) {

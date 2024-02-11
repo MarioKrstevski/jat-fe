@@ -1,12 +1,8 @@
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { LoaderIcon } from "lucide-react";
-import { useState } from "react";
-import TagDisplay from "./components/tag-manager/TagDisplay";
-import TagForm from "./components/tag-manager/TagForm";
 import { api } from "@/api/backend";
 import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
-import { JobApplicationTag } from "@/types";
+import { LoaderIcon } from "lucide-react";
+import TagDisplay from "./components/tag-manager/TagDisplay";
+import TagForm from "./components/tag-manager/TagForm";
 
 export default function TagManager() {
   const { data: tags, isLoading } = useQuery({

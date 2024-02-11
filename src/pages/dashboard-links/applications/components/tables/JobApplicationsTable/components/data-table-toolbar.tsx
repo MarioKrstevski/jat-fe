@@ -1,15 +1,16 @@
-import { Table } from "@tanstack/react-table";
+import { api } from "@/api/backend";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DataTableViewOptions } from "@/pages/dashboard-links/applications/components/tables/JobApplicationsTable/components/data-table-view-options";
-import EditButton from "@/pages/dashboard-links/applications/components/EditButton";
-import { useState } from "react";
-import { JobApplication } from "@/types";
-import { api } from "@/api/backend";
-import { useAuth } from "@clerk/clerk-react";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import { toast } from "sonner";
+import { queryClient } from "@/global/variables";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
+import EditButton from "@/pages/dashboard-links/applications/components/EditButton";
+import { DataTableViewOptions } from "@/pages/dashboard-links/applications/components/tables/JobApplicationsTable/components/data-table-view-options";
+import { JobApplication } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import { Table } from "@tanstack/react-table";
+import { useState } from "react";
+import { toast } from "sonner";
 
 // import { priorities, statuses } from "../data/data";
 // import { DataTableFacetedFilter } from "./data-table-faceted-filter";
@@ -29,12 +30,82 @@ export function DataTableToolbar<TData>({
   const jobApplicationStore = useJobApplicationsStore();
   const dialogControl = useDialogControl();
 
-  const statusChangeModal = dialogControl.modals["editStatus"];
-
   //   const isFiltered = table.getState().columnFilters.length > 0;
   const selectedCount = table.getSelectedRowModel().rows.length;
   const ja = table.getSelectedRowModel().rows[0]
     ?.original as JobApplication;
+
+  const { mutateAsync: unarchiveJobApplications } = useMutation({
+    mutationFn: api.applications.archiveJobApplications,
+    onSuccess: (archivedCount: { count: number }) => {
+      if (archivedCount.count === 0) {
+        toast.warning(
+          "Nothing has been archived in the database, probably id didn't match/ doesnt exist in db"
+        );
+        return;
+      }
+      const selectedApplicationsIds = table
+        .getSelectedRowModel()
+        .rows.map((row) => {
+          return (row.original as JobApplication).id;
+        });
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplications"],
+      });
+      queryClient.setQueryData(
+        ["jobApplications"],
+        (oldData: JobApplication[]) => {
+          return oldData.map((j) => {
+            if (selectedApplicationsIds.includes(j.id)) {
+              return {
+                ...ja,
+                isArchived: true,
+                updatedAt: new Date(),
+              };
+            } else {
+              return j;
+            }
+          });
+        }
+      );
+      table.toggleAllPageRowsSelected(false);
+      toast.success("Job Application Archived");
+    },
+    onError: (error: any) => {
+      toast.error(error.data.response.message);
+    },
+  });
+
+  const { mutateAsync: deleteJobApplications } = useMutation({
+    mutationFn: api.applications.deleteJobApplications,
+    onSuccess: (deletedCount: { count: number }) => {
+      if (deletedCount.count === 0) {
+        toast.warning(
+          "Nothing has been deleted in the database, probably id didn't match"
+        );
+        return;
+      }
+
+      const selectedApplicationsIds = table
+        .getSelectedRowModel()
+        .rows.map((row) => {
+          return (row.original as JobApplication).id;
+        });
+
+      const updatedJobApplications =
+        jobApplicationStore.jobApplications.filter(
+          (ja) => !selectedApplicationsIds.includes(ja.id)
+        );
+
+      jobApplicationStore.setJobApplications(updatedJobApplications);
+      table.toggleAllPageRowsSelected(false);
+      toast.success("Job Application Deleted");
+      dialogControl.closeModal("deleteAlert");
+    },
+    onError: (error: any) => {
+      toast.error(error.data.response.message);
+    },
+  });
 
   function handleSelectedChangeStatus() {
     const ja = table.getSelectedRowModel().rows[0]
@@ -50,46 +121,10 @@ export function DataTableToolbar<TData>({
         return (row.original as JobApplication).id;
       });
 
-    setIsLoading(true);
-
-    api.applications
-      .archiveJobApplications(selectedApplicationsIds, true)
-      .then((res) => {
-        console.log("res", res.data);
-
-        if (res.data?.count === 0) {
-          toast.warning(
-            "Nothing has been archived in the database, probably id didn't match/ doesnt exist in db"
-          );
-          return;
-        }
-
-        const updatedJobApplications =
-          jobApplicationStore.jobApplications.map((ja) => {
-            if (selectedApplicationsIds.includes(ja.id)) {
-              return {
-                ...ja,
-                isArchived: true,
-                updatedAt: new Date(),
-              };
-            } else {
-              return ja;
-            }
-          });
-
-        jobApplicationStore.setJobApplications(
-          updatedJobApplications
-        );
-        table.toggleAllPageRowsSelected(false);
-        toast.success("Job Application Archived");
-        dialogControl.closeModal("deleteAlert");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    unarchiveJobApplications({
+      ids: selectedApplicationsIds,
+      isArchived: true,
+    });
   }
 
   function onDelete() {
@@ -98,38 +133,7 @@ export function DataTableToolbar<TData>({
       .rows.map((row) => {
         return (row.original as JobApplication).id;
       });
-    setIsLoading(true);
-    api.applications
-      .deleteJobApplication(selectedApplicationsIds)
-      .then((res) => {
-        console.log("res", res.data);
-
-        // if nothing has been delted
-        if (res.data?.count === 0) {
-          toast.warning(
-            "Nothing has been deleted in the database, probably id didn't match"
-          );
-          return;
-        }
-
-        const updatedJobApplications =
-          jobApplicationStore.jobApplications.filter(
-            (ja) => !selectedApplicationsIds.includes(ja.id)
-          );
-
-        jobApplicationStore.setJobApplications(
-          updatedJobApplications
-        );
-        table.toggleAllPageRowsSelected(false);
-        toast.success("Job Application Deleted");
-        dialogControl.closeModal("deleteAlert");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    deleteJobApplications(selectedApplicationsIds);
   }
 
   return (

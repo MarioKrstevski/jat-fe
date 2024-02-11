@@ -25,6 +25,7 @@ export default function ApplicationsLayout() {
     let archivedCount = 0;
     for (const ja of jobApplications) {
       if (ja.isArchived) {
+        console.log(ja);
         archivedCount++;
       } else if (ja.status === "Wishlist") {
         wishlistCount++;

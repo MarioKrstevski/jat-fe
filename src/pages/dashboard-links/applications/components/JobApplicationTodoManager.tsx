@@ -47,13 +47,6 @@ export default function JobApplicationTodoManager({
     },
   });
 
-  console.log(
-    "passedTodos",
-    passedTodos,
-    typeof passedTodos,
-    passedTodos.length
-  );
-
   let parsedTodos: JobApplicationTodo[] = [];
   if (passedTodos.length > 0) {
     parsedTodos = JSON.parse(passedTodos);
