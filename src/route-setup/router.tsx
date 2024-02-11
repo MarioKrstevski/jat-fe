@@ -9,7 +9,7 @@ import ArchivedApplications from "@/pages/dashboard-links/applications/ArchivedA
 import WishlistApplications from "@/pages/dashboard-links/applications/WishlistApplications";
 import ImportApplications from "@/pages/dashboard-links/applications/ImportApplications";
 import KanbanView from "@/pages/dashboard-links/applications/KanbanView";
-import JobApplicationSettings from "@/pages/dashboard-links/applications/JobApplicationSettings";
+import JobApplicationSettings from "@/pages/dashboard-links/applications/components/JobApplicationSettings";
 import ResumeLayout from "./layouts/ResumeLayout";
 import ResumeList from "@/pages/dashboard-links/resume/ResumeList";
 import ResumeEditor from "@/pages/dashboard-links/resume/ResumeEditor";

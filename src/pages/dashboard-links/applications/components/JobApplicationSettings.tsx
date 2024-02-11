@@ -1,4 +1,4 @@
-import TagManager from "./TagManager";
+import TagManager from "../TagManager";
 
 export default function JobApplicationSettings() {
   return (

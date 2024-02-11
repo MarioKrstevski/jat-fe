@@ -3,12 +3,18 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { columns } from "./components/columns";
 import { DataTable } from "./components/data-table";
 import AddNewButton from "@/pages/dashboard-links/applications/components/AddNewButton";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/backend";
 
-export default function JobApplicationsTable() {
-  const jobApplications = useJobApplicationsStore(
-    (state) => state.jobApplications
-  );
+export default function ActiveTable() {
+  const { data: jobApplications } = useQuery({
+    initialData: [],
+    queryKey: ["jobApplications"],
+    queryFn: api.applications.getJobApplications,
+  });
+  console.log("jobApplications", jobApplications);
 
+  if (!jobApplications) return null;
   const activeJobApplications = jobApplications.filter(
     (ja) => !ja.isArchived && ja.status !== "Wishlist"
   );

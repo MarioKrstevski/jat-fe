@@ -1,4 +1,4 @@
-import JobApplicationDetails from "@/pages/dashboard-links/applications/JobApplicationDetails";
+import JobApplicationDetails from "@/pages/dashboard-links/applications/components/JobApplicationDetails";
 import { SecondaryNavLink } from "@/components/SecondaryNav";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";

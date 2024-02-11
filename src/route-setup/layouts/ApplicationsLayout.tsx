@@ -2,10 +2,16 @@ import { Outlet } from "react-router-dom";
 import SecondaryNav from "@/components/SecondaryNav";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/backend";
 
 export default function ApplicationsLayout() {
-  const jobApplicationsStore = useJobApplicationsStore();
-  const jobApplications = jobApplicationsStore.jobApplications;
+  const { data: jobApplications } = useQuery({
+    initialData: [],
+    queryKey: ["jobApplications"],
+    queryFn: api.applications.getJobApplications,
+  });
+
   const [counts, setCounts] = useState({
     active: 0,
     wishlist: 0,

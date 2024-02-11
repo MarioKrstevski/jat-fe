@@ -10,10 +10,10 @@ import { useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Button } from "../../../components/ui/button";
-import { Textarea } from "../../../components/ui/textarea";
+import { Button } from "../../../../components/ui/button";
+import { Textarea } from "../../../../components/ui/textarea";
 import JobApplicationTodoManager from "./JobApplicationTodoManager";
-import EditButton from "./components/EditButton";
+import EditButton from "./EditButton";
 import NoteForm from "@/components/NoteForm";
 import { useDialogControl } from "@/hooks/useDialogControl";
 interface JobApplicationDetailsProps {

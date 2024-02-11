@@ -1,18 +1,18 @@
+import { PersonIcon } from "@radix-ui/react-icons";
 import {
-  FileIcon,
-  SendIcon,
-  Trash2Icon,
   ArchiveIcon,
   ArchiveXIcon,
-  Users2Icon,
-  LineChartIcon,
-  UsersIcon,
-  PackageIcon,
+  FileIcon,
   HomeIcon,
   LayoutDashboardIcon,
+  LineChartIcon,
+  PackageIcon,
+  PenIcon,
   SaveAllIcon,
+  SendIcon,
+  Users2Icon,
+  UsersIcon,
 } from "lucide-react";
-import { PersonIcon } from "@radix-ui/react-icons";
 
 const current = undefined;
 export const sidenav = [
@@ -34,6 +34,11 @@ export const sidenav = [
         to: "/d/applications/archived",
         label: "Archived",
         icon: <ArchiveIcon className="h-4 w-4" />,
+      },
+      {
+        to: "/d/applications/wishlist",
+        label: "Wishlist",
+        icon: <PenIcon className="h-4 w-4" />,
       },
     ],
   },

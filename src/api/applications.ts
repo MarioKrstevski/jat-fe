@@ -2,10 +2,8 @@ import { EditTypes, JobApplication } from "@/types";
 import { jatbe } from "./instance";
 import { AxiosResponse } from "axios";
 
-async function getJobApplications(): Promise<
-  AxiosResponse<JobApplication[]>
-> {
-  return jatbe.get("applications/");
+async function getJobApplications(): Promise<JobApplication[]> {
+  return jatbe.get("applications/").then((res) => res.data);
 }
 
 async function getJobApplication(

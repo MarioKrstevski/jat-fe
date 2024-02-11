@@ -3,14 +3,18 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/backend";
 
 export default function ArchivedApplications() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
-  const applications = useJobApplicationsStore(
-    (state) => state.jobApplications
-  );
 
+  const { data: jobApplications } = useQuery({
+    initialData: [],
+    queryKey: ["jobApplications"],
+    queryFn: api.applications.getJobApplications,
+  });
   //effect description
   useEffect(() => {
     if (isLoaded && !userId) {
@@ -20,7 +24,7 @@ export default function ArchivedApplications() {
     }
   }, [userId, isLoaded]);
 
-  const archivedApplications = applications.filter((ja) => {
+  const archivedApplications = jobApplications.filter((ja) => {
     if (ja.isArchived) {
       return true;
     }

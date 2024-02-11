@@ -9,6 +9,16 @@ export const defaultContactRelationshipOptions = [
   "Alumni",
   "Other",
 ];
+
+export const tagColorsOptions = [
+  "#CDFADB",
+  "#F6FDC3",
+  "#FFCF96",
+  "#FF8080",
+  "#FFFFFF",
+  "#000000",
+];
+
 export const defaultStatusOptions = [
   "Wishlist",
   "OA - Online Assessment",

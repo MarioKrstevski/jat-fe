@@ -4,12 +4,16 @@ import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/api/backend";
 
 export default function WishlistApplications() {
   const { userId, isLoaded } = useAuth();
-  const applications = useJobApplicationsStore(
-    (state) => state.jobApplications
-  );
+  const { data: jobApplications } = useQuery({
+    initialData: [],
+    queryKey: ["jobApplications"],
+    queryFn: api.applications.getJobApplications,
+  });
   const navigate = useNavigate();
 
   //effect description
@@ -21,7 +25,7 @@ export default function WishlistApplications() {
     }
   }, [userId, isLoaded]);
 
-  const wishlistApplications = applications.filter((ja) => {
+  const wishlistApplications = jobApplications.filter((ja) => {
     if (ja.status === "Wishlist" && !ja.isArchived) {
       return true;
     }
