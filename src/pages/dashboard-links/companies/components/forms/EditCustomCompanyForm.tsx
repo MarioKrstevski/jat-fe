@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { urlRegex } from "@/global/variables";
+import { queryClient, urlRegex } from "@/global/variables";
+import { useMutation } from "@tanstack/react-query";
+import { SavedCompany } from "@/types";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
@@ -17,7 +19,7 @@ const formSchema = z.object({
 export default function EditCustomCompanyForm() {
   const dialogControl = useDialogControl();
   const savedCompanyEdited =
-    dialogControl.modals.editCustomCompany?.data.savedCompany!;
+    dialogControl.modals.editSavedCustomCompany?.data.savedCompany!;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -26,7 +28,29 @@ export default function EditCustomCompanyForm() {
     },
   });
 
-  function handleEditCustomCompany(
+  const { mutateAsync: updateSavedCustomCompany } = useMutation({
+    mutationFn: api.companies.updateSavedCustomCompany,
+    onSuccess: (editedSavedCompany) => {
+      queryClient.setQueryData(
+        ["savedCompanies"],
+        (oldData: SavedCompany[]) => {
+          return oldData.map((sc: SavedCompany) => {
+            if (sc.id === editedSavedCompany.id) {
+              return editedSavedCompany;
+            } else {
+              return sc;
+            }
+          });
+        }
+      );
+      toast.success("Company edited");
+      dialogControl.closeModal("editSavedCustomCompany");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  function handleUpdateSavedCustomCompan(
     companyInfo: z.infer<typeof formSchema>
   ) {
     console.log(companyInfo);
@@ -36,33 +60,15 @@ export default function EditCustomCompanyForm() {
         ? companyInfo.link
         : "https://" + companyInfo.link;
     }
-
-    api.companies
-      .editCustomCompany(
-        companyInfo.companyName,
-        companyInfo.link,
-        savedCompanyEdited?.id || ""
-      )
-      .then((response) => {
-        console.log(response);
-        toast.success("Company info changed");
-
-        dialogControl.closeModal("editCustomCompany");
-      })
-      .catch((error) => {
-        console.error("Error editing company:", error);
-        if (error.response) {
-          console.error(error.response.data);
-          toast.error(
-            "Error editing company: " + error.response.data.error
-          );
-        }
-      })
-      .finally(() => {});
+    updateSavedCustomCompany({
+      name: companyInfo.companyName,
+      link: companyInfo.link,
+      savedCompanyId: savedCompanyEdited.id,
+    });
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    handleEditCustomCompany(values);
+    handleUpdateSavedCustomCompan(values);
   }
   return (
     <div>

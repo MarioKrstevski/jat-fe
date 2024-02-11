@@ -2,38 +2,39 @@ import { api } from "@/api/backend";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useCompaniesStore } from "@/hooks/useCompaniesStore";
+import { queryClient } from "@/global/variables";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
-import {
-  GlobeIcon,
-  LinkedinIcon,
-  TwitchIcon,
-  TwitterIcon,
-} from "lucide-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GlobeIcon, TwitterIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function CompanyInfoPage() {
   const { companyId } = useParams();
   const navigate = useNavigate();
-  const companiesStore = useCompaniesStore();
-  const company = companiesStore.companies.find(
-    (company) => company.id === companyId
-  );
+
+  const { data: company } = useQuery({
+    queryKey: ["company", companyId],
+    queryFn: () => api.companies.getCompany(companyId as string),
+  });
+
+  const { mutateAsync: saveExistingCompany } = useMutation({
+    mutationKey: ["saveExistingCompany"],
+    mutationFn: api.companies.saveExistingCompany,
+    onSuccess: (savedData) => {
+      queryClient.invalidateQueries({
+        queryKey: ["savedCompanies"],
+      });
+      toast.success("Company saved");
+    },
+    onError: (error: any) => {
+      console.error("Error saving company:", error);
+      toast.error("Failed to save: " + error.response.data.error);
+    },
+  });
 
   function handleSaveCompany() {
-    api.companies
-      .saveExistingCompany(company?.id!)
-      .then((response) => {
-        console.log(response.data);
-        toast.success("Company saved");
-        // companiesStore.setCompanies(response.data);
-      })
-      .catch((error) => {
-        console.error("Error saving company:", error);
-        toast.error("Failed to save: " + error.response.data.error);
-      })
-      .finally(() => {});
+    saveExistingCompany(companyId as string);
   }
   if (!company) {
     return null;
@@ -121,8 +122,8 @@ export default function CompanyInfoPage() {
           <p className="flex gap-1 py-1">
             {company.industry
               .split(",")
-              .map((i) => i.trim())
-              .map((i) => {
+              .map((i: string) => i.trim())
+              .map((i: string) => {
                 return <Badge>{i}</Badge>;
               })}
           </p>

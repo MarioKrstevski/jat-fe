@@ -12,8 +12,9 @@ import { api } from "@/api/backend";
 import { SavedCompany } from "@/types";
 import { toast } from "sonner";
 
-import { useCompaniesStore } from "@/hooks/useCompaniesStore";
+import { queryClient } from "@/global/variables";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { useMutation } from "@tanstack/react-query";
 import { MoreVerticalIcon } from "lucide-react";
 
 interface CompanyActionsDropdownProps {
@@ -22,26 +23,29 @@ interface CompanyActionsDropdownProps {
 export default function CompanyActionsDropdown({
   savedCompany,
 }: CompanyActionsDropdownProps) {
-  const companiesStore = useCompaniesStore();
   const dialogControl = useDialogControl();
-  function handleDeleteSavedCompany() {
-    api.companies
-      .deleteCustomCompany(savedCompany.id)
-      .then((response) => {
-        console.log(response.data);
-        const newSavedCompanies =
-          companiesStore.savedCompanies.filter(
-            (c) => c.id !== savedCompany.id
+
+  const { mutateAsync: deleteSavedCompany } = useMutation({
+    mutationFn: api.companies.deleteSavedCompany,
+    onSuccess: (deletedSavedCompany) => {
+      queryClient.setQueryData(
+        ["savedCompanies"],
+        (oldData: SavedCompany[]) => {
+          return oldData.filter(
+            (sc) => sc.id !== deletedSavedCompany.id
           );
-        companiesStore.setSavedCompanies(newSavedCompanies);
-        toast.success("Company deleted");
-        dialogControl.closeModal("deleteAlert");
-      })
-      .catch((error) => {
-        console.error("Error fetching companies:", error);
-        toast.error("Failed to delete company");
-      })
-      .finally(() => {});
+        }
+      );
+      toast.success("Company deleted");
+      dialogControl.closeModal("deleteAlert");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  function handleDeleteSavedCompany() {
+    deleteSavedCompany(savedCompany.id);
   }
   return (
     <>
@@ -61,7 +65,7 @@ export default function CompanyActionsDropdown({
           {!savedCompany.company && (
             <DropdownMenuItem
               onClick={() => {
-                dialogControl.openModal("editCustomCompany", {
+                dialogControl.openModal("editSavedCustomCompany", {
                   savedCompany: savedCompany,
                 });
               }}

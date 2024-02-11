@@ -9,6 +9,8 @@ import { api } from "@/api/backend";
 import { toast } from "sonner";
 import SelectField from "@/components/form-fields/SelectField";
 import { defaultContactRelationshipOptions } from "@/global/values";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -23,6 +25,26 @@ const formSchema = z.object({
 interface EditContactFormProps {}
 export default function EditContactForm({}: EditContactFormProps) {
   const dialogControl = useDialogControl();
+
+  const { mutateAsync: updateContact } = useMutation({
+    //  @ts-ignore
+    mutationFn: api.contacts.updateContact,
+    onSuccess: (deletedContact) => {
+      // queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      queryClient.setQueryData(["contacts"], (oldData: any) => {
+        return oldData.filter((contact: any) => {
+          return contact.id !== deletedContact.id;
+        });
+      });
+
+      toast.success("Contact updated");
+      dialogControl.closeModal("editContact");
+    },
+
+    onError: (error) => {
+      toast.error("Error updating contact: " + error);
+    },
+  });
 
   const contactEdited =
     dialogControl.modals.editContact?.data.contact;
@@ -42,20 +64,7 @@ export default function EditContactForm({}: EditContactFormProps) {
 
   const onSubmit = (contactData: z.infer<typeof formSchema>) => {
     console.log(contactData);
-    api.contacts
-      .updateContact(contactData, contactEdited.id)
-      .then((response) => {
-        console.log(response);
-        dialogControl.closeModal("editContact");
-        toast.success("Contact updated");
-      })
-      .catch((error) => {
-        console.error("Error updating contact:", error);
-        toast.error(
-          "Error updating contact: " + error.response.data.error
-        );
-      })
-      .finally(() => {});
+    updateContact({ contactData, contactId: contactEdited.id });
   };
 
   // Add a new function here

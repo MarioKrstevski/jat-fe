@@ -12,9 +12,10 @@ import { api } from "@/api/backend";
 import { Contact } from "@/types";
 import { toast } from "sonner";
 
-import { useCompaniesStore } from "@/hooks/useCompaniesStore";
 import { useDialogControl } from "@/hooks/useDialogControl";
 import { MoreVerticalIcon } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 interface ContactActionsDropdownProps {
   contact: Contact;
@@ -22,26 +23,23 @@ interface ContactActionsDropdownProps {
 export default function ContactActionsDropdown({
   contact,
 }: ContactActionsDropdownProps) {
-  const companiesStore = useCompaniesStore();
   const dialogControl = useDialogControl();
+
+  const { mutateAsync: deleteContact } = useMutation({
+    mutationFn: api.contacts.deleteContact,
+    onSuccess: () => {
+      toast.success("Contact deleted");
+      dialogControl.closeModal("deleteAlert");
+      queryClient.invalidateQueries({ queryKey: ["contacts"] });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
   function handleDeleteContact() {
-    api.contacts
-      .deleteContact(contact.id)
-      .then((response) => {
-        console.log(response.data);
-        const newSavedCompanies =
-          companiesStore.savedCompanies.filter(
-            (c) => c.id !== contact.id
-          );
-        companiesStore.setSavedCompanies(newSavedCompanies);
-        toast.success("Contact deleted");
-        dialogControl.closeModal("deleteAlert");
-      })
-      .catch((error) => {
-        console.error("Error fetching companies:", error);
-        toast.error("Failed to delete company");
-      })
-      .finally(() => {});
+    // @ts-ignore
+    deleteContact(contact.id);
   }
   return (
     <>
@@ -50,13 +48,15 @@ export default function ContactActionsDropdown({
           <Button
             variant={"outline"}
             size={"icon"}
-            className=" h-6 w-6"
+            className=" h-6 w-6 bg-transparent border"
           >
             <MoreVerticalIcon size={14} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="-right-3 top-0 absolute">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuContent className="-right-3 top-0 absolute p-1">
+          <DropdownMenuLabel className="py-1">
+            Actions
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {!contact.company && (
             <DropdownMenuItem

@@ -111,7 +111,16 @@ export interface Note {
   jobApplicationId?: string;
   jobApplication?: JobApplication;
 }
-
+export interface RequestedCompany {
+  id: string;
+  name?: string;
+  link?: string;
+  company?: Company;
+  note: Note;
+  contacts?: Contact[];
+  createdAt: Date;
+  updatedAt: Date;
+}
 export interface SavedCompany {
   id: string;
   name?: string;

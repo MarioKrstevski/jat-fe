@@ -2,10 +2,7 @@ import { api } from "@/api/backend";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { Toaster } from "@/components/ui/sonner";
-import { useContactsStore } from "@/hooks/useContactsStore";
-import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
-import usePutTokenInInterceptor from "@/hooks/usePutTokenInInterceptor";
 import DrawerProvider from "@/providers/DrawerProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import SmartOverlayProvider from "@/providers/SmartOverlayProvider";
@@ -15,27 +12,10 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SideMenu from "../SideMenu";
 
 export default function DashboardLayout() {
-  usePutTokenInInterceptor();
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
   const jobApplicationStore = useJobApplicationsStore();
-  const contactsStore = useContactsStore();
-  const interviewsStore = useInterviewsStore();
 
-  // const { isLoading, data, error } = useClerkQuery(
-  //   "http://localhost:5050/applications"
-  // );
-  // const { isLoading, data, error } = useQuery({
-  //   queryKey: ["applications"],
-  //   queryFn: () =>
-  //     api.applications.getJobApplications(userId).then((res) => {
-  //       jobApplicationStore.setData(res.data);
-  //       return res.data;
-  //     }),
-  // });
-
-  // console.log(data, isLoading, error);
-  //effect description
   useEffect(() => {
     if (isLoaded && !userId) {
       // console.log("should go back");
@@ -67,33 +47,10 @@ export default function DashboardLayout() {
         console.log("err", err);
       });
   }
-  function handleFetchingInterviews() {
-    api.interviews
-      .getInterviews()
-      .then((res) => {
-        // console.log("interviews", res.data);
-        interviewsStore.setInterviews(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
-  function handleFetchingContacts() {
-    api.contacts
-      .getContacts()
-      .then((res) => {
-        contactsStore.setContacts(res.data);
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-  }
 
   useEffect(() => {
     handleFetchingJobApplications();
     handleFetchingTags();
-    handleFetchingContacts();
-    handleFetchingInterviews();
   }, []);
 
   if (!isLoaded || !userId) {

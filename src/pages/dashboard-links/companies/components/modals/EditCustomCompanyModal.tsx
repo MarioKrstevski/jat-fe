@@ -5,7 +5,8 @@ import EditCustomCompanyForm from "../forms/EditCustomCompanyForm";
 
 export default function EditCustomCompanyModal() {
   const dialogControl = useDialogControl();
-  const isOpen = dialogControl.modals["editCustomCompany"]?.isOpen!;
+  const isOpen =
+    dialogControl.modals["editSavedCustomCompany"]?.isOpen!;
 
   return (
     <Modal
@@ -13,7 +14,7 @@ export default function EditCustomCompanyModal() {
       description={`Change something or attach it to an existing company.`}
       isOpen={isOpen}
       onClose={() => {
-        dialogControl.closeModal("editCustomCompany");
+        dialogControl.closeModal("editSavedCustomCompany");
       }}
     >
       <EditCustomCompanyForm />

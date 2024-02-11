@@ -9,6 +9,8 @@ import { api } from "@/api/backend";
 import { toast } from "sonner";
 import SelectField from "@/components/form-fields/SelectField";
 import { defaultContactRelationshipOptions } from "@/global/values";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -23,6 +25,26 @@ const formSchema = z.object({
 interface CreateContactFormProps {}
 export default function CreateContactForm({}: CreateContactFormProps) {
   const dialogControl = useDialogControl();
+
+  const { mutateAsync: createContact } = useMutation({
+    //  @ts-ignore
+    mutationFn: api.contacts.createContact,
+    onSuccess: (successData) => {
+      // queryClient.invalidateQueries({ queryKey: ["contacts"] });
+      queryClient.setQueryData(["contacts"], (oldData: any) => {
+        return [
+          ...oldData,
+          { ...successData.contact, note: successData.note },
+        ];
+      });
+      dialogControl.closeModal("createContact");
+      toast.success("Contact created");
+    },
+    onError: (error) => {
+      toast.error("Error creating contact: " + error);
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,21 +60,7 @@ export default function CreateContactForm({}: CreateContactFormProps) {
   });
 
   const onSubmit = (contactData: z.infer<typeof formSchema>) => {
-    console.log(contactData);
-    api.contacts
-      .createContact(contactData)
-      .then((response) => {
-        console.log(response);
-        dialogControl.closeModal("createContact");
-        toast.success("Contact created");
-      })
-      .catch((error) => {
-        console.error("Error creating contact:", error);
-        toast.error(
-          "Error creating contact: " + error.response.data.error
-        );
-      })
-      .finally(() => {});
+    createContact(contactData);
   };
 
   // Add a new function here

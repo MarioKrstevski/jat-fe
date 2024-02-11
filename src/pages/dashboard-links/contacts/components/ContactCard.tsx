@@ -18,10 +18,10 @@ interface ContactCardProps {
 export default function ContactCard({ contact }: ContactCardProps) {
   return (
     <div
-      className="p-4 pb-2 rounded-xl  shadow bg-slate-100 hover:-translate-y-1 transition-all duration-300 w-full relative"
+      className="p-4 pb-2 rounded shadow bg-slate-100 hover:-translate-y-1 transition-all duration-300 w-full relative"
       key={contact.id}
     >
-      <div className="absolute top-2 right-2">
+      <div className="absolute top-1 right-1">
         <ContactActionsDropdown contact={contact} />
       </div>
       <div>
@@ -39,7 +39,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
             {contact.phone && (
               <p className="flex items-center gap-1 text-sm">
                 <PhoneIcon size={16} />{" "}
-                <span>
+                <span className="hover:text-blue-600 text-xs">
                   <a href={"tel:" + contact.phone}>{contact.phone}</a>
                 </span>
               </p>

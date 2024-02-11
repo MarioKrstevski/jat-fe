@@ -1,13 +1,14 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import TextField from "@/components/form-fields/TextField";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
-import { toast } from "sonner";
-import { useDialogControl } from "@/hooks/useDialogControl";
+import TextField from "@/components/form-fields/TextField";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 import { urlRegex } from "@/global/variables";
+import { useDialogControl } from "@/hooks/useDialogControl";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
@@ -24,27 +25,25 @@ export default function RequestCompanyForm() {
     },
   });
 
+  const { mutateAsync: requestCompany } = useMutation({
+    mutationFn: api.companies.saveCustomCompany,
+    onSuccess: () => {
+      toast.success("Company request sent");
+      dialogControl.closeModal("requestCompany");
+    },
+    onError: (error: any) => {
+      toast.error("Request failed: " + error.response.data.error);
+    },
+  });
+
   function handleCompanyRequest(
     companyInfo: z.infer<typeof formSchema>
   ) {
     console.log(companyInfo);
-    api.companies
-      .requestCompany(companyInfo.companyName, companyInfo.link)
-      .then((response) => {
-        console.log(response);
-        toast.success("Company requested");
-        dialogControl.closeModal("requestCompany");
-      })
-      .catch((error) => {
-        console.error("Error requesting company:", error);
-        if (error.response) {
-          console.error(error.response.data);
-          toast.error(
-            "Error requesting company: " + error.response.data.error
-          );
-        }
-      })
-      .finally(() => {});
+    requestCompany({
+      name: companyInfo.companyName,
+      link: companyInfo.link,
+    });
   }
   async function onSubmit(values: z.infer<typeof formSchema>) {
     handleCompanyRequest(values);
@@ -61,7 +60,11 @@ export default function RequestCompanyForm() {
           <TextField
             form={form}
             fieldName="link"
-            label="link * (ideally a Linkedin link"
+            label={
+              <span>
+                Link * <small>(ideally a Linkedin link)</small>
+              </span>
+            }
           />
 
           <div className="flex justify-end">

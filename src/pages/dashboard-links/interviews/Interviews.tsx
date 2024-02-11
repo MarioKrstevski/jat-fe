@@ -1,16 +1,20 @@
+import { api } from "@/api/backend";
 import Upcomming from "@/components/Upcomming";
+import { useQuery } from "@tanstack/react-query";
 import InterviewList from "./InterviewList";
-import { useDialogControl } from "@/hooks/useDialogControl";
 import CreateInterviewSmartOverlay from "./components/smartoverlays/CreateInterviewSmartOverlay";
-import { useInterviewsStore } from "@/hooks/useInterviewsStore";
 
 export default function Interviews() {
-  const interviewsStore = useInterviewsStore();
+  const { data: interviews } = useQuery({
+    initialData: [],
+    queryKey: ["interviews"],
+    queryFn: api.interviews.getInterviews,
+  });
 
   return (
     <>
       <CreateInterviewSmartOverlay />
-      <InterviewList interviews={interviewsStore.interviews} />
+      <InterviewList interviews={interviews} />
 
       <Upcomming imgSrc="https://img001.prntscr.com/file/img001/ViQbwJ8lRJe8sCGJtHVZcw.png" />
     </>

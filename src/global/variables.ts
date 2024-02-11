@@ -1,3 +1,5 @@
+import { QueryClient } from "@tanstack/react-query";
+
 // let mode = "development";
 let mode = "production";
 
@@ -18,3 +20,5 @@ if (mode === "development") {
 export { backendURL, frontendURL };
 
 export const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[^\s.]+\.[^\s]+$/;
+
+export const queryClient = new QueryClient();

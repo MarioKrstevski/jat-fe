@@ -165,9 +165,9 @@ export default function SideMenu() {
         {sidenav.map((item) => {
           if (item.section) {
             return (
-              <>
-                <p className="pt-5 pl-2 text-sm">{item.label}</p>
-              </>
+              <p key={item.label} className="pt-5 pl-2 text-sm">
+                {item.label}
+              </p>
             );
           }
 

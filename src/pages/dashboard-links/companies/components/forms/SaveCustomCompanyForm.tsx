@@ -7,13 +7,19 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { urlRegex } from "@/global/variables";
+import { queryClient, urlRegex } from "@/global/variables";
+import { Note, SavedCompany } from "@/types";
+import { useMutation } from "@tanstack/react-query";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
   link: z.string().regex(urlRegex).optional(),
 });
 
+interface NewSavedData {
+  company: SavedCompany;
+  note: Note;
+}
 export default function SaveCustomCompanyForm() {
   const dialogControl = useDialogControl();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -21,6 +27,26 @@ export default function SaveCustomCompanyForm() {
     defaultValues: {
       companyName: "",
       link: undefined,
+    },
+  });
+
+  const { mutateAsync: saveCustomCompany } = useMutation({
+    mutationFn: api.companies.saveCustomCompany,
+    onSuccess: (newData: NewSavedData) => {
+      queryClient.setQueryData(
+        ["savedCompanies"],
+        (oldData: SavedCompany[]) => {
+          return [
+            { ...newData.company, note: newData.note },
+            ...oldData,
+          ];
+        }
+      );
+      toast.success("Company saved");
+      dialogControl.closeModal("saveCustomCompany");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
@@ -34,25 +60,10 @@ export default function SaveCustomCompanyForm() {
         ? companyInfo.link
         : "https://" + companyInfo.link;
     }
-
-    api.companies
-      .saveCustomCompany(companyInfo.companyName, companyInfo.link)
-      .then((response) => {
-        console.log(response);
-        toast.success("Company saved");
-
-        dialogControl.closeModal("saveCustomCompany");
-      })
-      .catch((error) => {
-        console.error("Error saving company:", error);
-        if (error.response) {
-          console.error(error.response.data);
-          toast.error(
-            "Error saving company: " + error.response.data.error
-          );
-        }
-      })
-      .finally(() => {});
+    saveCustomCompany({
+      name: companyInfo.companyName,
+      link: companyInfo.link,
+    });
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

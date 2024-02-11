@@ -1,16 +1,17 @@
-import { Interview, JobApplicationTag } from "@/types";
+import { Interview } from "@/types";
 import { jatbe } from "./instance";
-import { AxiosResponse } from "axios";
 
-async function getInterviews(): Promise<AxiosResponse<Interview[]>> {
-  return jatbe.get("interviews");
+async function getInterviews(): Promise<Interview[]> {
+  return jatbe.get("interviews").then((response) => response.data);
 }
 async function createInterview(
   interviewDetails: any
-): Promise<AxiosResponse<Interview[]>> {
-  return jatbe.post("interviews", {
-    interviewDetails,
-  });
+): Promise<Interview[]> {
+  return jatbe
+    .post("interviews", {
+      interviewDetails,
+    })
+    .then((response) => response.data);
 }
 
 export const interviews = {
