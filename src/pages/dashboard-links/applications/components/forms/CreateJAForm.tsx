@@ -533,7 +533,7 @@ export default function CreateJAForm({}) {
             </Button>
             <Button
               disabled={isLoading}
-              variant={"outline"}
+              variant={"ghost"}
               type="button"
               onClick={() => dialogControl.closeModal("createJA")}
             >

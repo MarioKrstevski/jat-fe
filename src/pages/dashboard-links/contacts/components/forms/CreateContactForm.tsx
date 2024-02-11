@@ -121,7 +121,7 @@ export default function CreateContactForm({}: CreateContactFormProps) {
           <div className="pt-6 space-x-2 flex items-center justify-end">
             <Button
               type="button"
-              variant={"outline"}
+              variant={"ghost"}
               onClick={handleCancel}
             >
               Cancel

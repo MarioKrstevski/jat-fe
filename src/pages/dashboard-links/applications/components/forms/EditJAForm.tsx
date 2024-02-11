@@ -547,7 +547,7 @@ export default function EditJAForm() {
             <Button
               disabled={isLoading}
               type="button"
-              variant={"outline"}
+              variant={"ghost"}
               onClick={() => dialogControl.closeModal("editJA")}
             >
               Cancel

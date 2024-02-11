@@ -142,7 +142,7 @@ export default function EditJANextInterviewDateForm() {
           <div className="pt-6 space-x-2 flex items-center justify-end">
             <Button
               disabled={isLoading}
-              variant={"outline"}
+              variant={"ghost"}
               type="button"
               onClick={() => {
                 dialogControl.closeModal("editInterviewDate");

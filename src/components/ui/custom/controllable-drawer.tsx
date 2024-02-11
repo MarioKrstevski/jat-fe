@@ -51,7 +51,7 @@ export default function ControllableDrawer({
             <DrawerFooter>
               <Button onClick={onConfirm}>Submit</Button>
               <DrawerClose asChild>
-                <Button variant="outline" onClick={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   Cancel
                 </Button>
               </DrawerClose>
