@@ -150,7 +150,7 @@ export default function JobApplicationDetails({
           Delete <TrashIcon className="ml-1 h-3 w-3" />
         </Button>
       </div>
-      <main className="flex-1 overflow-y-auto p-6 pt-0">
+      <main className="flex-1 overflow-y-auto  p-1 sm:p-3 pt-0">
         <section className="  mb-2 bg-white rounded-lg shadow p-4 dark:bg-gray-900">
           <h2 className=" flex justify-between text-xl font-semibold text-gray-800 mb-2 dark:text-gray-100">
             <div>Important information</div>

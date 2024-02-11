@@ -111,7 +111,7 @@ export default function DashboardLayout() {
         <SideMenu />
         <section className="flex-1  overflow-x-auto overflow-y-auto">
           <Header />
-          <div className="px-2 sm:px-3">
+          <div className="px-0.5 sm:px-2">
             <Outlet />
           </div>
           <Footer />
