@@ -1,10 +1,9 @@
+import { api } from "@/api/backend";
 import ArchivedTable from "@/pages/dashboard-links/applications/components/tables/ArchivedTable";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { useAuth } from "@clerk/clerk-react";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/api/backend";
 
 export default function ArchivedApplications() {
   const { userId, isLoaded } = useAuth();
