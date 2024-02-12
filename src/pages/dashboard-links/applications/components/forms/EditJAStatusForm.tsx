@@ -4,38 +4,34 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
 import {
-  SelectValue,
-  SelectTrigger,
-  SelectLabel,
-  SelectItem,
-  SelectGroup,
-  SelectContent,
   Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+import { api } from "@/api/backend";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useDialogControl } from "@/hooks/useDialogControl";
 import {
   JobApplication,
   JobApplicationStatus,
   TimelineEntry,
 } from "@/types";
-import { Checkbox } from "../../../../../components/ui/checkbox";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { DateTimePicker } from "../../../../../components/DateTimePicker";
-import { api } from "@/api/backend";
-import { useAuth } from "@clerk/clerk-react";
-import { useDialogControl } from "@/hooks/useDialogControl";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
+import { Checkbox } from "../../../../../components/ui/checkbox";
 
 const formSchema = z.object({
   status: z.string(),
@@ -44,6 +40,7 @@ const formSchema = z.object({
 });
 
 export default function EditJAStatusForm() {
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
   const [addToTimeline, setAddToTimeline] = useState(false);
 

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { queryClient, urlRegex } from "@/global/variables";
-import { useMutation } from "@tanstack/react-query";
+import { urlRegex } from "@/global/variables";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SavedCompany } from "@/types";
 
 const formSchema = z.object({
@@ -17,6 +17,8 @@ const formSchema = z.object({
 });
 
 export default function EditCustomCompanyForm() {
+  const queryClient = useQueryClient();
+
   const dialogControl = useDialogControl();
   const savedCompanyEdited =
     dialogControl.modals.editSavedCustomCompany?.data.savedCompany!;

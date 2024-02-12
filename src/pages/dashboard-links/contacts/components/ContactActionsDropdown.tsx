@@ -13,9 +13,8 @@ import { Contact } from "@/types";
 import { toast } from "sonner";
 
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MoreVerticalIcon } from "lucide-react";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
 
 interface ContactActionsDropdownProps {
   contact: Contact;
@@ -24,7 +23,7 @@ export default function ContactActionsDropdown({
   contact,
 }: ContactActionsDropdownProps) {
   const dialogControl = useDialogControl();
-
+  const queryClient = useQueryClient();
   const { mutateAsync: deleteContact } = useMutation({
     mutationFn: api.contacts.deleteContact,
     onSuccess: () => {

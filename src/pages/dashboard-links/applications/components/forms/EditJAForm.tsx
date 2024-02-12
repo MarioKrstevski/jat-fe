@@ -22,11 +22,11 @@ import {
   defaultStatusOptions,
   defaultWorkModeOptions,
 } from "@/global/values";
-import { queryClient } from "@/global/variables";
+
 import { useDialogControl } from "@/hooks/useDialogControl";
 import { parseDateOrUndefined } from "@/lib/utils";
 import { JobApplication } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -73,6 +73,7 @@ const formSchema = z.object({
 export default function EditJAForm() {
   const dialogControl = useDialogControl();
   const editModal = dialogControl.modals["editJA"]!;
+  const queryClient = useQueryClient();
 
   const jobApplicationEditted = editModal.data
     .value as JobApplication;

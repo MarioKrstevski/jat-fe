@@ -2,9 +2,12 @@ import { api } from "@/api/backend";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { queryClient } from "@/global/variables";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { GlobeIcon, TwitterIcon } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -12,6 +15,8 @@ import { toast } from "sonner";
 export default function CompanyInfoPage() {
   const { companyId } = useParams();
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
 
   const { data: company } = useQuery({
     queryKey: ["company", companyId],

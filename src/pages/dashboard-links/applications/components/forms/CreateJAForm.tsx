@@ -19,17 +19,16 @@ import {
   defaultWorkModeOptions,
 } from "@/global/values";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import { JobApplication, Note } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronsUpDownIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
 import { toast } from "sonner";
 import { z } from "zod";
 import ExistingTagsControl from "./ExistingTagsControl";
-import ReactQuill from "react-quill";
-import { JobApplication, Note } from "@/types";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
 
 const formSchema = z.object({
   companyName: z.string(),
@@ -68,6 +67,7 @@ const formSchema = z.object({
 });
 
 export default function CreateJAForm({}) {
+  const queryClient = useQueryClient();
   const dialogControl = useDialogControl();
   const formContainerRef = useRef<HTMLDivElement>(null);
   const [usedTags, setUsedTags] = useState("");

@@ -2,11 +2,15 @@ import { api } from "@/api/backend";
 import NoteForm from "@/components/NoteForm";
 import Upcomming from "@/components/Upcomming";
 import { Badge } from "@/components/ui/badge";
-import { queryClient } from "@/global/variables";
+
 import { useDialogControl } from "@/hooks/useDialogControl";
 import { dateDistance, getContrastColor } from "@/lib/utils";
 import { JobApplication, TimelineEntry } from "@/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { format } from "date-fns";
 import { TrashIcon, Undo2Icon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +27,7 @@ export default function JobApplicationDetails({
   const ja = jobApplication;
   const navigate = useNavigate();
   const dialogControl = useDialogControl();
-
+  const queryClient = useQueryClient();
   const { data: tags } = useQuery({
     initialData: [],
     queryKey: ["tags"],

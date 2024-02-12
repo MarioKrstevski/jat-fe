@@ -1,19 +1,18 @@
 import { api } from "@/api/backend";
-import { JobApplicationTag } from "@/types";
-import { useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { EditIcon, Trash } from "lucide-react";
-import { cn, getContrastColor } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { tagColorsOptions } from "@/global/values";
+import { cn, getContrastColor } from "@/lib/utils";
+import { JobApplicationTag } from "@/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { EditIcon, Trash } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { queryClient } from "@/global/variables";
-import { useMutation } from "@tanstack/react-query";
 interface TagDisplayProps {
   tag: JobApplicationTag;
 }
@@ -24,6 +23,7 @@ export default function TagDisplay({ tag }: TagDisplayProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [tagName, setTagName] = useState(tag.name);
   const [tagColor, setTagColor] = useState(tag.color);
+  const queryClient = useQueryClient();
 
   const { mutateAsync: deleteTag } = useMutation({
     mutationFn: api.tags.deleteTag,

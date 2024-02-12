@@ -1,16 +1,15 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { api } from "@/api/backend";
+import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useDialogControl } from "@/hooks/useDialogControl";
-import { z } from "zod";
-import { api } from "@/api/backend";
-import { toast } from "sonner";
-import SelectField from "@/components/form-fields/SelectField";
 import { defaultContactRelationshipOptions } from "@/global/values";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
+import { useDialogControl } from "@/hooks/useDialogControl";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -25,6 +24,7 @@ const formSchema = z.object({
 interface EditContactFormProps {}
 export default function EditContactForm({}: EditContactFormProps) {
   const dialogControl = useDialogControl();
+  const queryClient = useQueryClient();
 
   const { mutateAsync: updateContact } = useMutation({
     //  @ts-ignore

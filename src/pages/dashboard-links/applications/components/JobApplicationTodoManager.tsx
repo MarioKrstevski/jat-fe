@@ -12,8 +12,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { queryClient } from "@/global/variables";
-import { useMutation } from "@tanstack/react-query";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import TodoForm from "./TodoForm";
 
@@ -24,6 +24,7 @@ export default function JobApplicationTodoManager({
   todos: string;
   applicationId: string;
 }) {
+  const queryClient = useQueryClient();
   const { mutateAsync: editJobApplication } = useMutation({
     mutationFn: api.applications.editJobApplication,
     onSuccess: (editedApplication: JobApplication) => {

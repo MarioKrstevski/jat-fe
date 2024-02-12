@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/api/backend";
 import { toast } from "sonner";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { queryClient, urlRegex } from "@/global/variables";
+import { urlRegex } from "@/global/variables";
 import { Note, SavedCompany } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   companyName: z.string().min(1),
@@ -22,6 +22,7 @@ interface NewSavedData {
 }
 export default function SaveCustomCompanyForm() {
   const dialogControl = useDialogControl();
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

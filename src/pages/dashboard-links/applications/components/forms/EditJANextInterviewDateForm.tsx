@@ -19,15 +19,14 @@ import { useAuth } from "@clerk/clerk-react";
 import { JobApplication } from "@/types";
 import { useDialogControl } from "@/hooks/useDialogControl";
 import { parseDateOrUndefined } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/global/variables";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   nextInterviewDate: z.date().nullish(),
 });
 export default function EditJANextInterviewDateForm() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const queryClient = useQueryClient();
   const dialogControl = useDialogControl();
 
   const interviewDateChangeModal =

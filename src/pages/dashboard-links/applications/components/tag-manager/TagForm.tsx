@@ -7,10 +7,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { tagColorsOptions } from "@/global/values";
-import { queryClient } from "@/global/variables";
 import { cn, getContrastColor } from "@/lib/utils";
 import { JobApplicationTag } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -19,6 +18,7 @@ interface TagFormProps {
 }
 
 export default function TagForm({ tags }: TagFormProps) {
+  const queryClient = useQueryClient();
   const [tagName, setTagName] = useState("");
   const [tagColor, setTagColor] = useState("#FFFFFF");
   const [isEditing, setIsEditing] = useState(false);

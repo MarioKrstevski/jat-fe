@@ -12,9 +12,8 @@ import { api } from "@/api/backend";
 import { SavedCompany } from "@/types";
 import { toast } from "sonner";
 
-import { queryClient } from "@/global/variables";
 import { useDialogControl } from "@/hooks/useDialogControl";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MoreVerticalIcon } from "lucide-react";
 
 interface CompanyActionsDropdownProps {
@@ -24,7 +23,7 @@ export default function CompanyActionsDropdown({
   savedCompany,
 }: CompanyActionsDropdownProps) {
   const dialogControl = useDialogControl();
-
+  const queryClient = useQueryClient();
   const { mutateAsync: deleteSavedCompany } = useMutation({
     mutationFn: api.companies.deleteSavedCompany,
     onSuccess: (deletedSavedCompany) => {
