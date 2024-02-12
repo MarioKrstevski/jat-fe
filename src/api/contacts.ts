@@ -1,7 +1,6 @@
 // src/api/contacts.ts
 import { Contact, Note } from "@/types";
 import { jatbe } from "./instance";
-import { AxiosResponse } from "axios";
 
 interface CreateContactResponse {
   contact: Contact;

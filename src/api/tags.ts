@@ -31,7 +31,7 @@ async function editTag({
   newColor: string;
   newName: string;
   originalName: string;
-}): Promise<AxiosResponse<JobApplicationTag[]>> {
+}): Promise<JobApplicationTag> {
   return jatbe
     .patch("tags/" + tagId, {
       newColor,
@@ -41,9 +41,7 @@ async function editTag({
     .then((res) => res.data);
 }
 
-async function deleteTag(
-  tagId: string
-): Promise<JobApplicationTag[]> {
+async function deleteTag(tagId: string): Promise<JobApplicationTag> {
   return jatbe.delete("tags/" + tagId).then((res) => res.data);
 }
 
