@@ -4,11 +4,16 @@ import { AxiosResponse } from "axios";
 
 // notes that are not attached to anything
 
-async function editNote(
-  noteId: string,
-  newContent: string
-): Promise<AxiosResponse<Note[]>> {
-  return jatbe.patch("notes", { newContent, noteId });
+async function editNote({
+  newContent,
+  noteId,
+}: {
+  noteId: string;
+  newContent: string;
+}): Promise<AxiosResponse<Note[]>> {
+  return jatbe
+    .patch("notes/" + noteId, { newContent })
+    .then((res) => res.data);
 }
 
 export const notes = {

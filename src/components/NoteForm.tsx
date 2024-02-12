@@ -1,10 +1,10 @@
 import { api } from "@/api/backend";
-import { useJobApplicationsStore } from "@/hooks/useJobApplicationsStore";
 import { Note } from "@/types";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { useMutation } from "@tanstack/react-query";
 
 interface NoteFormProps {
   note: Note;
@@ -14,17 +14,15 @@ export default function NoteForm({ note }: NoteFormProps) {
   const initialNoteContent = note.content || "";
   const [noteContent, setNoteContent] = useState(initialNoteContent);
 
+  const { mutateAsync: editNote } = useMutation({
+    mutationFn: api.notes.editNote,
+    onSuccess: function () {
+      toast.success("Note updated");
+    },
+  });
+
   function handleSaveNote() {
-    api.notes
-      .editNote(note.id, noteContent)
-      .then((res) => {
-        console.log("res", res.data);
-        toast.success("Note updated");
-      })
-      .catch((err) => {
-        console.log("err", err);
-      })
-      .finally(() => {});
+    editNote({ noteId: note.id, newContent: noteContent });
   }
 
   return (
