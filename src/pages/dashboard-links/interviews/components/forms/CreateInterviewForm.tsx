@@ -14,6 +14,7 @@ import {
   defaultInterviewTypesOptions,
 } from "@/global/values";
 import { FolderSyncIcon } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formSchema = z.object({
   date: z.date(),
@@ -26,6 +27,25 @@ const formSchema = z.object({
 interface CreateInterviewFormProps {}
 export default function CreateInterviewForm({}: CreateInterviewFormProps) {
   const dialogControl = useDialogControl();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: createInterview } = useMutation({
+    mutationFn: api.interviews.createInterview,
+    onSuccess: () => {
+      dialogControl.closeModal("createInterview");
+      toast.success("Interview created");
+    },
+    onError: (error: any, variables, context) => {
+      toast.error(
+        "Error creating contact: " + error.response.data.error
+      );
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["interviews"],
+      });
+    },
+  });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,19 +59,15 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
 
   const onSubmit = (interviewDetails: z.infer<typeof formSchema>) => {
     console.log(interviewDetails);
-    //@ts-ignor
+
+    createInterview(interviewDetails);
     api.interviews
       .createInterview(interviewDetails)
       .then((response) => {
         console.log(response);
-        dialogControl.closeModal("createInterview");
-        toast.success("Interview created");
       })
       .catch((error) => {
         console.error("Error creating interview:", error);
-        toast.error(
-          "Error creating contact: " + error.response.data.error
-        );
       })
       .finally(() => {});
   };

@@ -6,7 +6,7 @@ async function getInterviews(): Promise<Interview[]> {
 }
 async function createInterview(
   interviewDetails: any
-): Promise<Interview[]> {
+): Promise<Interview> {
   return jatbe
     .post("interviews", {
       interviewDetails,
