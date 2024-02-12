@@ -23,6 +23,8 @@ export default function ArchivedApplications() {
     }
   }, [userId, isLoaded]);
 
+  //an array with user names
+
   const archivedApplications = jobApplications.filter((ja) => {
     if (ja.isArchived) {
       return true;

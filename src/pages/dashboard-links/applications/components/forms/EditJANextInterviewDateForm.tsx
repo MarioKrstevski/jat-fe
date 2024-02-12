@@ -48,9 +48,6 @@ export default function EditJANextInterviewDateForm() {
   const { mutateAsync: editJobApplication } = useMutation({
     mutationFn: api.applications.editJobApplication,
     onSuccess: (newData: JobApplication) => {
-      queryClient.invalidateQueries({
-        queryKey: ["jobApplications"],
-      });
       queryClient.setQueryData(
         ["jobApplications"],
         (oldData: JobApplication[]): JobApplication[] => {

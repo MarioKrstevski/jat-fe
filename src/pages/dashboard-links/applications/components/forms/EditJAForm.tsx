@@ -4,34 +4,33 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { api } from "@/api/backend";
-import { Button } from "@/components/ui/button";
-import {
-  defaultEmploymentType,
-  defaultStatusOptions,
-  defaultWorkModeOptions,
-} from "@/global/values";
-import { useDialogControl } from "@/hooks/useDialogControl";
-import { parseDateOrUndefined } from "@/lib/utils";
-import { JobApplication } from "@/types";
-import { ChevronsUpDownIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Separator } from "@/components/ui/separator";
 import CheckboxField from "@/components/form-fields/CheckboxField";
 import DateTimeField from "@/components/form-fields/DateTimeField";
 import NumberField from "@/components/form-fields/NumberField";
 import SelectField from "@/components/form-fields/SelectField";
 import TextField from "@/components/form-fields/TextField";
 import TextareaField from "@/components/form-fields/TextareaField";
-import ExistingTagsControl from "./ExistingTagsControl";
-import { useMutation } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Separator } from "@/components/ui/separator";
+import {
+  defaultEmploymentType,
+  defaultStatusOptions,
+  defaultWorkModeOptions,
+} from "@/global/values";
 import { queryClient } from "@/global/variables";
-import { AxiosError, AxiosResponse } from "axios";
+import { useDialogControl } from "@/hooks/useDialogControl";
+import { parseDateOrUndefined } from "@/lib/utils";
+import { JobApplication } from "@/types";
+import { useMutation } from "@tanstack/react-query";
+import { ChevronsUpDownIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import ExistingTagsControl from "./ExistingTagsControl";
 
 const formSchema = z.object({
   companyName: z
@@ -84,25 +83,40 @@ export default function EditJAForm() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutateAsync: editJobApplication } = useMutation({
-    // @ts-ignorea
-    mutationFn: api.applications.editJobApplication,
+    // @ts-ignora
+    mutationFn: (application: JobApplication) => {
+      console.log("applicationMutt", application);
+      return api.applications.editJobApplication({
+        application: application,
+        applicationId: jae.id, // Extract from application object
+        type: "allChange" /* Determine the EditTypes value here */,
+      });
+    },
     onSuccess: (editedApplication: JobApplication) => {
       console.log("editedApplication", editedApplication);
+
+      queryClient.fetchQuery({
+        queryKey: ["jobApplication", jae.id],
+      });
+
       form.reset();
       toast.success("Job application updated");
       dialogControl.closeModal("editJA");
     },
     onMutate: async function (updatedJA: JobApplication) {
       // const updatedJA = response.data;
+
       console.log("updatedJA", updatedJA);
 
       await queryClient.cancelQueries({
         queryKey: ["jobApplications"],
       });
 
-      const previousApplications = queryClient.getQueryData([
-        "jobApplications",
-      ]);
+      queryClient.invalidateQueries({
+        queryKey: ["jobApplication"],
+      });
+      const previousApplications: JobApplication[] =
+        queryClient.getQueryData(["jobApplications"])!;
 
       queryClient.setQueryData(
         ["jobApplications"],
@@ -116,7 +130,7 @@ export default function EditJAForm() {
         }
       );
 
-      return { previousApplications, updatedJA };
+      return { previousApplications, editedJa: updatedJA, updatedJA };
     },
     onError: (err: any, newTodo, context) => {
       queryClient.setQueryData(
@@ -226,15 +240,8 @@ export default function EditJAForm() {
     }
   }, [editModal.data.ja]);
 
-  function handleEditJobApplication(
-    application: any,
-    applicationId: string
-  ) {
-    editJobApplication({
-      application,
-      applicationId,
-      type: "allChange",
-    });
+  function handleEditJobApplication(application: any) {
+    editJobApplication(application);
   }
 
   function changeDateValuesFromUndefinedToNull(values: any) {
@@ -257,11 +264,8 @@ export default function EditJAForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // console.log("edit values", values);
     let valuesToSend = { ...values };
-
     valuesToSend = changeDateValuesFromUndefinedToNull(valuesToSend);
-
-    handleEditJobApplication(valuesToSend, jae.id);
-    // editModal.onClose();
+    handleEditJobApplication(valuesToSend);
   }
 
   //effect description
