@@ -65,7 +65,7 @@ export const sidenav = [
     icon: <SendIcon className="h-4 w-4" />,
   },
   {
-    section: "Other",
+    section: true,
     label: "Comming Soon",
   },
 
@@ -83,6 +83,15 @@ export const sidenav = [
     to: current,
     label: "Projects",
     icon: <UsersIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/documents",
+    label: "Documents",
+    icon: <FileIcon className="h-4 w-4" />,
+  },
+  {
+    section: true,
+    label: "Backlog",
   },
   {
     to: "/d/communities",
