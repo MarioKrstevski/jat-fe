@@ -52,17 +52,18 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
       });
     },
   });
+  console.log(newInterviewData);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: newInterviewData.date
+      date: newInterviewData?.date
         ? new Date(newInterviewData.date)
         : new Date(),
       type: "Technical",
       jobApplicationId: undefined,
       format: "Onsite",
-      duration: newInterviewData.duration ?? "45",
-      title: newInterviewData.title ?? "",
+      duration: newInterviewData?.duration ?? "45",
+      title: newInterviewData?.title ?? "",
       location: "",
     },
   });
@@ -71,6 +72,7 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
     defaultInterviewDurationOptions;
 
   if (
+    newInterviewData?.duration &&
     !defaultInterviewDurationOptions.includes(
       newInterviewData.duration
     )
