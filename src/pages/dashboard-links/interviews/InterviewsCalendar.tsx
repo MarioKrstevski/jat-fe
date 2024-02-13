@@ -8,6 +8,7 @@ import { useDialogControl } from "@/hooks/useDialogControl";
 
 // example to follow
 //https://stackblitz.com/github/fullcalendar/fullcalendar-examples/tree/main/react?file=src%2FDemoApp.jsx
+//https://fullcalendar.io/docs#toc
 
 function Event(eventInfo: any) {
   const interview = eventInfo.event.extendedProps.interview;
