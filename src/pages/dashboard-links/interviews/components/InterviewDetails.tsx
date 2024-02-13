@@ -38,6 +38,7 @@ export default function InterviewDetails({}: InterviewDetailsProps) {
       queryClient.invalidateQueries({
         queryKey: ["interviews"],
       });
+      dialogControl.closeModal("deleteAlert");
     },
   });
 
@@ -72,7 +73,11 @@ export default function InterviewDetails({}: InterviewDetailsProps) {
           <Button
             size="sm"
             variant="outline"
-            onClick={handleDeleteInterview}
+            onClick={() => {
+              dialogControl.openModal("deleteAlert", {
+                onConfirm: handleDeleteInterview,
+              });
+            }}
           >
             <TrashIcon className="text-red-500" size={14} />
           </Button>
@@ -104,7 +109,7 @@ export default function InterviewDetails({}: InterviewDetailsProps) {
           <div className="flex flex-row">
             <dt className="w-20 font-medium">Location</dt>
             <dd className="ml-auto">
-              {activeInterview.locaton || "N/A"}
+              {activeInterview.location || "N/A"}
             </dd>
           </div>
         </dl>

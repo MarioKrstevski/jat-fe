@@ -80,7 +80,7 @@ export interface Interview {
   jobApplicationId?: string;
   type: string;
   format: string;
-  locaton: string;
+  location: string;
   duration: string;
   title: string;
   noteId: string;
