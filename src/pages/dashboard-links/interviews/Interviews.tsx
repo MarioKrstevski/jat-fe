@@ -26,10 +26,13 @@ export default function Interviews() {
     <>
       <CreateInterviewSmartOverlay />
       <EditInterviewSmartOverlay />
+      {/* TODO: implement preview modal, and on edit button goes to edit smart overlay */}
+
       <Button onClick={handleCreateInterview} className="mt-2">
         Add interview
       </Button>
       <h2>You have {interviews.length} total events</h2>
+
       <InterviewsCalendar interviews={interviews} />
 
       {/* <InterviewList interviews={interviews} /> */}
