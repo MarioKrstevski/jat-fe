@@ -43,7 +43,7 @@ export default function ContactActionsDropdown({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button
             variant={"outline"}
             size={"icon"}
