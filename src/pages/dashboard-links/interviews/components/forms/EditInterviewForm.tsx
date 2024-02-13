@@ -16,6 +16,7 @@ import {
 } from "@/global/values";
 import { FolderSyncIcon } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import NoteForm from "@/components/NoteForm";
 
 const formSchema = z.object({
   date: z.date(),
@@ -201,7 +202,12 @@ export default function EditInterviewForm({}: EditInterviewFormProps) {
               }
             />
           </div>
+          {/* Note */}
 
+          <p className=" mb-2">Your notes:</p>
+          {activeInterview?.note && (
+            <NoteForm note={activeInterview.note} />
+          )}
           {/*Sync with your Google Calendar */}
 
           {/* Sync to Google (optional) */}

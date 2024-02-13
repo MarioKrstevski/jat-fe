@@ -28,17 +28,21 @@ export default function NoteForm({ note }: NoteFormProps) {
   return (
     <>
       <div>
-        <ReactQuill
-          theme="snow"
-          value={noteContent}
-          onChange={(stringifiedHTML) => {
-            setNoteContent(stringifiedHTML);
-          }}
-          className="bg-white"
-        />
+        <div className="h-52 pb-12">
+          <ReactQuill
+            theme="snow"
+            className=" "
+            style={{ height: "100%" }}
+            value={noteContent}
+            onChange={(stringifiedHTML) => {
+              setNoteContent(stringifiedHTML);
+            }}
+          />
+        </div>
         <Button
           className="px-3 py-1.5 my-1"
           size={"sm"}
+          type="button"
           onClick={handleSaveNote}
         >
           Save Note
