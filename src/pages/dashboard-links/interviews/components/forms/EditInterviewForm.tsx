@@ -65,6 +65,19 @@ export default function EditInterviewForm({}: EditInterviewFormProps) {
     },
   });
 
+  const localDefaultInterviewDurationOptions =
+    defaultInterviewDurationOptions;
+
+  if (
+    !defaultInterviewDurationOptions.includes(
+      activeInterview.duration
+    )
+  ) {
+    localDefaultInterviewDurationOptions.push(
+      activeInterview.duration
+    );
+  }
+
   const onSubmit = (interviewDetails: z.infer<typeof formSchema>) => {
     editInterview({
       interviewDetails,
@@ -112,8 +125,8 @@ export default function EditInterviewForm({}: EditInterviewFormProps) {
             <SelectField
               form={form}
               fieldName="duration"
-              label="Estimation of duration"
-              options={defaultInterviewDurationOptions}
+              label="Duration in minutes"
+              options={localDefaultInterviewDurationOptions}
             />
           </div>
 

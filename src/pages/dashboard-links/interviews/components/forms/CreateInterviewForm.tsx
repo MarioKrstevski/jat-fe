@@ -32,6 +32,9 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
   const dialogControl = useDialogControl();
   const queryClient = useQueryClient();
 
+  const newInterviewData =
+    dialogControl.modals.createInterview?.data?.newInterviewData;
+
   const { mutateAsync: createInterview } = useMutation({
     mutationFn: api.interviews.createInterview,
     onSuccess: () => {
@@ -52,15 +55,30 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: new Date(),
+      date: newInterviewData.date
+        ? new Date(newInterviewData.date)
+        : new Date(),
       type: "Technical",
       jobApplicationId: undefined,
       format: "Onsite",
-      duration: "45",
-      title: "",
+      duration: newInterviewData.duration ?? "45",
+      title: newInterviewData.title ?? "",
       location: "",
     },
   });
+
+  const localDefaultInterviewDurationOptions =
+    defaultInterviewDurationOptions;
+
+  if (
+    !defaultInterviewDurationOptions.includes(
+      newInterviewData.duration
+    )
+  ) {
+    localDefaultInterviewDurationOptions.push(
+      newInterviewData.duration
+    );
+  }
 
   const onSubmit = (interviewDetails: z.infer<typeof formSchema>) => {
     createInterview(interviewDetails);
@@ -106,8 +124,8 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
             <SelectField
               form={form}
               fieldName="duration"
-              label="Estimation of duration"
-              options={defaultInterviewDurationOptions}
+              label="Duration in minutes"
+              options={localDefaultInterviewDurationOptions}
             />
           </div>
 

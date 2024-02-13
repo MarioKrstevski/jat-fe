@@ -60,7 +60,14 @@ export default function InterviewsCalendar({
       // display: "auto",
     };
   });
-
+  const calculateTimeDifference = (
+    start: Date,
+    end: Date
+  ): string => {
+    const difference = Math.abs(end.getTime() - start.getTime());
+    const minutes = Math.floor(difference / 60000);
+    return `${minutes}`;
+  };
   const handleDateSelect = (selectInfo: any) => {
     let title = prompt("Please enter a new title for your interview");
     let calendarApi = selectInfo.view.calendar;
@@ -69,13 +76,25 @@ export default function InterviewsCalendar({
 
     if (title) {
       // this puts it on the screen
-      calendarApi.addEvent({
-        id: "newId" + Math.random(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay,
+
+      dialogControl.openModal("createInterview", {
+        newInterviewData: {
+          date: selectInfo.startStr,
+          title,
+          duration: calculateTimeDifference(
+            selectInfo.start,
+            selectInfo.end
+          ),
+        },
       });
+
+      // calendarApi.addEvent({
+      //   id: "newId" + Math.random(),
+      //   title,
+      //   start: selectInfo.startStr,
+      //   end: selectInfo.endStr,
+      //   allDay: selectInfo.allDay,
+      // });
 
       // handle create Interview here
     }
