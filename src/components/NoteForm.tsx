@@ -31,11 +31,10 @@ export default function NoteForm({ note }: NoteFormProps) {
   return (
     <>
       <div>
-        <div className="h-52 pb-12">
+        <div className="h-52">
           <ReactQuill
             theme="snow"
-            className=" "
-            style={{ height: "100%" }}
+            className="grid"
             value={noteContent}
             onChange={(stringifiedHTML) => {
               setNoteContent(stringifiedHTML);

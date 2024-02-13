@@ -14,12 +14,13 @@ export default function PreviewInterviewModal() {
 
   return (
     <Modal
-      title="Interview Preview"
+      title="Interview Details"
       description={``}
       isOpen={isOpen}
       onClose={() => {
         dialogControl.closeModal("previewInterview");
       }}
+      className="w-[88%] sm:w-full overflow-y-auto max-h-[90%] sm:max-h-[90%]"
     >
       <InterviewDetails />
     </Modal>
