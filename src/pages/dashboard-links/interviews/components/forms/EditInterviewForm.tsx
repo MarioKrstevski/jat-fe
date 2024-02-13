@@ -44,7 +44,7 @@ export default function EditInterviewForm({}: EditInterviewFormProps) {
     },
     onError: (error: any, variables, context) => {
       toast.error(
-        "Error creating contact: " + error.response.data.error
+        "Error updating interview: " + error.response.data.error
       );
     },
     onSettled: () => {
@@ -215,7 +215,11 @@ export default function EditInterviewForm({}: EditInterviewFormProps) {
             <p className="text-sm text-gray-500">
               Sync with your Google Calendar
             </p>
-            <Button size={"sm"} onClick={() => alert("Synced")}>
+            <Button
+              type="button"
+              size={"sm"}
+              onClick={() => alert("Synced")}
+            >
               <FolderSyncIcon className="mr-2" size={16} /> Sync
             </Button>
           </div>

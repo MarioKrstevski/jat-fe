@@ -28,8 +28,17 @@ async function editInterview({
     .then((response) => response.data);
 }
 
+async function deleteInterview(
+  interviewId: string
+): Promise<Interview> {
+  return jatbe
+    .delete("interviews/" + interviewId)
+    .then((response) => response.data);
+}
+
 export const interviews = {
   getInterviews,
   createInterview,
   editInterview,
+  deleteInterview,
 };

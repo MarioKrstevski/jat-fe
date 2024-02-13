@@ -15,10 +15,7 @@ function Event(eventInfo: any) {
 
   return (
     <>
-      <div
-        className="flex text-xs leading-3 flex-col gap-1 py-1 "
-        onClick={() => alert(eventInfo.timeText)}
-      >
+      <div className="flex text-xs leading-3 flex-col gap-1 py-1 ">
         <b>{eventInfo.timeText}</b>
         <i>{eventInfo.event.title}</i>
         <i>{eventInfo.event.company}</i>
@@ -101,18 +98,12 @@ export default function InterviewsCalendar({
     }
   };
   const handleEventClick = (clickInfo: any) => {
-    if (
-      confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
-    ) {
-      dialogControl.openModal("editInterview", {
-        activeInterview: clickInfo.event.extendedProps.interview,
-      });
-      // console.log(clickInfo.event.extendedProps.interview);
+    dialogControl.openModal("previewInterview", {
+      activeInterview: clickInfo.event.extendedProps.interview,
+    });
+    // console.log(clickInfo.event.extendedProps.interview);
 
-      // clickInfo.event.remove();
-    }
+    // clickInfo.event.remove();
   };
 
   const handleEvents = (events: any) => {

@@ -43,7 +43,7 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
     },
     onError: (error: any, variables, context) => {
       toast.error(
-        "Error creating contact: " + error.response.data.error
+        "Error creating interview: " + error.response.data.error
       );
     },
     onSettled: () => {
@@ -208,7 +208,11 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
             <p className="text-sm text-gray-500">
               Sync with your Google Calendar
             </p>
-            <Button size={"sm"} onClick={() => alert("Synced")}>
+            <Button
+              size={"sm"}
+              type="button"
+              onClick={() => alert("Synced")}
+            >
               <FolderSyncIcon className="mr-2" size={16} /> Sync
             </Button>
           </div>

@@ -9,6 +9,7 @@ import CreateInterviewSmartOverlay from "./components/smartoverlays/CreateInterv
 
 import InterviewsCalendar from "./InterviewsCalendar";
 import EditInterviewSmartOverlay from "./components/smartoverlays/EditInterviewSmartOverlay";
+import PreviewInterviewModal from "./components/modals/PreviewInterviewModal";
 
 export default function Interviews() {
   const { data: interviews } = useQuery({
@@ -26,6 +27,7 @@ export default function Interviews() {
     <>
       <CreateInterviewSmartOverlay />
       <EditInterviewSmartOverlay />
+      <PreviewInterviewModal />
       {/* TODO: implement preview modal, and on edit button goes to edit smart overlay */}
 
       <Button onClick={handleCreateInterview} className="mt-2">
