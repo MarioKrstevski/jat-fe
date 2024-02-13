@@ -55,6 +55,15 @@ export const defaultInterviewFormatOptions = [
   "Other",
 ];
 
+export const defaultInterviewDurationOptions = [
+  "30",
+  "45",
+  "60",
+  "90",
+  "120",
+  "More than 120 minutes",
+];
+
 export const defaultWorkModeOptions = [
   "In-Office",
   "Remote",

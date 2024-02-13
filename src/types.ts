@@ -80,11 +80,13 @@ export interface Interview {
   jobApplicationId?: string;
   type: string;
   format: string;
+  locaton: string;
+  duration: string;
+  title: string;
   noteId: string;
   note: Note;
   createdAt: Date;
   updatedAt: Date;
-  contacts: Contact[];
 }
 export interface Contact {
   id: string;

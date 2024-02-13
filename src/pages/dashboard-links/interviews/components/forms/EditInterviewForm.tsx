@@ -27,16 +27,19 @@ const formSchema = z.object({
   location: z.string(),
 });
 
-interface CreateInterviewFormProps {}
-export default function CreateInterviewForm({}: CreateInterviewFormProps) {
+interface EditInterviewFormProps {}
+export default function EditInterviewForm({}: EditInterviewFormProps) {
   const dialogControl = useDialogControl();
   const queryClient = useQueryClient();
 
-  const { mutateAsync: createInterview } = useMutation({
-    mutationFn: api.interviews.createInterview,
+  const activeInterview =
+    dialogControl.modals.editInterview?.data?.activeInterview;
+
+  const { mutateAsync: editInterview } = useMutation({
+    mutationFn: api.interviews.editInterview,
     onSuccess: () => {
-      dialogControl.closeModal("createInterview");
-      toast.success("Interview created");
+      dialogControl.closeModal("editInterview");
+      toast.success("Interview updated");
     },
     onError: (error: any, variables, context) => {
       toast.error(
@@ -52,23 +55,26 @@ export default function CreateInterviewForm({}: CreateInterviewFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: new Date(),
-      type: "Technical",
-      jobApplicationId: undefined,
-      format: "Onsite",
-      duration: "45",
-      title: "",
-      location: "",
+      date: new Date(activeInterview?.date),
+      type: activeInterview?.type,
+      jobApplicationId: activeInterview?.jobApplication?.id,
+      format: activeInterview?.format,
+      duration: activeInterview?.duration,
+      title: activeInterview?.title,
+      location: activeInterview?.location,
     },
   });
 
   const onSubmit = (interviewDetails: z.infer<typeof formSchema>) => {
-    createInterview(interviewDetails);
+    editInterview({
+      interviewDetails,
+      interviewId: activeInterview?.id,
+    });
   };
 
   // Add a new function here
   function handleCancel() {
-    dialogControl.closeModal("createInterview");
+    dialogControl.closeModal("editInterview");
   }
 
   return (

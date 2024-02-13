@@ -14,7 +14,22 @@ async function createInterview(
     .then((response) => response.data);
 }
 
+async function editInterview({
+  interviewDetails,
+  interviewId,
+}: {
+  interviewDetails: any;
+  interviewId: string;
+}): Promise<Interview> {
+  return jatbe
+    .patch("interviews/" + interviewId, {
+      interviewDetails,
+    })
+    .then((response) => response.data);
+}
+
 export const interviews = {
   getInterviews,
   createInterview,
+  editInterview,
 };

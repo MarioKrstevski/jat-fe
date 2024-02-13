@@ -12,7 +12,7 @@ export default function CreateInterviewSmartOverlay({}) {
   return (
     <SmartOverlay
       title="Create an interview"
-      description={`You will get a reminder for this interview.`}
+      description={`We highly suggest to create a job application first. So that you can link it to the interview.`}
       isOpen={isOpen}
       onClose={onClose}
       //   onConfirm={onConfirm}
