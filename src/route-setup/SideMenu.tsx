@@ -174,8 +174,8 @@ export default function SideMenu() {
       <aside
         ref={sideMenuRef}
         className={cn(
-          " top-0 flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
-          isSmallScreen && "fixed left-0 z-30",
+          "flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
+          isSmallScreen ? "fixed left-0 z-30" : "sticky left-0 top-0",
           smState === "open" && "w-48",
           // smState === "minimized" && "w-10",
           smState === "hidden" && "w-0 overflow-hidden"
