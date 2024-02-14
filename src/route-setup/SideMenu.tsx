@@ -152,7 +152,7 @@ export default function SideMenu() {
       <div
         ref={sideMenuControlButtonRef}
         className={cn(
-          "absolute top-4 left-0 transition-all duration-300",
+          "fixed top-4 left-0 z-30 transition-all duration-300",
           smState === "open" && "left-48",
           smState === "hidden" && "left-0"
         )}
@@ -175,7 +175,7 @@ export default function SideMenu() {
         ref={sideMenuRef}
         className={cn(
           " top-0 flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
-          isSmallScreen && "absolute left-0 z-30",
+          isSmallScreen && "fixed left-0 z-30",
           smState === "open" && "w-48",
           // smState === "minimized" && "w-10",
           smState === "hidden" && "w-0 overflow-hidden"
