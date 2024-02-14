@@ -18,3 +18,4 @@ if (mode === "development") {
 export { backendURL, frontendURL };
 
 export const urlRegex = /^(?:https?:\/\/)?(?:www\.)?[^\s.]+\.[^\s]+$/;
+export const smallScreenWidth = 768;

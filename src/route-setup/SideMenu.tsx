@@ -19,6 +19,9 @@ import { Button } from "@/components/ui/button";
 import { useSideMenuControl } from "@/hooks/useSideMenuControl";
 import { sidenav } from "./routes-nav-links";
 import { Separator } from "@/components/ui/separator";
+import { useEffect, useRef } from "react";
+import { useWindowSize } from "usehooks-ts";
+import { smallScreenWidth } from "@/global/variables";
 interface SideMenuLinkWithoutChildrenProps {
   to?: string;
   icon: React.ReactNode;
@@ -99,8 +102,8 @@ function SideMenuLink({
       <span className="transition-none">{icon}</span>
       <span
         className={cn(
-          "overflow-x-hidden whitespace-nowrap",
-          smState === "minimized" ? "w-0 hidden" : "w-full block"
+          "overflow-x-hidden whitespace-nowrap"
+          // smState === "minimized" ? "w-0 hidden" : "w-full block"
         )}
       >
         {/* Add a hashtag to know its not defined  */}
@@ -113,91 +116,130 @@ function SideMenuLink({
 
 export default function SideMenu() {
   const sideMenuControl = useSideMenuControl();
+  const sideMenuRef = useRef<HTMLElement>(null);
+  const sideMenuControlButtonRef = useRef<HTMLDivElement>(null);
+  const { width = 0, height = 0 } = useWindowSize();
   const smState = sideMenuControl.state;
+  useEffect(() => {
+    function handleOutsideClick(e: any) {
+      if (
+        sideMenuRef.current &&
+        !sideMenuRef.current.contains(e.target) &&
+        sideMenuControlButtonRef.current &&
+        !sideMenuControlButtonRef.current.contains(e.target) &&
+        window.innerWidth <= 768
+      ) {
+        sideMenuControl.makeSideMenu("hidden");
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+  const isSmallScreen = width <= smallScreenWidth;
   function handleToggleSideMenu() {
     if (smState === "open") {
-      sideMenuControl.makeSideMenu("minimized");
+      sideMenuControl.makeSideMenu("hidden");
     }
 
-    if (smState === "minimized") {
+    if (smState === "hidden") {
       sideMenuControl.makeSideMenu("open");
     }
   }
   return (
-    <aside
-      className={cn(
-        "sticky top-0 flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
-        smState === "open" && "w-48",
-        smState === "minimized" && "w-10",
-        smState === "hidden" && "hidden"
-      )}
-    >
+    <>
       <div
+        ref={sideMenuControlButtonRef}
         className={cn(
-          "flex items-center justify-between h-16 border-b border-b-gray-400 dark:border-gray-700 ",
-          smState === "minimized" && "justify-center"
+          "absolute top-4 left-0 transition-all duration-300",
+          smState === "open" && "left-48",
+          smState === "hidden" && "left-0"
         )}
       >
-        {smState === "open" && (
-          <Link to={"/"} className="flex-1 flex justify-center">
-            <MountainIcon className="h-6 w-6" />
-            <span className="sr-only lg:hidden">Acme Inc</span>
-          </Link>
+        {isSmallScreen && (
+          <Button
+            size={"icon"}
+            className="p-0 ml-1 w-8 h-8 mr-1 rounded-full"
+            onClick={handleToggleSideMenu}
+          >
+            {smState === "hidden" ? (
+              <ChevronRightIcon size={15} className="h-4 w-4" />
+            ) : (
+              <ChevronLeftIcon size={15} className="h-4 w-4" />
+            )}
+          </Button>
         )}
-        <Button
-          size={"icon"}
-          className="p-0 w-8 h-8 mr-1 rounded-full"
-          onClick={handleToggleSideMenu}
-        >
-          {smState === "open" ? (
-            <ChevronLeftIcon size={15} className="h-4 w-4" />
-          ) : (
-            <ChevronRightIcon size={15} className="h-4 w-4" />
+      </div>
+      <aside
+        ref={sideMenuRef}
+        className={cn(
+          " top-0 flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
+          isSmallScreen && "absolute left-0 z-30",
+          smState === "open" && "w-48",
+          // smState === "minimized" && "w-10",
+          smState === "hidden" && "w-0 overflow-hidden"
+        )}
+      >
+        <div
+          className={cn(
+            "flex items-center justify-between h-16 border-b border-b-gray-400 dark:border-gray-700 "
+            // smState === "minimized" && "justify-center"
           )}
-        </Button>
-      </div>
-      <nav
-        className={cn(
-          "flex flex-col gap-1 px-2  py-1 overflow-y-auto ",
-          smState === "minimized" && "px-1"
-        )}
-      >
-        {sidenav.map((item) => {
-          if (item.section) {
-            return (
-              <p key={item.label} className="pt-5 pl-2 text-sm">
-                {item.label}
-              </p>
-            );
-          }
+        >
+          {smState === "open" && (
+            <Link to={"/"} className="flex-1 flex justify-center">
+              <MountainIcon className="h-6 w-6" />
+              <span className="sr-only lg:hidden">Acme Inc</span>
+            </Link>
+          )}
+        </div>
+        <nav
+          className={cn(
+            "flex flex-col gap-1 px-2  py-1 overflow-y-auto "
+            // smState === "minimized" && "px-1"
+          )}
+        >
+          {sidenav.map((item) => {
+            if (item.section) {
+              return (
+                <p
+                  key={item.label}
+                  className="pt-5 pl-2 text-sm whitespace-nowrap"
+                >
+                  {item.label}
+                </p>
+              );
+            }
 
-          return (
-            <SideMenuLink
-              key={item.label}
-              to={item.to}
-              label={item.label}
-              icon={item.icon}
-              children={item.children}
-            />
-          );
-        })}
-      </nav>
-      <div
-        className={cn(
-          "flex flex-col items-start justify-center  mt-auto py-1 border-t-2 border-t-gray-400 dark:border-gray-700"
-        )}
-      >
-        <SideMenuLink
-          // to={current}
-          icon={<SettingsIcon className="h-4 w-4 ml-2" />}
-          label="Settings"
-        />
-        <SideMenuLink
-          to="/d/support"
-          icon={<HelpCircleIcon className="h-4 w-4 ml-2" />}
-          label="Support"
-        />
-      </div>
-    </aside>
+            return (
+              <SideMenuLink
+                key={item.label}
+                to={item.to}
+                label={item.label}
+                icon={item.icon}
+                children={item.children}
+              />
+            );
+          })}
+        </nav>
+        <div
+          className={cn(
+            "flex flex-col items-start justify-center  mt-auto py-1 border-t-2 border-t-gray-400 dark:border-gray-700"
+          )}
+        >
+          <SideMenuLink
+            // to={current}
+            icon={<SettingsIcon className="h-4 w-4 ml-2" />}
+            label="Settings"
+          />
+          <SideMenuLink
+            to="/d/support"
+            icon={<HelpCircleIcon className="h-4 w-4 ml-2" />}
+            label="Support"
+          />
+        </div>
+      </aside>
+    </>
   );
 }

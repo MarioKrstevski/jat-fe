@@ -9,10 +9,28 @@ import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SideMenu from "../SideMenu";
+import { useSideMenuControl } from "@/hooks/useSideMenuControl";
+import { smallScreenWidth } from "@/global/variables";
 
 export default function DashboardLayout() {
   const { userId, isLoaded } = useAuth();
   const navigate = useNavigate();
+  const sideMenuControl = useSideMenuControl();
+
+  useEffect(() => {
+    const handleResize = () => {
+      // logic to handle screen width change
+      if (window.innerWidth > smallScreenWidth) {
+        sideMenuControl.makeSideMenu("open");
+      } else {
+        sideMenuControl.makeSideMenu("hidden");
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (isLoaded && !userId) {
