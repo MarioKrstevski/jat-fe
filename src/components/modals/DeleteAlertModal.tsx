@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "../ui/custom/modal";
 import { Button } from "../ui/button";
 import { useDialogControl } from "@/hooks/useDialogControl";
+import ControllableAlertDialog from "../ui/custom/controllable-alert-dialog";
 
 export default function DeleteAlertModal() {
   const dialogControl = useDialogControl();
@@ -18,7 +19,7 @@ export default function DeleteAlertModal() {
     return null;
   }
   return (
-    <Modal
+    <ControllableAlertDialog
       title="Are you sure?"
       description="This action cannot be undone"
       isOpen={isOpen}
@@ -41,6 +42,6 @@ export default function DeleteAlertModal() {
           Continue
         </Button>
       </div>
-    </Modal>
+    </ControllableAlertDialog>
   );
 }
