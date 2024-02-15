@@ -3,6 +3,7 @@ import {
   ArchiveIcon,
   ArchiveXIcon,
   FileIcon,
+  HelpCircleIcon,
   HomeIcon,
   LayoutDashboardIcon,
   LineChartIcon,
@@ -10,6 +11,7 @@ import {
   PenIcon,
   SaveAllIcon,
   SendIcon,
+  SettingsIcon,
   Users2Icon,
   UsersIcon,
 } from "lucide-react";
@@ -127,5 +129,17 @@ export const sidenav = [
     to: current,
     label: "Mentors",
     icon: <PackageIcon className="h-4 w-4" />,
+  },
+];
+export const sideNavBottomLinks = [
+  {
+    to: "/d/settings",
+    label: "Settings",
+    icon: <SettingsIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/support",
+    label: "Support",
+    icon: <HelpCircleIcon className="h-4 w-4" />,
   },
 ];

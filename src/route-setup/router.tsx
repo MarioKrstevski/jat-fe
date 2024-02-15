@@ -30,6 +30,9 @@ import CompanyInfoPage from "@/pages/dashboard-links/companies/CompanyInfoPage";
 import CompaniesLayout from "./layouts/CompaniesLayout";
 import SavedCompanies from "@/pages/dashboard-links/companies/SavedCompanies";
 import Documents from "@/pages/dashboard-links/documents/Documents";
+import Settings from "@/pages/dashboard-links/settings/Settings";
+import SettingsLayout from "./layouts/SettingsLayout";
+import Profile from "@/pages/dashboard-links/profile/Profile";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -163,6 +166,20 @@ export const router = createBrowserRouter([
           {
             element: <JobBoard />,
             path: "job-board",
+          },
+          {
+            element: <SettingsLayout />,
+            path: "settings",
+            children: [
+              {
+                element: <Settings />,
+                index: true,
+              },
+              {
+                element: <Profile />,
+                path: "profile",
+              },
+            ],
           },
           {
             element: <Support />,

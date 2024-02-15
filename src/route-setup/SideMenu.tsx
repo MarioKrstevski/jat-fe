@@ -17,7 +17,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useSideMenuControl } from "@/hooks/useSideMenuControl";
-import { sidenav } from "./routes-nav-links";
+import { sideNavBottomLinks, sidenav } from "./routes-nav-links";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useRef } from "react";
 import { useWindowSize } from "usehooks-ts";
@@ -225,19 +225,19 @@ export default function SideMenu() {
         </nav>
         <div
           className={cn(
-            "flex flex-col items-start justify-center  mt-auto py-1 border-t-2 border-t-gray-400 dark:border-gray-700"
+            "flex flex-col items-start justify-center  mt-auto py-1 px-2 border-t-2 border-t-gray-400 dark:border-gray-700"
           )}
         >
-          <SideMenuLink
-            // to={current}
-            icon={<SettingsIcon className="h-4 w-4 ml-2" />}
-            label="Settings"
-          />
-          <SideMenuLink
-            to="/d/support"
-            icon={<HelpCircleIcon className="h-4 w-4 ml-2" />}
-            label="Support"
-          />
+          {sideNavBottomLinks.map((item) => {
+            return (
+              <SideMenuLink
+                key={item.label}
+                to={item.to}
+                label={item.label}
+                icon={item.icon}
+              />
+            );
+          })}
         </div>
       </aside>
     </>
