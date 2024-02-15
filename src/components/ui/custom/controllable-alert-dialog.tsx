@@ -39,7 +39,6 @@ export default function ControllableAlertDialog({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onChange}>
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
       <AlertDialogContent
         className={cn(
           "overflow-y-auto max-h-[95dvh] transition-all duration-700",
