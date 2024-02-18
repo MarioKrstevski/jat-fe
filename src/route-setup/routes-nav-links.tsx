@@ -12,6 +12,7 @@ import {
   SaveAllIcon,
   SendIcon,
   SettingsIcon,
+  UserIcon,
   Users2Icon,
   UsersIcon,
 } from "lucide-react";
@@ -136,6 +137,11 @@ export const sideNavBottomLinks = [
     to: "/d/settings",
     label: "Settings",
     icon: <SettingsIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/profile",
+    label: "Profile",
+    icon: <UserIcon className="h-4 w-4" />,
   },
   {
     to: "/d/support",

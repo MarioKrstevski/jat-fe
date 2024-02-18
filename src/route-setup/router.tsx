@@ -33,6 +33,15 @@ import Documents from "@/pages/dashboard-links/documents/Documents";
 import Settings from "@/pages/dashboard-links/settings/Settings";
 import SettingsLayout from "./layouts/SettingsLayout";
 import Profile from "@/pages/dashboard-links/profile/Profile";
+import Account from "@/pages/dashboard-links/settings/Account";
+import Billing from "@/pages/dashboard-links/settings/Billing";
+import Integrations from "@/pages/dashboard-links/settings/Integrations";
+import More from "@/pages/dashboard-links/settings/More";
+import Preferences from "@/pages/dashboard-links/settings/Preferences";
+import Referrals from "@/pages/dashboard-links/settings/Referrals";
+import Security from "@/pages/dashboard-links/settings/Security";
+import Subscriptions from "@/pages/dashboard-links/settings/Subscriptions";
+import Notifications from "@/pages/dashboard-links/settings/Notifications";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -168,6 +177,10 @@ export const router = createBrowserRouter([
             path: "job-board",
           },
           {
+            element: <Profile />,
+            path: "Profile",
+          },
+          {
             element: <SettingsLayout />,
             path: "settings",
             children: [
@@ -176,8 +189,40 @@ export const router = createBrowserRouter([
                 index: true,
               },
               {
-                element: <Profile />,
-                path: "profile",
+                element: <Account />,
+                path: "account",
+              },
+              {
+                element: <Billing />,
+                path: "billing",
+              },
+              {
+                element: <Integrations />,
+                path: "integrations",
+              },
+              {
+                element: <More />,
+                path: "more",
+              },
+              {
+                element: <Notifications />,
+                path: "notifications",
+              },
+              {
+                element: <Preferences />,
+                path: "preferences",
+              },
+              {
+                element: <Referrals />,
+                path: "referrals",
+              },
+              {
+                element: <Security />,
+                path: "security",
+              },
+              {
+                element: <Subscriptions />,
+                path: "subscriptions",
               },
             ],
           },

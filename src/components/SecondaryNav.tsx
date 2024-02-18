@@ -24,7 +24,7 @@ interface SecondaryNavProps {
 }
 export default function SecondaryNav({ links }: SecondaryNavProps) {
   return (
-    <nav className="flex gap-2 px-3 py-2 mb-2 mt-1 bg-white-50 ">
+    <nav className="flex flex-wrap gap-2 px-3 py-2 mb-2 mt-1 bg-white-50 ">
       {links.map((link) => {
         return (
           <SecondaryNavLink

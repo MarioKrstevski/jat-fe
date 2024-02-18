@@ -9,8 +9,36 @@ const secondaryNavLinks = [
     label: "Settings",
   },
   {
-    to: "/d/settings/profile",
-    label: "Profile",
+    to: "/d/settings/account",
+    label: "My Account",
+  },
+  {
+    to: "/d/settings/billing",
+    label: "Billing",
+  },
+  {
+    to: "/d/settings/integrations",
+    label: "Integrations",
+  },
+  {
+    to: "/d/settings/preferences",
+    label: "Preferences",
+  },
+  {
+    to: "/d/settings/referrals",
+    label: "Referrals",
+  },
+  {
+    to: "/d/settings/security",
+    label: "Security",
+  },
+  {
+    to: "/d/settings/subscriptions",
+    label: "Subscriptions",
+  },
+  {
+    to: "/d/settings/more",
+    label: "More",
   },
 ];
 

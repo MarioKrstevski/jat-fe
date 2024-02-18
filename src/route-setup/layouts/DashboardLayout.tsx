@@ -8,7 +8,7 @@ import SmartOverlayProvider from "@/providers/SmartOverlayProvider";
 import { useAuth } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import SideMenu from "../SideMenu";
+import SideMenu from "../../components/layout/side-menu/SideMenu";
 import { useSideMenuControl } from "@/hooks/useSideMenuControl";
 import { smallScreenWidth } from "@/global/variables";
 
