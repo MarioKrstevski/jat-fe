@@ -40,6 +40,8 @@ export const defaultStatusOptions = [
   "Archived",
 ];
 
+// export const defaultDocument
+
 export const defaultInterviewTypesOptions = [
   "Technical",
   "HR",

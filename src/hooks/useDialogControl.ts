@@ -1,7 +1,6 @@
 import { create } from "zustand";
 const validModalNames = new Set([
   "deleteAlert",
-
   "createJA",
   "editJA",
   "editStatus",
@@ -9,15 +8,24 @@ const validModalNames = new Set([
   "editJobDescription",
   "saveCustomCompany",
   "editSavedCustomCompany",
-
   "requestCompany",
-
   "createInterview",
   "editInterview",
   "previewInterview",
   "createContact",
   "editContact",
+
+  "createDocument",
+  "editDocument",
+
+  "createTemplate",
+  "editTemplate",
+
+  "createMyResource",
+  "editMyResource",
 ]);
+
+// type ModalName = keyof typeof validModalNames;
 type ModalName =
   | "createJA"
   | "editJA"
@@ -32,7 +40,13 @@ type ModalName =
   | "createInterview"
   | "deleteAlert"
   | "editInterview"
-  | "previewInterview";
+  | "previewInterview"
+  | "createDocument"
+  | "editDocument"
+  | "createTemplate"
+  | "editTemplate"
+  | "createMyResource"
+  | "editMyResource";
 
 type ModalData = {
   value?: any;
