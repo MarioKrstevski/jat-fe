@@ -43,6 +43,7 @@ import Security from "@/pages/dashboard-links/settings/Security";
 import Subscriptions from "@/pages/dashboard-links/settings/Subscriptions";
 import Notifications from "@/pages/dashboard-links/settings/Notifications";
 import Templates from "@/pages/dashboard-links/templates/Templates";
+import MyResources from "@/pages/dashboard-links/my-resources/MyResources";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -163,6 +164,10 @@ export const router = createBrowserRouter([
           {
             element: <Templates />,
             path: "templates",
+          },
+          {
+            element: <MyResources />,
+            path: "my-resources",
           },
           {
             element: <Linkedin />,

@@ -4,6 +4,7 @@ import {
   ArchiveXIcon,
   BookTemplateIcon,
   FileIcon,
+  FolderHeartIcon,
   HelpCircleIcon,
   HomeIcon,
   LayoutDashboardIcon,
@@ -72,6 +73,11 @@ export const sidenav = [
     to: "/d/documents",
     label: "Documents",
     icon: <FileIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/my-resources",
+    label: "My Resources",
+    icon: <FolderHeartIcon className="h-4 w-4" />,
   },
   {
     to: "/d/templates",
