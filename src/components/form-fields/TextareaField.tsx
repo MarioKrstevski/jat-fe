@@ -10,11 +10,13 @@ interface TextareaProps {
   form: any;
   fieldName: string;
   label: string;
+  rows?: number;
 }
 export default function TextareaField({
   form,
   fieldName,
   label,
+  rows = 3,
 }: TextareaProps) {
   return (
     <FormField
@@ -25,7 +27,7 @@ export default function TextareaField({
           <FormItem className="flex-1">
             <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Textarea {...field} />
+              <Textarea {...field} rows={rows} />
             </FormControl>
           </FormItem>
         );
