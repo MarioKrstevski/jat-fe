@@ -152,6 +152,42 @@ export interface Company {
   updatedAt: Date;
 }
 
+export interface Document {
+  id: string;
+  userId: string;
+  label: string;
+  type: string;
+  extension: string;
+  applications: JobApplication[]; // Assuming a defined type for JobApplication
+  link: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isFavorite: boolean;
+}
+
+export interface Template {
+  id: string;
+  userId: string;
+  name: string;
+  type: string;
+  content: string;
+  isFavorite: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MyResource {
+  id: string;
+  userId: string;
+  name: string;
+  link: string;
+  image: string; // Can be URL or icon name
+  category: string;
+  isFavorite: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface JobApplicationTodo {
   id: string;
   text: string;
