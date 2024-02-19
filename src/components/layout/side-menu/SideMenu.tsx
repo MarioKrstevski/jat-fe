@@ -14,7 +14,7 @@ import { useWindowSize } from "usehooks-ts";
 import {
   sideNavBottomLinks,
   sidenav,
-} from "../../../route-setup/routes-nav-links";
+} from "../../../route-setup/sidenav-links";
 import SideMenuLink from "./components/SideMenuLink";
 
 export default function SideMenu() {

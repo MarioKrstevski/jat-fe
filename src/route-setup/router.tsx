@@ -42,6 +42,7 @@ import Referrals from "@/pages/dashboard-links/settings/Referrals";
 import Security from "@/pages/dashboard-links/settings/Security";
 import Subscriptions from "@/pages/dashboard-links/settings/Subscriptions";
 import Notifications from "@/pages/dashboard-links/settings/Notifications";
+import Templates from "@/pages/dashboard-links/templates/Templates";
 
 function HandleRedirect({ to = "/" }: { to: string }) {
   return <Navigate to={to} />;
@@ -158,6 +159,10 @@ export const router = createBrowserRouter([
           {
             element: <Documents />,
             path: "documents",
+          },
+          {
+            element: <Templates />,
+            path: "templates",
           },
           {
             element: <Linkedin />,

@@ -2,6 +2,7 @@ import { PersonIcon } from "@radix-ui/react-icons";
 import {
   ArchiveIcon,
   ArchiveXIcon,
+  BookTemplateIcon,
   FileIcon,
   HelpCircleIcon,
   HomeIcon,
@@ -68,6 +69,16 @@ export const sidenav = [
     icon: <SendIcon className="h-4 w-4" />,
   },
   {
+    to: "/d/documents",
+    label: "Documents",
+    icon: <FileIcon className="h-4 w-4" />,
+  },
+  {
+    to: "/d/templates",
+    label: "Templates",
+    icon: <BookTemplateIcon className="h-4 w-4" />,
+  },
+  {
     section: true,
     label: "Comming Soon",
   },
@@ -87,11 +98,7 @@ export const sidenav = [
     label: "Projects",
     icon: <UsersIcon className="h-4 w-4" />,
   },
-  {
-    to: "/d/documents",
-    label: "Documents",
-    icon: <FileIcon className="h-4 w-4" />,
-  },
+
   {
     section: true,
     label: "Backlog",
