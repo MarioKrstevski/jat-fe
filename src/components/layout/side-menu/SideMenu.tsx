@@ -16,6 +16,7 @@ import {
   sidenav,
 } from "../../../route-setup/sidenav-links";
 import SideMenuLink from "./components/SideMenuLink";
+import SideMenuItem from "./components/SideMenuItem";
 
 export default function SideMenu() {
   const sideMenuControl = useSideMenuControl();
@@ -76,37 +77,39 @@ export default function SideMenu() {
   );
   return (
     <>
-      {toggleButton}
       <aside
         ref={sideMenuRef}
         className={cn(
           "flex flex-col h-screen shadow-md  bg-[#212421] text-slate-300 dark:bg-gray-800 transition-all duration-300",
           isSmallScreen ? "fixed left-0 z-30" : "sticky left-0 top-0",
           smState === "open" && "w-48",
-          // smState === "minimized" && "w-10",
           smState === "hidden" && "w-0 overflow-hidden"
         )}
       >
+        {toggleButton}
+        {/* Side Menu - Header */}
         <div
           className={cn(
             "flex items-center justify-between min-h-16 border-b border-b-gray-400 dark:border-gray-700 "
-            // smState === "minimized" && "justify-center"
           )}
         >
-          {smState === "open" && (
-            <Link to={"/"} className="flex-1 flex justify-center">
-              <MountainIcon className="h-6 w-6" />
-              <span className="sr-only lg:hidden">Acme Inc</span>
-            </Link>
-          )}
+          <Link to={"/"} className="flex-1 flex justify-center">
+            <MountainIcon className="h-6 w-6" />
+            <span className="sr-only lg:hidden">Acme Inc</span>
+          </Link>
         </div>
+
+        {/* Side Menu - Body */}
         <nav
           className={cn(
             "flex flex-col gap-1 px-2  py-1 overflow-y-auto "
             // smState === "minimized" && "px-1"
           )}
         >
-          {sidenav.map((item) => {
+          {sidenav.map((item, idx) => {
+            return <SideMenuItem key={idx} item={item} />;
+          })}
+          {/* {sidenav.map((item) => {
             if (item.section) {
               return (
                 <p
@@ -124,11 +127,12 @@ export default function SideMenu() {
                 to={item.to}
                 label={item.label}
                 icon={item.icon}
-                children={item.children}
               />
             );
-          })}
+          })} */}
         </nav>
+
+        {/* Side Menu - Footer */}
         <div
           className={cn(
             "flex flex-col items-start justify-center  mt-auto py-1 px-2 border-t-2 border-t-gray-400 dark:border-gray-700"

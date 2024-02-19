@@ -1,3 +1,4 @@
+import ArchivedCount from "@/pages/dashboard-links/applications/components/ArchivedCount";
 import { PersonIcon } from "@radix-ui/react-icons";
 import {
   ArchiveIcon,
@@ -39,6 +40,13 @@ export const sidenav = [
         to: "/d/applications/archived",
         label: "Archived",
         icon: <ArchiveIcon className="h-4 w-4" />,
+        // tag: "2",
+        tag: <ArchivedCount />,
+        // tag: (
+        //   <span className="text-xs  bg-red-500 text-white p-1.5 py-0.5 rounded-full">
+        //     2
+        //   </span>
+        // ),
       },
       {
         to: "/d/applications/wishlist",

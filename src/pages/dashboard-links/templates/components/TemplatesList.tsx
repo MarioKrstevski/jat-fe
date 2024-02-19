@@ -8,6 +8,7 @@ import { toast } from "sonner";
 interface TemplatesListProps {
   templates: Template[];
 }
+
 export default function TemplatesList({
   templates,
 }: TemplatesListProps) {

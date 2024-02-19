@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type SideMenuState = "minimized" | "hidden" | "open";
+type SideMenuState = "hidden" | "open";
 
 interface SideMenuControl {
   state: SideMenuState;
