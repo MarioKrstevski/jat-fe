@@ -1,3 +1,4 @@
+import AddNewButton from "@/pages/dashboard-links/applications/components/AddNewButton";
 import ArchivedCount from "@/pages/dashboard-links/applications/components/ArchivedCount";
 import { PersonIcon } from "@radix-ui/react-icons";
 import {
@@ -56,6 +57,14 @@ export const sidenav = [
     ],
   },
   {
+    customComponent: true,
+    component: (
+      <div className="flex justify-start items-center">
+        <AddNewButton />
+      </div>
+    ),
+  },
+  {
     to: "/d/companies",
     label: "Companies",
     icon: <PackageIcon className="h-4 w-4" />,
@@ -102,6 +111,7 @@ export const sidenav = [
     label: "Resume",
     icon: <FileIcon className="h-4 w-4" />,
   },
+
   {
     to: current,
     label: "Portfolio",

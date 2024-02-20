@@ -79,12 +79,23 @@ export default function SideMenuItem({
         to={item.to}
         label={item.label}
         icon={item.icon}
+        tag={item.tag}
       />
     );
   }
 
-  if (true) {
+  if (
+    item.hasOwnProperty("customComponent") &&
+    item.customComponent &&
+    item.hasOwnProperty("component") &&
+    item.component
+  ) {
+    return (
+      <p className="pt-5 pl-2 text-sm whitespace-nowrap">
+        {item.component}
+      </p>
+    );
   }
 
-  return <div>SideMenuHeader works</div>;
+  throw new Error("Invalid side menu item");
 }
