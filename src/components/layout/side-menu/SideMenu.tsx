@@ -117,8 +117,8 @@ export default function SideMenu() {
             "flex flex-col items-start justify-center  mt-auto py-1 px-2 border-t-2 border-t-gray-400 dark:border-gray-700"
           )}
         >
-          {sidenavFooter.map((item) => {
-            return <SideMenuItem item={item} />;
+          {sidenavFooter.map((item, idx) => {
+            return <SideMenuItem key={idx} item={item} />;
           })}
         </div>
       </aside>

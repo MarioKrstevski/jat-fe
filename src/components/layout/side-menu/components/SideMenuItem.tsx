@@ -62,9 +62,9 @@ export default function SideMenuItem({
   // Section
   if (item.hasOwnProperty("section") && item.section) {
     return (
-      <p className="pt-5 pl-2 text-sm whitespace-nowrap">
+      <div className="pt-5 pl-2 text-sm whitespace-nowrap">
         {item.label}
-      </p>
+      </div>
     );
   }
 
@@ -91,9 +91,9 @@ export default function SideMenuItem({
     item.component
   ) {
     return (
-      <p className="pt-5 pl-2 text-sm whitespace-nowrap">
+      <div className="pt-5 pl-2 text-sm whitespace-nowrap">
         {item.component}
-      </p>
+      </div>
     );
   }
 
