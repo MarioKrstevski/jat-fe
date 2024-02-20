@@ -23,6 +23,16 @@ import {
 
 const current = undefined;
 export const sidenav = [
+  // {
+  //   customComponent: true,
+  //   component: (
+  //     <input
+  //       placeholder="Search"
+  //       className="chakra-input css-1ypj4k2"
+  //       type="text"
+  //     />
+  //   ),
+  // },
   {
     to: "/dashboard",
     label: "Dashboard",
@@ -163,7 +173,7 @@ export const sidenav = [
     icon: <PackageIcon className="h-4 w-4" />,
   },
 ];
-export const sideNavBottomLinks = [
+export const sidenavFooter = [
   {
     to: "/d/settings",
     label: "Settings",

@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import { useWindowSize } from "usehooks-ts";
 import {
-  sideNavBottomLinks,
   sidenav,
+  sidenavFooter,
 } from "../../../route-setup/sidenav-links";
 import SideMenuLink from "./components/SideMenuLink";
 import SideMenuItem from "./components/SideMenuItem";
@@ -109,27 +109,6 @@ export default function SideMenu() {
           {sidenav.map((item, idx) => {
             return <SideMenuItem key={idx} item={item} />;
           })}
-          {/* {sidenav.map((item) => {
-            if (item.section) {
-              return (
-                <p
-                  key={item.label}
-                  className="pt-5 pl-2 text-sm whitespace-nowrap"
-                >
-                  {item.label}
-                </p>
-              );
-            }
-
-            return (
-              <SideMenuLink
-                key={item.label}
-                to={item.to}
-                label={item.label}
-                icon={item.icon}
-              />
-            );
-          })} */}
         </nav>
 
         {/* Side Menu - Footer */}
@@ -138,15 +117,8 @@ export default function SideMenu() {
             "flex flex-col items-start justify-center  mt-auto py-1 px-2 border-t-2 border-t-gray-400 dark:border-gray-700"
           )}
         >
-          {sideNavBottomLinks.map((item) => {
-            return (
-              <SideMenuLink
-                key={item.label}
-                to={item.to}
-                label={item.label}
-                icon={item.icon}
-              />
-            );
+          {sidenavFooter.map((item) => {
+            return <SideMenuItem item={item} />;
           })}
         </div>
       </aside>
