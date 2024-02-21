@@ -39,9 +39,10 @@ export const sidenav = [
     icon: <LayoutDashboardIcon className="h-5 w-5" />,
   },
   {
-    section: "Other",
+    section: true,
     label: "Main Features",
   },
+
   {
     to: "/d/applications",
     label: "Applications",
